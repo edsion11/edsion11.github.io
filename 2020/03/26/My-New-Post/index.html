@@ -5,16 +5,19 @@
   
 
   
-  <title>Edsion11的博客</title>
+  <title>理解http | Edsion11的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="断剑重铸之日，骑士归来之时">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Edsion11的博客">
-<meta property="og:url" content="http://edsion11.github.io/index.html">
+  <meta name="description" content="GET和POST的区别首先是语义上的区别：1.从缓存的角度来说，GET请求会被浏览器主动缓存下来，留下历史记录，而POST不会2.从编码的角度，GET只能进行URL编码，只能接受ASCII码，而POST没有限制3.从参数的角度，GET一般放在URL中，因此不安全，POST在请求体中，适合传输敏感信息4.TCP的角度分析：GET请求会把报文一次性发出去，而POST会分为两个TCP数据包 ，首先发he">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解http">
+<meta property="og:url" content="http://edsion11.github.io/2020/03/26/My-New-Post/index.html">
 <meta property="og:site_name" content="Edsion11的博客">
-<meta property="og:description" content="断剑重铸之日，骑士归来之时">
+<meta property="og:description" content="GET和POST的区别首先是语义上的区别：1.从缓存的角度来说，GET请求会被浏览器主动缓存下来，留下历史记录，而POST不会2.从编码的角度，GET只能进行URL编码，只能接受ASCII码，而POST没有限制3.从参数的角度，GET一般放在URL中，因此不安全，POST在请求体中，适合传输敏感信息4.TCP的角度分析：GET请求会把报文一次性发出去，而POST会分为两个TCP数据包 ，首先发he">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-26T08:10:21.000Z">
+<meta property="article:modified_time" content="2020-03-26T08:23:00.574Z">
 <meta property="article:author" content="Edion Gu">
+<meta property="article:tag" content="GET和POST区别">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Edsion11的博客" type="application/atom+xml">
@@ -68,9 +71,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-My-New-Post" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-My-New-Post" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/03/26/My-New-Post/" class="article-date">
   <time datetime="2020-03-26T08:10:21.000Z" itemprop="datePublished">2020-03-26</time>
@@ -83,8 +84,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/26/My-New-Post/">理解http</a>
+    <h1 class="article-title" itemprop="name">
+      理解http
     </h1>
   
 
@@ -105,11 +106,9 @@
     </footer>
   </div>
   
-</article>
-
-
+    
   
-
+</article>
 
 </section>
         
