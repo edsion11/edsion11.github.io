@@ -12,7 +12,7 @@
     
     
     
-    <title>Tags: 博客 | EdsionGu的博客</title>
+    <title>希尔排序学习 | EdsionGu的博客</title>
     <!-- inject:style -->
     <link href="/css/style.css" rel="stylesheet" type="text/css">
     <!-- endinject -->
@@ -162,29 +162,128 @@
     
     <div class="cube-content">
         <div class="cube-left">
-            <style>
-    @media(max-width: 768px) {
-        body {
-            background-color: #fff!important;
-        }
-    }
-</style>
-<div class="cube-archives">
+            <div class="cube-article">
+    <h1 class="title">希尔排序学习</h1>
     
-    <div class="cube-archive" style="margin-top: 0;">
-        <h1 class="title">博客</h1>
-        
-        <ul class="posts">
-            
-            <li class="post">
-                <a href="/2020/03/27/%E9%80%9A%E8%BF%87coding%E5%88%9B%E5%BB%BA%E4%BD%A0%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">通过coding创建你的个人博客</a>
-            </li>
-            
-        </ul>
-        
-    </div>
+    <div class="cube-article-header">
+        <div class="cube-article-date">
+            <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
+            <!-- moment.js对象 -->
+            2020-03-27
+        </div>
+        <div class="cube-article-tags">
+    <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
+    
+    <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">#排序算法</a>
     
 </div>
+    </div>
+    
+    <div class="cube-article-content cube-markdown">
+        
+        <h4>希尔排序</h4>
+<p>希尔排序的工作原理是，通过定义一个间隔序列来表示在排序过程中进行比较的元素之
+间有多远的间隔。我们可以动态定义间隔序列，不过对于大部分的实际应用场景，算法
+要用到的间隔序列可以提前定义好。有一些公开定义的间隔序列，使用它们会得到不同
+的结果。在这里我们用到了 Marcin Ciura 在他 2001 年发表的论文“Best Increments for the
+Average Case of Shell Sort”（http:bit.ly/1b04YFv,2001）中定义的间隔序列。这个间隔序列
+是：701, 301, 132, 57, 23, 10, 4, 1。</p>
+<h6>首先是希尔排序的js写法</h6>
+<pre><code >
+var arr=[2,3,5,6,2,1,5,123,34,5,66,3,4,2,43,52,45,47,48]
+var gaps=[5,3,1]
+function shellSort(arr,gaps){
+  for(let g=0;g<gaps.length;++g){
+    for(let i=0;i<arr.length;++i){
+      var temp = arr[i]
+      for(var j=i;j>=gaps[g]&&arr[j-gaps[g]]>temp;j-=gaps[g]){
+        arr[j]=arr[j-gaps[g]]
+      }
+      arr[j]=temp
+    }
+  }
+}
+</code></pre>
+<h6>实际就是:</h6>
+<p>外循环控制间隔序列的移动。也就是说，算法在第一次处理数据集时，会检查所有间隔为
+5 的元素。下一次遍历会检查所有间隔为 3 的元素。最后一次则会对间隔为 1 的元素，也
+就是相邻元素执行标准插入排序。在开始做最后一次处理时，大部分元素都将在正确的位
+置，算法就不必对很多元素进行交换。这就是希尔排序比插入排序更高效的地方。图 12-3
+演示了如何使用间隔序列为 5, 3, 1 的希尔排序算法，对一个包含 10 个随机数字的数据集
+合进行排序。
+</p>
+原理图如下：
+<image src="/images/希尔排序原理.png"></image>
+<h6>计算动态间隔序列</h6>
+
+<p>《算法（第 4 版）》（人民邮电出版社）的合著者 Robert Sedgewick 定义了一个 shellsort()
+函数，在这个函数中可以通过一个公式来对希尔排序用到的间隔序列进行动态计算。
+Sedgewick 的算法是通过下面的代码片段来决定初始间隔值的：</p>
+
+<pre><code>
+var N = this.dataStore.length;
+var h = 1;
+while (h < N/3) {
+  h = 3 * h + 1;
+}
+</code></pre>
+<p>间隔值确定好后，这个函数就可以像之前定义的 shellsort() 函数一样运行了，唯一的区<br>别是，回到外循环之前的最后一条语句会计算一个新的间隔值：</p>
+<pre><code>
+h = 3 * h + 1
+</code></pre>
+<h6>举例如下:</h6>
+
+<pre><code>
+
+function shellSort (arr){
+  var N = arr.length;
+  var h = 1;
+  while(h<N/3){
+    h = h * 3 + 1;
+  }
+  while(h>=1){
+    for(var i=h;i<N;i++){
+      for(j=i;j > = h && arr[j] < arr[j-h];j-=h){
+        var temp = arr[j-h]
+        arr[j-h]=arr[j]
+        arr[j] = temp
+      }
+    }
+    h=(h-1)/3
+  }
+}
+</code></pre>
+<p>在运算时间上，前后两个算法相差一个while()循环来取gaps[]值，前者设定了[5,3,1],后者通过计算得到gaps数组，多几ms。</p>
+
+    </div>
+</div>
+
+<div class="cube-article-nav">
+    <ul>
+        
+        <li class="prev">
+            <a href="/2020/03/27/post-0/">
+                <i class="cube-icon cube-prev" aria-hidden="true"></i>
+                图片
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2020/03/26/GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB/">
+                GET和POST的区别
+                <i class="cube-icon cube-next" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+<!-- TODO 根据theme.comment的内容进行入口选择 -->
+
+
+
         </div>
         <div class="cube-right">
             
@@ -224,8 +323,8 @@
     <a title="断剑重铸之日，骑士归来之时">断剑重铸之日，骑士归来之时</a>
     
     <div class="count">
-        <a class="count articles"><span>4</span>Article</a>
-        <a class="count tags"><span>4</span>Tags</a>
+        <a class="count articles"><span>3</span>Article</a>
+        <a class="count tags"><span>3</span>Tags</a>
         <a class="count categories"><span>0</span>Categories</a>
     </div>
 </div>
@@ -238,7 +337,7 @@
 <script>
     (function (window) {
         window.musicModule = {}
-        window.musicModule.musicConfig = '{"narrow":false,"autoplay":false,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
+        window.musicModule.musicConfig = '{"narrow":false,"autoplay":true,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
         window.musicModule.lrcConfig = {
             open: 'Open Lyrics',
             close: 'Close Lyrics'
@@ -263,7 +362,7 @@
                     <span>1</span>
                 </p>
                 <p class="title">
-                    <a href="/2020/03/27/image/" title="image">image</a>
+                    <a href="/2020/03/27/post-0/" title="图片">图片</a>
                 </p>
             </div>
             
@@ -277,7 +376,7 @@
                     <span>2</span>
                 </p>
                 <p class="title">
-                    <a href="/2020/03/27/%E9%80%9A%E8%BF%87coding%E5%88%9B%E5%BB%BA%E4%BD%A0%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" title="通过coding创建你的个人博客">通过coding创建你的个人博客</a>
+                    <a href="/2020/03/27/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%E8%AE%BA/" title="希尔排序学习">希尔排序学习</a>
                 </p>
             </div>
         </li>
@@ -290,20 +389,7 @@
                     <span>3</span>
                 </p>
                 <p class="title">
-                    <a href="/2020/03/26/POST/" title="POST">POST</a>
-                </p>
-            </div>
-        </li>
-        
-        
-        
-        <li>
-            <div class="normal">
-                <p class="index">
-                    <span>4</span>
-                </p>
-                <p class="title">
-                    <a href="/2020/03/26/page/" title="page">page</a>
+                    <a href="/2020/03/26/GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB/" title="GET和POST的区别">GET和POST的区别</a>
                 </p>
             </div>
         </li>
@@ -329,17 +415,12 @@
         
         
         <div class="cube-box ">
-            <a href="/tags/page/">#page</a>
+            <a href="/tags/%E5%9B%BE%E7%89%87/">#图片</a>
         </div>
         
         
         <div class="cube-box ">
-            <a href="/tags/%E5%8D%9A%E5%AE%A2/">#博客</a>
-        </div>
-        
-        
-        <div class="cube-box-bg ">
-            <a href="/tags/%E5%9B%BE%E7%89%87/">#图片</a>
+            <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">#排序算法</a>
         </div>
         
     </div>

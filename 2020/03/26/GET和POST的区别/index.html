@@ -12,7 +12,7 @@
     
     
     
-    <title>通过coding创建你的个人博客 | EdsionGu的博客</title>
+    <title>GET和POST的区别 | EdsionGu的博客</title>
     <!-- inject:style -->
     <link href="/css/style.css" rel="stylesheet" type="text/css">
     <!-- endinject -->
@@ -163,27 +163,25 @@
     <div class="cube-content">
         <div class="cube-left">
             <div class="cube-article">
-    <h1 class="title">通过coding创建你的个人博客</h1>
+    <h1 class="title">GET和POST的区别</h1>
     
     <div class="cube-article-header">
         <div class="cube-article-date">
             <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
             <!-- moment.js对象 -->
-            2020-03-27
+            2020-03-26
         </div>
         <div class="cube-article-tags">
     <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
     
-    <a href="/tags/%E5%8D%9A%E5%AE%A2/">#博客</a>
+    <a href="/tags/HTTP/">#HTTP</a>
     
 </div>
     </div>
     
     <div class="cube-article-content cube-markdown">
         
-         <h2> 搭建博客</h2>
-<image src="/images/bestriven.jpg"></image>
- <a href="http://coding.net" target="_blank" rel="noopener">http://coding.net</a>
+        <p>-GET 和 POST 有什么区别？<br>-1.首先最直观的是语义上的区别。<br>-2.从缓存的角度，GET 请求会被浏览器主动缓存下来，留下历史记录，而 POST 默认不会。<br>-3.从编码的角度，GET 只能进行 URL 编码，只能接收 ASCII 字符，而 POST 没有限制。<br>-4.从参数的角度，GET 一般放在 URL 中，因此不安全，POST 放在请求体中，更适合传输敏感信息。<br>-5.从幂等性的角度，GET 是幂等的，而 POST 不是。(幂等表示执行相同的操作，结果也是相同)<br>-6.从 TCP 的角度，GET 请求会把请求报文一次性发出去，而 POST 会分为两个 TCP 数据包，首先发 header 部分，如果服务器响应 100(continue)， 然后发 -body 部分。(火狐浏览器除外，它的 POST 请求只发一个 TCP 包)</p>
 
     </div>
 </div>
@@ -192,19 +190,12 @@
     <ul>
         
         <li class="prev">
-            <a href="/2020/03/27/image/">
+            <a href="/2020/03/27/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%E8%AE%BA/">
                 <i class="cube-icon cube-prev" aria-hidden="true"></i>
-                image
+                希尔排序学习
             </a>
         </li>
         
-        
-        <li class="next">
-            <a href="/2020/03/26/POST/">
-                POST
-                <i class="cube-icon cube-next" aria-hidden="true"></i>
-            </a>
-        </li>
         
     </ul>
 </div>
@@ -253,8 +244,8 @@
     <a title="断剑重铸之日，骑士归来之时">断剑重铸之日，骑士归来之时</a>
     
     <div class="count">
-        <a class="count articles"><span>4</span>Article</a>
-        <a class="count tags"><span>4</span>Tags</a>
+        <a class="count articles"><span>3</span>Article</a>
+        <a class="count tags"><span>3</span>Tags</a>
         <a class="count categories"><span>0</span>Categories</a>
     </div>
 </div>
@@ -267,7 +258,7 @@
 <script>
     (function (window) {
         window.musicModule = {}
-        window.musicModule.musicConfig = '{"narrow":false,"autoplay":false,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
+        window.musicModule.musicConfig = '{"narrow":false,"autoplay":true,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
         window.musicModule.lrcConfig = {
             open: 'Open Lyrics',
             close: 'Close Lyrics'
@@ -292,7 +283,7 @@
                     <span>1</span>
                 </p>
                 <p class="title">
-                    <a href="/2020/03/27/image/" title="image">image</a>
+                    <a href="/2020/03/27/post-0/" title="图片">图片</a>
                 </p>
             </div>
             
@@ -306,7 +297,7 @@
                     <span>2</span>
                 </p>
                 <p class="title">
-                    <a href="/2020/03/27/%E9%80%9A%E8%BF%87coding%E5%88%9B%E5%BB%BA%E4%BD%A0%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" title="通过coding创建你的个人博客">通过coding创建你的个人博客</a>
+                    <a href="/2020/03/27/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%E8%AE%BA/" title="希尔排序学习">希尔排序学习</a>
                 </p>
             </div>
         </li>
@@ -319,20 +310,7 @@
                     <span>3</span>
                 </p>
                 <p class="title">
-                    <a href="/2020/03/26/POST/" title="POST">POST</a>
-                </p>
-            </div>
-        </li>
-        
-        
-        
-        <li>
-            <div class="normal">
-                <p class="index">
-                    <span>4</span>
-                </p>
-                <p class="title">
-                    <a href="/2020/03/26/page/" title="page">page</a>
+                    <a href="/2020/03/26/GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB/" title="GET和POST的区别">GET和POST的区别</a>
                 </p>
             </div>
         </li>
@@ -352,23 +330,18 @@
     <div class="cube-boxs">
         
         
-        <div class="cube-box ">
-            <a href="/tags/HTTP/">#HTTP</a>
-        </div>
-        
-        
         <div class="cube-box-bg ">
-            <a href="/tags/page/">#page</a>
-        </div>
-        
-        
-        <div class="cube-box ">
-            <a href="/tags/%E5%8D%9A%E5%AE%A2/">#博客</a>
+            <a href="/tags/HTTP/">#HTTP</a>
         </div>
         
         
         <div class="cube-box ">
             <a href="/tags/%E5%9B%BE%E7%89%87/">#图片</a>
+        </div>
+        
+        
+        <div class="cube-box ">
+            <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">#排序算法</a>
         </div>
         
     </div>
