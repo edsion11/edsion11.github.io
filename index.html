@@ -1,659 +1,252 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="zh_CN" class="loading">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="author" content="Edsion Gu">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EdsionGu的博客 - 断剑重铸之日，骑士归来之时</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="前端,"> 
+    <meta name="description" content="断剑重铸之日，骑士归来之时,"> 
+    <meta name="author" content="Edsion Gu"> 
+    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
     
-    <meta name="description" content="断剑重铸之日，骑士归来之时">
-    
-    
-    
-    
-    
-    
-    <title>EdsionGu的博客</title>
-    <!-- inject:style -->
-    <link href="/css/style.css" rel="stylesheet" type="text/css">
-    <!-- endinject -->
-    <style>
-        .cube-loading {
-            top: 0;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: url('/images/lg/loading.gif') no-repeat center center;
-            background-color: rgba(0,0,0,.7);
-        }
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
 
-        .cube-loading.out {
-            display: none;
-        }
-
-        .cube-loading:before {
-            display: block;
-            content: 'Loading';
-            position: relative;
-            width: 100%;
-            top: 50%;
-            right: -50%;
-            color: #fff;
-        }
-
-        @media(max-width: 768px) {
-            .cube-loading:before {
-                font-size: 1.2em;
-                transform: translate(-24px,20px);
-                -webkit-transform: translate(-24px,20px);
-                -o-transform: translate(-24px,20px);
-                -ms-transform: translate(-24px,20px);
-            }
-        }
-
-        @media(min-width: 768px) {
-            .cube-loading:before {
-
-            }
-        }
-    </style>
     
-<meta name="generator" content="Hexo 4.2.0"></head>
-<body>
-<div class="cube-body">
-    <nav id="cube-top-memu" class="cube-menu">
-    <ul class="cube-menu-collapse">
-        
-        <li>
-            <i class="cube-icon cube-icon-home" aria-hidden="true"></i>
-            <a href="/">首页</a>
-        </li>
-        
-        <li>
-            <i class="cube-icon cube-icon-archive" aria-hidden="true"></i>
-            <a href="/archives">归档</a>
-        </li>
-        
-        <li>
-            <i class="cube-icon cube-icon-categories" aria-hidden="true"></i>
-            <a href="/categories">分类</a>
-        </li>
-        
-        <li>
-            <i class="cube-icon cube-icon-tags" aria-hidden="true"></i>
-            <a href="/tags">标签</a>
-        </li>
-        
-        <li>
-            <i class="cube-icon cube-icon-about" aria-hidden="true"></i>
-            <a href="/about-me">关于我</a>
-        </li>
-        
-    </ul>
-</nav>
-<nav class="cube-side-menu" id="cube-side-menu">
-    <ul class="cube-menu-list">
-        
-        <li>
-            <a class="lrc-control">Open Lyrics</a>
-        </li>
-        
-        <li>
-            <a class="scroll-to-top">Top</a>
-        </li>
-    </ul>
-</nav>
-    <header class="cube-header" id="cube-header">
-    <img src=" http://cube-1252774894.cosgz.myqcloud.com/background.png " alt="头部背景图片">
-    
-    <div class="cube-type">
-        <span class="cube-typed-title">Edsionの部落格</span>
-        <span class="cube-typed-cursor">|</span>
-    </div>
-    
-</header>
+<link rel="stylesheet" href="/css/diaspora.css">
 
-    <style>
-        nav.cube-menu:before {
-            content: '';
-            visibility: hidden;
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 44px;
-        
-            filter: blur(5px);
-            -webkit-filter: blur(5px);
-        
-            z-index: -1;
-            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
-            background-repeat: no-repeat;
-            background-position: center -356px;
-            background-size: cover;
-            background-color: transparent;
-        }
-
-        header.cube-background.cube-header-background {
-            visibility: hidden;
-            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
-            background-position: center -400px;
-        }
-    </style>
-    <header class="cube-background cube-header-background">
-        
-        <div class="cube-type">
-            <span class="cube-typed-title">Edsionの部落格</span>
-            <span class="cube-typed-cursor">|</span>
-        </div>
-        
-    </header>
-    <div class="load-header-background"></div>
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script>
-        (function (window) {
-
-            window.headerModule = {}
-            window.headerModule.image = {
-                width: '2000',
-                height: '1414'
-            }
-
-        })(window)
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
     </script>
-    
-    <div class="cube-content">
-        <div class="cube-left">
-            
-<div class="cube-excerpt" id="cube-excerpt-图片">
-    <header class="cube-excerpt-header">
-        <h1><a href="/2020/03/27/post-0/">图片</a></h1>
-        <div class="cube-excerpt-header-msg">
-            <div class="cube-excerpt-date">
-                <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
-                2020-03-27
-            </div>
-            <div class="cube-excerpt-tags">
-                <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
-                
-                <a href="/tags/%E5%9B%BE%E7%89%87/" class="cube-excerpt-tag-link">#图片</a>
-                
-            </div>
-        </div>
-    </header>
-    <article class="cube-excerpt-entry cube-markdown">
-        
-        
-           <p><image src="http://pic.netbian.com/uploads/allimg/200102/193708-15779650287a6a.jpg"></image><br>卡哇伊</p>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
 
+<body class="loading">
+    <span id="config-title" style="display:none">EdsionGu的博客</span>
+    <div id="loader"></div>
+    <div class="nav">
+    <ul id="menu-menu" class="menu">
         
-    </article>
-    <footer class="cube-excerpt-footer">
-        <a class="cube-excerpt-more" href="/2020/03/27/post-0/">Read More</a>
-    </footer>
+        <li class="pview menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="//" title="首页" target="_blank" rel="noopener">首页</a>
+        </li>
+        
+        <li class="pview menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/categories/" title="分类" target="_blank" rel="noopener">分类</a>
+        </li>
+        
+        <li class="pview menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/tags/" title="标签" target="_blank" rel="noopener">标签</a>
+        </li>
+        
+        <li class="pview menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/archives/" title="归档" target="_blank" rel="noopener">归档</a>
+        </li>
+        
+        <li class="pview menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/about/" title="关于" target="_blank" rel="noopener">关于</a>
+        </li>
+        
+    </ul>
+	<span class="target"></span>
+	<center>
+	<div class="hitokoto">
+		<span class="typed" id="hitokoto" data-st="true"></span>
+	</div>
+	</center>
+	
+	<p class="footerlinks">
+		<a href="#" class="iconfont icon-null"></a>
+		
+            <a href="/" title="facebook" class="iconfont icon-facebook" target="_blank" rel="noopener"> </a>
+        
+            <a href="/" title="twitter" class="iconfont icon-twitter" target="_blank" rel="noopener"> </a>
+        
+            <a href="https://github.com/edsion11" title="github" class="iconfont icon-github" target="_blank" rel="noopener"> </a>
+        
+            <a href="/null" title="wechat" class="iconfont icon-wechat" target="_blank" rel="noopener"> </a>
+        
+            <a href="mailto:1447424545@qq.com" title="email" class="iconfont icon-email" target="_blank" rel="noopener"> </a>
+        
+		<a href="#" class="iconfont icon-null"></a>
+	</p>
+	
+    <p id="copyright">
+        &copy; 2020 Edsion Gu.
+        <span> | </span>Powered by <a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        <span> | </span>Theme <a href="https://github.com/Fechin/hexo-theme-diaspora" title="Diaspora" target="_blank" rel="noopener">Diaspora</a> by Fechin
+		
+		<span> | </span><a rel="nofollow" href="http://www.beian.miit.gov.cn" target="_blank">冀ICP备xxxxxxx号</a>
+		
+    </p>
 </div>
 
-<div class="cube-excerpt" id="cube-excerpt-希尔排序和快速排序">
-    <header class="cube-excerpt-header">
-        <h1><a href="/2020/03/27/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%E8%AE%BA/">希尔排序和快速排序</a></h1>
-        <div class="cube-excerpt-header-msg">
-            <div class="cube-excerpt-date">
-                <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
-                2020-03-27
-            </div>
-            <div class="cube-excerpt-tags">
-                <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
-                
-                <a href="/tags/%E9%AB%98%E7%BA%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="cube-excerpt-tag-link">#高级排序算法</a>
-                
-            </div>
+<div id="container">
+    
+<div id="screen">
+    <div id="mark">
+        <div class="layer" data-depth="0.4">
+            <img src="/img/bcimg.jpg" id="cover" crossorigin="anonymous" width="1920" height="1080">
         </div>
-    </header>
-    <article class="cube-excerpt-entry cube-markdown">
-        
-        
-           <h4>希尔排序</h4>
-<p>希尔排序的工作原理是，通过定义一个间隔序列来表示在排序过程中进行比较的元素之
-间有多远的间隔。我们可以动态定义间隔序列，不过对于大部分的实际应用场景，算法
-要用到的间隔序列可以提前定义好。有一些公开定义的间隔序列，使用它们会得到不同
-的结果。在这里我们用到了 Marcin Ciura 在他 2001 年发表的论文“Best Increments for the
-Average Case of Shell Sort”（http:bit.ly/1b04YFv,2001）中定义的间隔序列。这个间隔序列
-是：701, 301, 132, 57, 23, 10, 4, 1。</p>
-<h6>首先是希尔排序的js写法</h6>
-<pre><code >
-var arr=[2,3,5,6,2,1,5,123,34,5,66,3,4,2,43,52,45,47,48]
-var gaps=[5,3,1]
-function shellSort(arr,gaps){
-  for(let g=0;g<gaps.length;++g){
-    for(let i=0;i<arr.length;++i){
-      var temp = arr[i]
-      for(var j=i;j>=gaps[g]&&arr[j-gaps[g]]>temp;j-=gaps[g]){
-        arr[j]=arr[j-gaps[g]]
-      }
-      arr[j]=temp
-    }
-  }
-}
-</code></pre>
-<h6>实际就是:</h6>
-<p>外循环控制间隔序列的移动。也就是说，算法在第一次处理数据集时，会检查所有间隔为
-5 的元素。下一次遍历会检查所有间隔为 3 的元素。最后一次则会对间隔为 1 的元素，也
-就是相邻元素执行标准插入排序。在开始做最后一次处理时，大部分元素都将在正确的位
-置，算法就不必对很多元素进行交换。这就是希尔排序比插入排序更高效的地方。图 12-3
-演示了如何使用间隔序列为 5, 3, 1 的希尔排序算法，对一个包含 10 个随机数字的数据集
-合进行排序。
+    </div>
+    <div id="vibrant">
+        <svg viewBox="0 0 2880 1620" height="100%" preserveAspectRatio="xMaxYMax slice">
+            <polygon opacity="0.7" points="2000,1620 0,1620 0,0 600,0 "/>
+        </svg>
+        <div></div>
+    </div>
+    <div id="header">
+        <div>
+            <a class="image-logo" href="/"></a>
+			
+            <div class="iconfont icon-menu switchmenu"></div>
+        </div>
+    </div>
+    
+    <div id="post0">
+        <p>三月 27, 2020</p>
+        <h2><a href="/2020/03/27/post-0/" title="图片" class="posttitle">图片</a></h2>
+        <p class="summary">卡哇伊
 </p>
-原理图如下：
-<image src="/images/希尔排序原理.png"></image>
-<h6>计算动态间隔序列</h6>
-
-<p>《算法（第 4 版）》（人民邮电出版社）的合著者 Robert Sedgewick 定义了一个 shellsort()
-函数，在这个函数中可以通过一个公式来对希尔排序用到的间隔序列进行动态计算。
-Sedgewick 的算法是通过下面的代码片段来决定初始间隔值的：</p>
-
-<pre><code>
-var N = this.dataStore.length;
-var h = 1;
-while (h < N/3) {
-  h = 3 * h + 1;
-}
-</code></pre>
-<p>间隔值确定好后，这个函数就可以像之前定义的 shellsort() 函数一样运行了，唯一的区<br>别是，回到外循环之前的最后一条语句会计算一个新的间隔值：</p>
-<pre><code>
-h = 3 * h + 1
-</code></pre>
-<h6>举例如下:</h6>
-
-<pre><code>
-
-function shellSort (arr){
-  var N = arr.length;
-  var h = 1;
-  while(h<N/3){
-    h = h * 3 + 1;
-  }
-  while(h>=1){
-    for(var i=h;i<N;i++){
-      for(j=i;j > = h && arr[j] < arr[j-h];j-=h){
-        var temp = arr[j-h]
-        arr[j-h]=arr[j]
-        arr[j] = temp
-      }
-    }
-    h=(h-1)/3
-  }
-}
-</code></pre>
-<p>在运算时间上，前后两个算法相差一个while()循环来取gaps[]值，前者设定了[5,3,1],后者通过计算得到gaps数组。</p>
-<h4>快速排序</h4>
-快速排序是处理大数据集最快的排序算法之一，它是一种分而治之的算法，通过递归的方式将数据分解为包含较小元素和较大元素的不同子序列
-这个算法首先要在列表中选择一个元素作为基准值（pivot）。数据排序围绕基准值进行，将列表中小于基准值的元素移到数组的底部，将大于基准值的元素移到数组的顶部。
-如图所示：
-<image src="/images/快速排序.jpg"></image>
-<pre><code>
-function QuickSort(arr) {
-  if (arr.length == 0) return []
-  var left = []
-  var right = []
-  var pivot = arr[0]
-  for (let i = 1; i < arr.length; i++) {//此处留意i=1
-    if (arr[i] < pivot) {
-      left.push(arr[i])
-    } else {
-      right.push(arr[i])
-    }
-  }
-  return QuickSort(left).concat(pivot, QuickSort(right))
-}
-</code></pre>
-以下获取每次循环的输出，解释了快速排序的运行原理。
-<pre><code>
-9,3,93,9,65,94,50,90,12,65
-基准值：9 当前元素：3
-移动 3 到左边
-基准值：9 当前元素：93
-移动 93 到右边
-基准值：9 当前元素：9
-移动 9 到右边
-基准值：9 当前元素：65
-移动 65 到右边
-基准值：9 当前元素：94
-移动 94 到右边
-基准值：9 当前元素：50
-移动 50 到右边
-基准值：9 当前元素：90
-移动 90 到右边
-基准值：9 当前元素：12
-移动 12 到右边
-基准值：9 当前元素：65
-移动 65 到右边
-基准值：93 当前元素：9
-移动 9 到左边
-基准值：93 当前元素：65
-移动 65 到左边
-基准值：93 当前元素：94
-移动 94 到右边
-基准值：93 当前元素：50
-移动 50 到左边
-基准值：93 当前元素：90
-移动 90 到左边
-基准值：93 当前元素：12
-移动 12 到左边
-基准值：93 当前元素：65
-移动 65 到左边
-基准值：9 当前元素：65
-移动 65 到右边
-基准值：9 当前元素：50
-移动 50 到右边
-基准值：9 当前元素：90
-移动 90 到右边
-基准值：9 当前元素：12
-移动 12 到右边
-基准值：9 当前元素：65
-移动 65 到右边
-基准值：65 当前元素：50
-移动 50 到左边
-基准值：65 当前元素：90
-移动 90 到右边
-排序算法 ｜ 167
-基准值：65 当前元素：12
-移动 12 到左边
-基准值：65 当前元素：65
-移动 65 到右边
-基准值：50 当前元素：12
-移动 12 到左边
-基准值：90 当前元素：65
-移动 65 到左边
-3,9,9,12,50,65,65,90,93,94
-</code></pre>
-本次文章到此结束
-        
-    </article>
-    <footer class="cube-excerpt-footer">
-        <a class="cube-excerpt-more" href="/2020/03/27/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%E8%AE%BA/">Read More</a>
-    </footer>
-</div>
-
-<div class="cube-excerpt" id="cube-excerpt-GET和POST的区别">
-    <header class="cube-excerpt-header">
-        <h1><a href="/2020/03/26/GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB/">GET和POST的区别</a></h1>
-        <div class="cube-excerpt-header-msg">
-            <div class="cube-excerpt-date">
-                <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
-                2020-03-26
-            </div>
-            <div class="cube-excerpt-tags">
-                <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
-                
-                <a href="/tags/HTTP/" class="cube-excerpt-tag-link">#HTTP</a>
-                
-            </div>
-        </div>
-    </header>
-    <article class="cube-excerpt-entry cube-markdown">
-        
-        
-           <p>-GET 和 POST 有什么区别？<br>-1.首先最直观的是语义上的区别。<br>-2.从缓存的角度，GET 请求会被浏览器主动缓存下来，留下历史记录，而 POST 默认不会。<br>-3.从编码的角度，GET 只能进行 URL 编码，只能接收 ASCII 字符，而 POST 没有限制。<br>-4.从参数的角度，GET 一般放在 URL 中，因此不安全，POST 放在请求体中，更适合传输敏感信息。<br>-5.从幂等性的角度，GET 是幂等的，而 POST 不是。(幂等表示执行相同的操作，结果也是相同)<br>-6.从 TCP 的角度，GET 请求会把请求报文一次性发出去，而 POST 会分为两个 TCP 数据包，首先发 header 部分，如果服务器响应 100(continue)， 然后发 -body 部分。(火狐浏览器除外，它的 POST 请求只发一个 TCP 包)</p>
-
-        
-    </article>
-    <footer class="cube-excerpt-footer">
-        <a class="cube-excerpt-more" href="/2020/03/26/GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB/">Read More</a>
-    </footer>
-</div>
-
-
-
-<ul class="cube-pagination cube-pagination-6">
-    
-    <li class="cube-pagination-prev disabled">
-        <span>« Prev</span>
-    </li>
-    
-    
-        
-            
-            <li class="cube-pagination-index disabled">
-                <span>1</span>
-            </li>
-            
-        
-    
-
-    
-    <li class="cube-pagination-next disabled">
-        <span>Next »</span>
-    </li>
-    
-</ul>
-
-<!--其他组件后续添加-->
-        </div>
-        <div class="cube-right">
-            
-
-<div class="cube-search cube-sidebar" id="cube-search">
-    <div class="search-container">
-        <input type="text" placeholder="Search" class="cube-search-input" id="cube-search-input">
-        <i class="cube-icon cube-icon-search cube-search-submit" aria-hidden="true"></i>
     </div>
-    <!-- TODO 通过给window赋一个全局变量，通过脚本赋值 -->
-</div>
-<script>
-    (function (window) {
-        'use strict';
-        window.searchModule = {}
-        window.searchModule.JSONUrl = '/content.json'
-        window.searchModule.rootUrl = '/'
-    })(window)
-</script>
-<div class="cube-search-form">
-    <div class="cube-search-control">
-        <input type="text" placeholder="Search" class="search-input">
-        <a class="close-button">
-            <i class="cube-icon cube-close" aria-hidden="true"></i>
-        </a>
-    </div>
-    <div class="cube-search-result"></div>
+    
 </div>
 
-
-<div class="cube-author cube-sidebar" id="cube-author">
-    
-    
-    <span>Edsion Gu</span>
-    
-    
-    <a title="断剑重铸之日，骑士归来之时">断剑重铸之日，骑士归来之时</a>
-    
-    <div class="count">
-        <a class="count articles"><span>3</span>Article</a>
-        <a class="count tags"><span>3</span>Tags</a>
-        <a class="count categories"><span>0</span>Categories</a>
+    <div id="primary">
+        
+<div class="post">
+    <a href="/2020/03/27/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%E8%AE%BA/" title="希尔排序和快速排序">
+        <img src="/img/two.jpg" class="cover" width="680" height="440">
+    </a>
+    <div class="else">
+        <p>三月 27, 2020</p>
+        <h3><a href="/2020/03/27/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%E8%AE%BA/" title="希尔排序和快速排序" class="posttitle">希尔排序和快速排序</a></h3>
+        <p>希尔排序
+希尔排序的工作原理是，通过定义一个间隔序列来表示在排序过程中进行比较的元素之
+间有多远的间隔。我们可以动态定义间隔序列，不过对于大部分的实际应用...</p>
     </div>
 </div>
 
 
-
-<div class="cube-music cube-sidebar" id="cube-music">
-    <div class="cube-player aplayer" id="cube-player"></div>
-</div>
-<script>
-    (function (window) {
-        window.musicModule = {}
-        window.musicModule.musicConfig = '{"narrow":false,"autoplay":true,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
-        window.musicModule.lrcConfig = {
-            open: 'Open Lyrics',
-            close: 'Close Lyrics'
-        }
-    })(window)
-</script>
-
-
-
-<div class="cube-recent-posts cube-sidebar" id="cube-recent-posts">
-    <div class="title">
-        <a>Recent Posts</a>
-    </div>
-    <ul class="list">
-        
-        
-        <li>
-            <!-- TODO 如果文章要显示图片，那么在front-matter上添加preview属性(url or path) -->
-            
-            <div class="normal">
-                <p class="index first">
-                    <span>1</span>
-                </p>
-                <p class="title">
-                    <a href="/2020/03/27/post-0/" title="图片">图片</a>
-                </p>
-            </div>
-            
-        </li>
-        
-        
-        
-        <li>
-            <div class="normal">
-                <p class="index">
-                    <span>2</span>
-                </p>
-                <p class="title">
-                    <a href="/2020/03/27/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%E8%AE%BA/" title="希尔排序和快速排序">希尔排序和快速排序</a>
-                </p>
-            </div>
-        </li>
-        
-        
-        
-        <li>
-            <div class="normal">
-                <p class="index">
-                    <span>3</span>
-                </p>
-                <p class="title">
-                    <a href="/2020/03/26/GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB/" title="GET和POST的区别">GET和POST的区别</a>
-                </p>
-            </div>
-        </li>
-        
-        
-    </ul>
-</div>
-
-
-
-
-
-<div class="cube-tagcloud cube-sidebar" id="cube-tagcloud">
-    <div class="title">
-        <a href="/tags">Tagcloud</a>
-    </div>
-    <div class="cube-boxs">
-        
-        
-        <div class="cube-box ">
-            <a href="/tags/HTTP/">#HTTP</a>
-        </div>
-        
-        
-        <div class="cube-box ">
-            <a href="/tags/%E5%9B%BE%E7%89%87/">#图片</a>
-        </div>
-        
-        
-        <div class="cube-box ">
-            <a href="/tags/%E9%AB%98%E7%BA%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">#高级排序算法</a>
-        </div>
-        
+<div class="post">
+    <a href="/2020/03/26/GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB/" title="GET和POST的区别">
+        <img src="/img/LOL2.jpg" class="cover" width="680" height="440">
+    </a>
+    <div class="else">
+        <p>三月 26, 2020</p>
+        <h3><a href="/2020/03/26/GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB/" title="GET和POST的区别" class="posttitle">GET和POST的区别</a></h3>
+        <p>-GET 和 POST 有什么区别？-1.首先最直观的是语义上的区别。-2.从缓存的角度，GET 请求会被浏览器主动缓存下来，留下历史记录，而 POST ...</p>
     </div>
 </div>
 
 
-
-<div class="cube-links cube-sidebar" id="cube-links">
-    <div class="title">
-        <a>Links</a>
     </div>
-    <ul class="list">
-        
-        <li>
-            
-            
-            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/GitHub.png">
-            
-            <a href="https://github.com/ZEROKISEKI" target="_blank">GitHub</a>
-        </li>
-        
-        <li>
-            
-            
-            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/Coding.png">
-            
-            <a href="https://coding.net/u/SORA1" target="_blank">Coding</a>
-        </li>
-        
-        <li>
-            
-            
-            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/SF.png">
-            
-            <a href="https://segmentfault.com/u/aonosora" target="_blank">SF社区</a>
-        </li>
-        
-        <li>
-            
-            
-            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/开发者头条.png">
-            
-            <a href="https://toutiao.io/u/148070" target="_blank">开发者头条</a>
-        </li>
-        
-    </ul>
-</div>
-
-
-
-<div class="cube-friend-links cube-sidebar" id="cube-friend-links">
-    <div class="title">
-        <a>Friend Links</a>
-    </div>
-    <ul class="list">
-        
-        <li>
-            <!-- TODO change avatar.png to friend.png-->
-            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/micblo.png">
-            <a href="https://blog.micblo.com/" target="_blank">罗大佬</a>
-        </li>
-        
-        <li>
-            <!-- TODO change avatar.png to friend.png-->
-            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/DIYgod.jpg">
-            <a href="https://www.anotherhome.net/" target="_blank">DIYgod</a>
-        </li>
-        
-        <li>
-            <!-- TODO change avatar.png to friend.png-->
-            <img src="/images/friend_links.jpg ">
-            <a href="https://aonosora.com/" target="_blank">咪西西の部落格</a>
-        </li>
-        
-    </ul>
-</div>
-
-
-        </div>
-    </div>
-</div>
-<footer class="cube-footer">
     
-© 2017 Edsion Gu
+</div>
+<div id="preview"></div>
 
-<br>
-Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>.&nbsp;Theme by <a href="https://github.com/ZEROKISEKI" target="_blank">AONOSORA</a>
-</footer>
-<!-- inject:script -->
-<script src="/js/script.js"></script>
-<!-- endinject -->
-<div class="cube-loading out"></div>
+
+
 </body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
 </html>
