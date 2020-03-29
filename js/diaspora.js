@@ -165,7 +165,7 @@ var Diaspora = {
         if (progress / 5 <= 1) {
           p[0].volume = progress / 100
         } else {
-          p[0].volume = 0.05
+          p[0].volume = 0.1
         }
       },
       ended: function() {
