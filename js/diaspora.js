@@ -163,7 +163,7 @@ var Diaspora = {
         var progress = (p[0].currentTime / p[0].duration) * 100
         $('.bar').css('width', progress + '%')
         if (progress / 5 <= 1) {
-          p[0].volume = progress / 100
+          p[0].volume = progress / 50
         } else {
           p[0].volume = 0.1
         }
