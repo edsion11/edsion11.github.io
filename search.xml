@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>javaScript(一)</title>
+    <url>/2020/03/29/javaScript-%E4%B8%80/</url>
+    <content><![CDATA[<ul><li><h4>把多个JavaScript函数绑定到onload时间处理函数上</h4></li></ul>
+<p>假设我有两个函数：firstFunction()和secondFunction()。如果我想让他们俩都在页面加载时得到执行，我该怎么办？如果把他们逐一绑定到onload事件上，他们当中将只有最后那个被执行：</p>
+<pre>
+<code>window.onload = firstFunction;</code>
+<code>window.onload = scondFunction;</code>
+</pre>
+secondFunction将取代firstFunction。所以得出结论：每个事件处理函数只能绑定一条指令
+<pre><code>
+<span style="color:orange">function</span> <span style="color:purple">addLoadEvent</span><span>(func){
+  var oldload = window.onload;
+  if(typeof window.onload != 'function'){
+    window.onload = fnc;
+  }else{
+    window.onload = function(){
+      oldonload();
+      func();
+    }
+  }
+}</span>
+</code></pre>
+这相当于把那些将在页面加载完毕时执行的函数创建为一个队列。如果想把刚才那两个函数添加到这个队列里去，只需要写如下代码：
+<pre>
+addLoadEvent(firstFunction)
+addLoadEvent(secondFunction)
+</pre>
+---未完待续]]></content>
+  </entry>
+  <entry>
+    <title>http状态码</title>
+    <url>/2020/03/29/http%E7%8A%B6%E6%80%81%E7%A0%81/</url>
+    <content><![CDATA[<div><image src="http://pic.netbian.com/uploads/allimg/180803/084010-15332568107994.jpg"></image></div>
+<h4 style="font-weight:bold">一些常见的状态码有</h4>
+<pre>
+<span style="color:MediumSlateBlue">200</span>       //服务器请求成功
+<span style="color:MediumSlateBlue">403</span>       //服务器理解请求客户端的请求，但是拒绝执行此请求
+<span style="color:MediumSlateBlue">404</span>       //服务器请求的网页不存在
+<span style="color:MediumSlateBlue">503</span>       //服务器不可用
+</pre>
+
+<p>所有状态解释：</p>
+<h4 style="font-weight:bold">1XX(临时响应)</h4>
+<p>表示临时响应需要请求者继续执行操作的状态码</p>
+<pre>
+<span style="color:MediumSlateBlue">100</span>       //服务器收到请求的一部分，正在等待剩余部分
+<span style="color:MediumSlateBlue">101</span>       //请求切换协议，服务器确认并切换
+</pre>
+<h4 style="font-weight:bold">2XX(成功)</h4>
+<p>表示响应成功--status</p>
+<pre>
+<span style="color:MediumSlateBlue">200</span>       //OK    请求成功。一般用于GET与POST请求
+<span style="color:MediumSlateBlue">201</span>       //Created    已创建。成功请求并创建了新的资源
+<span style="color:MediumSlateBlue">202</span>       //Accepted    已接受。已经接受请求，但未处理完成
+<span style="color:MediumSlateBlue">203</span>       //Non-Authoritative Information    非授权信息。请求成功。但返回的meta信息不在原始的服务器，而是一个副本
+<span style="color:MediumSlateBlue">204</span>       //无内容。服务器成功处理，但未返回内容。在未更新网页的情况下，可确保浏览器继续显示当前文档
+<span style="color:MediumSlateBlue">205</span>       //重置内容。服务器处理成功，用户终端（例如：浏览器）应重置文档视图。可通过此返回码清除浏览器的表单域
+<span style="color:MediumSlateBlue">206</span>       //部分内容。服务器成功处理了部分GET请求
+</pre>
+<h4 style="font-weight:bold">3XX(重定向)</h4>
+<p>表示要完成请求，需要进一步操作。通常，这些状态代码用来重定向</p>
+<pre>
+<span style="color:MediumSlateBlue">300</span>       //多种选择。请求的资源可包括多个位置，相应可返回一个资源特征与地址的列表用于用户终端（例如：浏览器）选择
+<span style="color:MediumSlateBlue">301</span>       //永久移动。请求的资源已被永久的移动到新URI，返回信息会包括新的URI，浏览器会自动定向到新URI。今后任何新的请求都应使用新的URI代替
+<span style="color:MediumSlateBlue">302</span>       //临时移动。与301类似。但资源只是临时被移动。客户端应继续使用原有URI
+<span style="color:MediumSlateBlue">303</span>       // 查看其它地址。与301类似。使用GET和POST请求查看
+<span style="color:MediumSlateBlue">304</span>       // 未修改。所请求的资源未修改，服务器返回此状态码时，不会返回任何资源。客户端通常会缓存访问过的资源，通过提供一个头信息指出客户端希望只返回在指定日期之后修改的资源
+<span style="color:MediumSlateBlue">305</span>       // 使用代理。所请求的资源必须通过代理访问
+<span style="color:MediumSlateBlue">306</span>       //已经被废弃的HTTP状态码
+<span style="color:MediumSlateBlue">307</span>       //临时重定向。与302类似。使用GET请求重定向
+</pre>
+<h4 style="font-weight:bold">4XX(请求错误)</h4>
+<p>这些状态码表示请求可能出错，妨碍了服务器的处理。</p>
+<pre>
+<span style="color:MediumSlateBlue">400</span>       //客户端请求的语法错误，服务器无法理解
+<span style="color:MediumSlateBlue">401</span>       //请求要求用户的身份认证
+<span style="color:MediumSlateBlue">402</span>       //保留，将来使用
+<span style="color:MediumSlateBlue">403</span>       //服务器理解请求客户端的请求，但是拒绝执行此请求
+<span style="color:MediumSlateBlue">404</span>       //服务器无法根据客户端的请求找到资源（网页）。通过此代码，网站设计人员可设置"您所请求的资源无法找到"的个性页面
+<span style="color:MediumSlateBlue">405</span>       //客户端请求中的方法被禁止
+<span style="color:MediumSlateBlue">406</span>       //服务器无法根据客户端请求的内容特性完成请求
+<span style="color:MediumSlateBlue">407</span>       //请求要求代理的身份认证，与401类似，但请求者应当使用代理进行授权
+<span style="color:MediumSlateBlue">408</span>       //服务器等待客户端发送的请求时间过长，超时
+<span style="color:MediumSlateBlue">409</span>       //服务器完成客户端的PUT请求是可能返回此代码，服务器处理请求时发生了冲突
+<span style="color:MediumSlateBlue">410</span>       //客户端请求的资源已经不存在。410不同于404，如果资源以前有现在被永久删除了可使用410代码，网站设计人员可通过301代码指定资源的新位置
+<span style="color:MediumSlateBlue">411</span>       //服务器无法处理客户端发送的不带Content-Length的请求信息
+.....
+</pre>
+<h4 style="font-weight:bold">5XX(服务器错误)</h4>
+<p>这些状态码表示服务器在尝试处理请求时发生内部错误。这些错误可能是服务器本身的错误，而不是请求出错。</p>
+<pre>
+<span style="color:MediumSlateBlue">100</span>       // 服务器内部错误，无法完成请求
+<span style="color:MediumSlateBlue">101</span>       //服务器不支持请求的功能，无法完成请求
+<span style="color:MediumSlateBlue">102</span>       //作为网关或者代理工作的服务器尝试执行请求时，从远程服务器接收到了一个无效的响应
+<span style="color:MediumSlateBlue">103</span>       //由于超载或系统维护，服务器暂时的无法处理客户端的请求。延时的长度可包含在服务器的Retry-After头信息中
+<span style="color:MediumSlateBlue">104</span>       //充当网关或代理的服务器，未及时从远端服务器获取请求
+<span style="color:MediumSlateBlue">105</span>       //服务器不支持请求的HTTP协议的版本，无法完成处理
+</pre>
+<ul><li><h4 style="font-weight:bold">强，协商缓存</h4></li></ul>
+<p>顺便记录一下强缓存和协商缓存</p>
+缓存分为两种：强缓存和协商缓存，根据响应的header内容来决定。
+<table>
+<tr>
+<th>    </th>
+<th>获取资源形式</th>
+<th>状态码</th>
+<th>是否发送请求到服务器</th>
+</tr>
+<tr>
+<th>强缓存</th>
+<th>从缓存取</th>
+<th>200</th>
+<th>否，直接从缓存取</th>
+</tr>
+<tr>
+<th>协商缓存</th>
+<th>从缓存取</th>
+<th>状304</th>
+<th>    
+是，通过服务器来告知缓存是否可用</th>
+</tr>
+</table>
+<a href="https://591616.coding-pages.com/2020/03/29/http状态码/" target="_blank" rel="noopener">本文链接(https://591616.coding-pages.com/2020/03/29/http状态码/)</a>]]></content>
+      <tags>
+        <tag>http状态码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>图片</title>
+    <url>/2020/03/27/post-0/</url>
+    <content><![CDATA[<p><image src="http://pic.netbian.com/uploads/allimg/200102/193708-15779650287a6a.jpg"></image><br>卡哇伊</p>
+]]></content>
+      <tags>
+        <tag>图片</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>希尔排序和快速排序</title>
+    <url>/2020/03/27/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%E8%AE%BA/</url>
+    <content><![CDATA[<h4>希尔排序</h4>
+<p>希尔排序的工作原理是，通过定义一个间隔序列来表示在排序过程中进行比较的元素之
+间有多远的间隔。我们可以动态定义间隔序列，不过对于大部分的实际应用场景，算法
+要用到的间隔序列可以提前定义好。有一些公开定义的间隔序列，使用它们会得到不同
+的结果。在这里我们用到了 Marcin Ciura 在他 2001 年发表的论文“Best Increments for the
+Average Case of Shell Sort”（http:bit.ly/1b04YFv,2001）中定义的间隔序列。这个间隔序列
+是：701, 301, 132, 57, 23, 10, 4, 1。</p>
+<h6>首先是希尔排序的js写法</h6>
+<pre><code >
+var arr=[2,3,5,6,2,1,5,123,34,5,66,3,4,2,43,52,45,47,48]
+var gaps=[5,3,1]
+function shellSort(arr,gaps){
+  for(let g=0;g<gaps.length;++g){
+    for(let i=0;i<arr.length;++i){
+      var temp = arr[i]
+      for(var j=i;j>=gaps[g]&&arr[j-gaps[g]]>temp;j-=gaps[g]){
+        arr[j]=arr[j-gaps[g]]
+      }
+      arr[j]=temp
+    }
+  }
+}
+</code></pre>
+<h6>实际就是:</h6>
+<p>外循环控制间隔序列的移动。也就是说，算法在第一次处理数据集时，会检查所有间隔为
+5 的元素。下一次遍历会检查所有间隔为 3 的元素。最后一次则会对间隔为 1 的元素，也
+就是相邻元素执行标准插入排序。在开始做最后一次处理时，大部分元素都将在正确的位
+置，算法就不必对很多元素进行交换。这就是希尔排序比插入排序更高效的地方。图 12-3
+演示了如何使用间隔序列为 5, 3, 1 的希尔排序算法，对一个包含 10 个随机数字的数据集
+合进行排序。
+</p>
+原理图如下：
+<image src="/images/希尔排序原理.png"></image>
+<h6>计算动态间隔序列</h6>
+
+<p>《算法（第 4 版）》（人民邮电出版社）的合著者 Robert Sedgewick 定义了一个 shellsort()
+函数，在这个函数中可以通过一个公式来对希尔排序用到的间隔序列进行动态计算。
+Sedgewick 的算法是通过下面的代码片段来决定初始间隔值的：</p>
+
+<pre><code>
+var N = this.dataStore.length;
+var h = 1;
+while (h < N/3) {
+  h = 3 * h + 1;
+}
+</code></pre>
+<p>间隔值确定好后，这个函数就可以像之前定义的 shellsort() 函数一样运行了，唯一的区<br>别是，回到外循环之前的最后一条语句会计算一个新的间隔值：</p>
+<pre><code>
+h = 3 * h + 1
+</code></pre>
+<h6>举例如下:</h6>
+
+<pre><code>
+
+function shellSort (arr){
+  var N = arr.length;
+  var h = 1;
+  while(h<N/3){
+    h = h * 3 + 1;
+  }
+  while(h>=1){
+    for(var i=h;i<N;i++){
+      for(j=i;j > = h && arr[j] < arr[j-h];j-=h){
+        var temp = arr[j-h]
+        arr[j-h]=arr[j]
+        arr[j] = temp
+      }
+    }
+    h=(h-1)/3
+  }
+}
+</code></pre>
+<p>在运算时间上，前后两个算法相差一个while()循环来取gaps[]值，前者设定了[5,3,1],后者通过计算得到gaps数组。</p>
+<h4>快速排序</h4>
+快速排序是处理大数据集最快的排序算法之一，它是一种分而治之的算法，通过递归的方式将数据分解为包含较小元素和较大元素的不同子序列
+这个算法首先要在列表中选择一个元素作为基准值（pivot）。数据排序围绕基准值进行，将列表中小于基准值的元素移到数组的底部，将大于基准值的元素移到数组的顶部。
+如图所示：
+<image src="/images/快速排序.jpg"></image>
+<pre><code>
+function QuickSort(arr) {
+  if (arr.length == 0) return []
+  var left = []
+  var right = []
+  var pivot = arr[0]
+  for (let i = 1; i < arr.length; i++) {//此处留意i=1
+    if (arr[i] < pivot) {
+      left.push(arr[i])
+    } else {
+      right.push(arr[i])
+    }
+  }
+  return QuickSort(left).concat(pivot, QuickSort(right))
+}
+</code></pre>
+以下获取每次循环的输出，解释了快速排序的运行原理。
+<pre><code>
+9,3,93,9,65,94,50,90,12,65
+基准值：9 当前元素：3
+移动 3 到左边
+基准值：9 当前元素：93
+移动 93 到右边
+基准值：9 当前元素：9
+移动 9 到右边
+基准值：9 当前元素：65
+移动 65 到右边
+基准值：9 当前元素：94
+移动 94 到右边
+基准值：9 当前元素：50
+移动 50 到右边
+基准值：9 当前元素：90
+移动 90 到右边
+基准值：9 当前元素：12
+移动 12 到右边
+基准值：9 当前元素：65
+移动 65 到右边
+基准值：93 当前元素：9
+移动 9 到左边
+基准值：93 当前元素：65
+移动 65 到左边
+基准值：93 当前元素：94
+移动 94 到右边
+基准值：93 当前元素：50
+移动 50 到左边
+基准值：93 当前元素：90
+移动 90 到左边
+基准值：93 当前元素：12
+移动 12 到左边
+基准值：93 当前元素：65
+移动 65 到左边
+基准值：9 当前元素：65
+移动 65 到右边
+基准值：9 当前元素：50
+移动 50 到右边
+基准值：9 当前元素：90
+移动 90 到右边
+基准值：9 当前元素：12
+移动 12 到右边
+基准值：9 当前元素：65
+移动 65 到右边
+基准值：65 当前元素：50
+移动 50 到左边
+基准值：65 当前元素：90
+移动 90 到右边
+排序算法 ｜ 167
+基准值：65 当前元素：12
+移动 12 到左边
+基准值：65 当前元素：65
+移动 65 到右边
+基准值：50 当前元素：12
+移动 12 到左边
+基准值：90 当前元素：65
+移动 65 到左边
+3,9,9,12,50,65,65,90,93,94
+</code></pre>
+本次文章到此结束]]></content>
+      <tags>
+        <tag>高级排序算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GET和POST的区别</title>
+    <url>/2020/03/26/GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<p>-GET 和 POST 有什么区别？<br>-1.首先最直观的是语义上的区别。<br>-2.从缓存的角度，GET 请求会被浏览器主动缓存下来，留下历史记录，而 POST 默认不会。<br>-3.从编码的角度，GET 只能进行 URL 编码，只能接收 ASCII 字符，而 POST 没有限制。<br>-4.从参数的角度，GET 一般放在 URL 中，因此不安全，POST 放在请求体中，更适合传输敏感信息。<br>-5.从幂等性的角度，GET 是幂等的，而 POST 不是。(幂等表示执行相同的操作，结果也是相同)<br>-6.从 TCP 的角度，GET 请求会把请求报文一次性发出去，而 POST 会分为两个 TCP 数据包，首先发 header 部分，如果服务器响应 100(continue)， 然后发 -body 部分。(火狐浏览器除外，它的 POST 请求只发一个 TCP 包)</p>
+]]></content>
+      <tags>
+        <tag>HTTP</tag>
+      </tags>
+  </entry>
+</search>
