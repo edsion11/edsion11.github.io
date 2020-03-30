@@ -202,6 +202,7 @@ h1.title {font-size:30px;color:#333;line-height:1.3;position:relative;font-weigh
 .content h1 {font-size:39px}
 .content h2 {font-size:32px}
 .content h3 {font-size:26px}
+.content h4 {font-weight:bold}
 .content h4 {font-size:19px}
 .content h5 {font-size:15px}
 .content h6 {font-size:13px}
@@ -216,11 +217,11 @@ h1.title {font-size:30px;color:#333;line-height:1.3;position:relative;font-weigh
 .content > h1,.content > h2,.content > h3,.content > h4,.content > h5,.content > h6 {margin-top:2rem;margin-bottom:0.8rem;color:#000;}
 .content > h1:first-child,.content > h2:first-child,.content > h3:first-child,.content > h4:first-child,.content > h5:first-child,.content > h6:first-child {margin-top:0;}
 .content img {cursor:pointer;}
-.content pre,.content .highlight {background:#f7f7f7;margin:1.6rem 0;padding:0.8rem 0.8rem;border-style:solid;border-width:1px 0;overflow:auto;color:#ccc;line-height:20px;}
+.content pre,.content .highlight {background:#f7f7f7;margin:1.6rem 0;padding:0.8rem 0.8rem;border-style:solid;border-width:1px 0;overflow:auto;color:#333333;line-height:20px;}
 .content .gutter {display:none;}
-.content .highlight .gutter pre {color:#666;font-size:0.9rem;}
-.content code,.content pre {font-family: Menlo,"PingFang SC",Consolas, "Microsoft YaHei",Monaco,Courier New,Monaco}
-.content code {background:rgba(99,99,99,0.07);color:#998;padding:1px 2px;border-radius:2px;}
+.content .highlight .gutter pre {color:#2196F3;font-size:0.9rem;}
+.content code,.content pre {font-family:PT Mono,Source Code Pro,Courier New,PingFang SC,Microsoft YaHei,monospace}
+.content code {background:rgba(99,99,99,0.07);color:#333333;padding:1px 2px;border-radius:2px;}
 .content pre code {background:none;text-shadow:none;padding:0;}
 .content blockquote {color:#656565;margin:0 0 1.1em;border-left:3px solid #efefef;border-left-width:6px;background-color:rgba(119,119,119,0.05);border-top-right-radius:5px;border-bottom-right-radius:5px;padding:15px 20px;}
 .content blockquote p {margin:0;}
