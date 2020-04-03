@@ -83,21 +83,7 @@
 Average Case of Shell Sort”（http:bit.ly/1b04YFv,2001）中定义的间隔序列。这个间隔序列
 是：701, 301, 132, 57, 23, 10, 4, 1。</p>
 <h5>首先是希尔排序的js写法</h5>
-<pre>
-var arr=[2,3,5,6,2,1,5,123,34,5,66,3,4,2,43,52,45,47,48]
-var gaps=[5,3,1]
-function shellSort(arr,gaps){
-  for(let g=0;g < gaps.length; ++g){
-    for( let i = 0 ; i < arr.length ; ++i){
-      var temp = arr[i]
-      for(var j=i; j >= gaps[g] && arr[j-gaps[g]] > temp ; j-=gaps[g]){
-        arr[j]=arr[j-gaps[g]]
-      }
-      arr[j]=temp
-    }
-  }
-}
-</pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr=[<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">123</span>,<span class="number">34</span>,<span class="number">5</span>,<span class="number">66</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">43</span>,<span class="number">52</span>,<span class="number">45</span>,<span class="number">47</span>,<span class="number">48</span>]</span><br><span class="line"><span class="keyword">var</span> gaps=[<span class="number">5</span>,<span class="number">3</span>,<span class="number">1</span>]</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shellSort</span>(<span class="params">arr,gaps</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> g=<span class="number">0</span>;g &lt; gaps.length; ++g)&#123;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">let</span> i = <span class="number">0</span> ; i &lt; arr.length ; ++i)&#123;</span><br><span class="line">      <span class="keyword">var</span> temp = arr[i]</span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">var</span> j=i; j &gt;= gaps[g] &amp;&amp; arr[j-gaps[g]] &gt; temp ; j-=gaps[g])&#123;</span><br><span class="line">        arr[j]=arr[j-gaps[g]]</span><br><span class="line">      &#125;</span><br><span class="line">      arr[j]=temp</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h5>实际就是:</h5>
 <p>外循环控制间隔序列的移动。也就是说，算法在第一次处理数据集时，会检查所有间隔为
 5 的元素。下一次遍历会检查所有间隔为 3 的元素。最后一次则会对间隔为 1 的元素，也
@@ -115,41 +101,16 @@ function shellSort(arr,gaps){
 Sedgewick 的算法是通过下面的代码片段来决定初始间隔值的：
 </p>
 
-<pre>
-var N = this.dataStore.length;
-var h = 1;
-while (h < N/3) {
-  h = 3 * h + 1;
-}
-</pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> N = <span class="keyword">this</span>.dataStore.length</span><br><span class="line"><span class="keyword">var</span> h = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> (h &lt; N / <span class="number">3</span>) &#123;</span><br><span class="line">  h = <span class="number">3</span> * h + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>间隔值确定好后，这个函数就可以像之前定义的 shellsort() 函数一样运行了，唯一的区
 别是，回到外循环之前的最后一条语句会计算一个新的间隔值：</p>
 
-<pre>
-h = 3 * h + 1
-</pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">h = <span class="number">3</span> * h + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
 <h6>举例如下:</h6>
 
-<pre>
-function shellSort (arr){
-var N = arr.length;
-var h = 1;
-while(h<N/3){
-h = h \* 3 + 1;
-}
-while(h>=1){
-for(var i=h;i<N;i++){
-for(j=i;j > = h && arr[j] < arr[j-h];j-=h){
-var temp = arr[j-h]
-arr[j-h]=arr[j]
-arr[j] = temp
-}
-}
-h=(h-1)/3
-}
-}
-</pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shellSort</span> (<span class="params">arr</span>)</span>&#123;</span><br><span class="line"><span class="keyword">var</span> N = arr.length;</span><br><span class="line"><span class="keyword">var</span> h = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span>(h&lt;N/<span class="number">3</span>)&#123;</span><br><span class="line">h = h \* <span class="number">3</span> + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span>(h&gt;=<span class="number">1</span>)&#123;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=h;i&lt;N;i++)&#123;</span><br><span class="line"><span class="keyword">for</span>(j=i;j &gt; = h &amp;&amp; arr[j] &lt; arr[j-h];j-=h)&#123;</span><br><span class="line"><span class="keyword">var</span> temp = arr[j-h]</span><br><span class="line">arr[j-h]=arr[j]</span><br><span class="line">arr[j] = temp</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">h=(h<span class="number">-1</span>)/<span class="number">3</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>在运算时间上，前后两个算法相差一个 while()循环来取 gaps[]值，前者设定了[5,3,1],后者通过计算得到 gaps 数组。</p>
 <h4>快速排序</h4>
@@ -158,83 +119,10 @@ h=(h-1)/3
 如图所示：
 <img src="/images/快速排序.jpg"></img>
 
-<pre>
-function QuickSort(arr) {
-  if (arr.length == 0) return []
-  var left = []
-  var right = []
-  var pivot = arr[0]
-  for (let i = 1; i < arr.length; i++) {//此处留意i=1
-    if (arr[i] < pivot) {
-      left.push(arr[i])
-    } else {
-      right.push(arr[i])
-    }
-  }
-  return QuickSort(left).concat(pivot, QuickSort(right))
-}
-</pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">QuickSort</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (arr.length == <span class="number">0</span>) <span class="keyword">return</span> []</span><br><span class="line">  <span class="keyword">var</span> left = []</span><br><span class="line">  <span class="keyword">var</span> right = []</span><br><span class="line">  <span class="keyword">var</span> pivot = arr[<span class="number">0</span>]</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">    <span class="comment">//此处留意i=1</span></span><br><span class="line">    <span class="keyword">if</span> (arr[i] &lt; pivot) &#123;</span><br><span class="line">      left.push(arr[i])</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      right.push(arr[i])</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> QuickSort(left).concat(pivot, QuickSort(right))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>以下获取每次循环的输出，解释了快速排序的运行原理。</p>
-<pre>
-9,3,93,9,65,94,50,90,12,65
-基准值：9 当前元素：3
-移动 3 到左边
-基准值：9 当前元素：93
-移动 93 到右边
-基准值：9 当前元素：9
-移动 9 到右边
-基准值：9 当前元素：65
-移动 65 到右边
-基准值：9 当前元素：94
-移动 94 到右边
-基准值：9 当前元素：50
-移动 50 到右边
-基准值：9 当前元素：90
-移动 90 到右边
-基准值：9 当前元素：12
-移动 12 到右边
-基准值：9 当前元素：65
-移动 65 到右边
-基准值：93 当前元素：9
-移动 9 到左边
-基准值：93 当前元素：65
-移动 65 到左边
-基准值：93 当前元素：94
-移动 94 到右边
-基准值：93 当前元素：50
-移动 50 到左边
-基准值：93 当前元素：90
-移动 90 到左边
-基准值：93 当前元素：12
-移动 12 到左边
-基准值：93 当前元素：65
-移动 65 到左边
-基准值：9 当前元素：65
-移动 65 到右边
-基准值：9 当前元素：50
-移动 50 到右边
-基准值：9 当前元素：90
-移动 90 到右边
-基准值：9 当前元素：12
-移动 12 到右边
-基准值：9 当前元素：65
-移动 65 到右边
-基准值：65 当前元素：50
-移动 50 到左边
-基准值：65 当前元素：90
-移动 90 到右边
-排序算法 ｜ 167
-基准值：65 当前元素：12
-移动 12 到左边
-基准值：65 当前元素：65
-移动 65 到右边
-基准值：50 当前元素：12
-移动 12 到左边
-基准值：90 当前元素：65
-移动 65 到左边
-3,9,9,12,50,65,65,90,93,94
-</pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">9</span>,<span class="number">3</span>,<span class="number">93</span>,<span class="number">9</span>,<span class="number">65</span>,<span class="number">94</span>,<span class="number">50</span>,<span class="number">90</span>,<span class="number">12</span>,<span class="number">65</span></span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">3</span></span><br><span class="line">移动 <span class="number">3</span> 到左边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">93</span></span><br><span class="line">移动 <span class="number">93</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">9</span></span><br><span class="line">移动 <span class="number">9</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">94</span></span><br><span class="line">移动 <span class="number">94</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">50</span></span><br><span class="line">移动 <span class="number">50</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">90</span></span><br><span class="line">移动 <span class="number">90</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">12</span></span><br><span class="line">移动 <span class="number">12</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到右边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">9</span></span><br><span class="line">移动 <span class="number">9</span> 到左边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到左边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">94</span></span><br><span class="line">移动 <span class="number">94</span> 到右边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">50</span></span><br><span class="line">移动 <span class="number">50</span> 到左边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">90</span></span><br><span class="line">移动 <span class="number">90</span> 到左边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">12</span></span><br><span class="line">移动 <span class="number">12</span> 到左边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到左边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">50</span></span><br><span class="line">移动 <span class="number">50</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">90</span></span><br><span class="line">移动 <span class="number">90</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">12</span></span><br><span class="line">移动 <span class="number">12</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到右边</span><br><span class="line">基准值：<span class="number">65</span> 当前元素：<span class="number">50</span></span><br><span class="line">移动 <span class="number">50</span> 到左边</span><br><span class="line">基准值：<span class="number">65</span> 当前元素：<span class="number">90</span></span><br><span class="line">移动 <span class="number">90</span> 到右边</span><br><span class="line">排序算法 ｜ <span class="number">167</span></span><br><span class="line">基准值：<span class="number">65</span> 当前元素：<span class="number">12</span></span><br><span class="line">移动 <span class="number">12</span> 到左边</span><br><span class="line">基准值：<span class="number">65</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到右边</span><br><span class="line">基准值：<span class="number">50</span> 当前元素：<span class="number">12</span></span><br><span class="line">移动 <span class="number">12</span> 到左边</span><br><span class="line">基准值：<span class="number">90</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到左边</span><br><span class="line"><span class="number">3</span>,<span class="number">9</span>,<span class="number">9</span>,<span class="number">12</span>,<span class="number">50</span>,<span class="number">65</span>,<span class="number">65</span>,<span class="number">90</span>,<span class="number">93</span>,<span class="number">94</span></span><br></pre></td></tr></table></figure>
 
 <p>本次文章到此结束</p>
 

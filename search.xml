@@ -1,6 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ES6语法总结（一）</title>
+    <url>/2020/04/02/ES6%E8%AF%AD%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+    <content><![CDATA[<h4>let 和 const</h4>
+<p>在原来的ES5时，定义变量，函数用的var会造成变量提升，于是ES6新增了<code>let</code>和<code>const</code>语法。接下来用代码说明</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a=[]</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">  a[i] = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line">a[<span class="number">6</span>]()</span><br><span class="line"><span class="keyword">var</span> b = [];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; <span class="number">10</span> ;j++)&#123;</span><br><span class="line">  b[j] = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(j)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">b[<span class="number">6</span>]()</span><br><span class="line"><span class="comment">//输出：</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">6</span></span><br></pre></td></tr></table></figure>
+上下仅有的不同是for循环里面的<code> i </code>，<code> j </code>定义方式不同，上面定义的<code> i </code>为全局变量，for循环结束，<code> i </code>为10。而下面定义的<code> j </code>为局部变量，只在for（）｛｝的作用域内有效，于是形成了上面的结果。
+<p>另外for循环的的设置循环变量括号内部是父作用域，而循环体则是子作用域。---来自阮一峰老师的博客介绍</p>
+<code>var</code>的变量存在变量提升，什么意思呢，就是<code>var</code>定义的变量，在js运行时，会在运行开始的时候执行一条语句<code> var a </code>此时<code>a</code>为<code>undefined</code>，如果在定义<code>a</code>变量之前调用<code>a</code>变量,会显示<code>undefined</code>。而现在ES6为了减少这种情况，同时规范代码，新提出了<code>let</code>指令，let定义的变量，只有在let的块作用域内有效，出了作用域调用就会报错<code>// 报错ReferenceError</code><br>
+<h4>暂时性死区</h4>
+ES6 明确规定，如果区块中存在let和const命令，这个区块对这些命令声明的变量，从一开始就形成了封闭作用域。凡是在声明之前就使用这些变量，就会报错。即在代码块内，使用let命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”（temporal dead zone，简称 TDZ）。有了这个，<code>typeof</code>就会更加安全，如果let定义之前typeof，会报错，而如果没有定义，则会输出undefined。<br>
+还有一点：<code> let </code>不允许重复定义，不能同时定义相同的变量两次。
+<h4>块作用域</h4>
+<p>在ES5中只有全局作用域和局部作用域，带来了很多不合理的场景，所以如今ES6提出了块作用域，强调规范</p>
+第一种场景，内层变量可能会覆盖外层变量。
+第二种场景，用来计数的循环变量泄露为全局变量。(上面开头例子)
+详见阮一峰老师的博客<a href="https://es6.ruanyifeng.com/#docs/let" target="_blank" rel="noopener">阮一峰-let和const</a>
+<h4>关于函数声明</h4>
+<p>ES5中规定：函数只能在顶层作用域或者函数作用域中声明，不能在块级作用域申明。但是浏览器中还是支持在块级作用域中申明函数，不会报错。</p>
+<p>而ES6引入了块级作用域，规定块级作用域外不可引用作用域内的函数</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fnc</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'I am outside!'</span>);</span><br><span class="line">   &#125;</span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="number">0</span>) &#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log(<span class="string">'I am inside!'</span>); &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  f();</span><br><span class="line">&#125;());</span><br></pre></td></tr></table></figure>
+上面的代码在ES5中会输出<code>I am inside!</code>，因为类似于<code>var</code>变量，函数会var声明提前，将if作用域内的<code>function</code>会提前至if之前，即<code> var f = undefined</code>于是在ES6中回报错。
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">  test.js:<span class="number">10</span></span><br><span class="line">  f();</span><br><span class="line">  ^</span><br><span class="line"><span class="built_in">TypeError</span>: f is not a <span class="function"><span class="keyword">function</span></span></span><br></pre></td></tr></table></figure>
+原因是ES6 在附录 B里面规定，浏览器的实现可以不遵守上面的规定，有自己的行为方式。
+<ul>
+<li>允许在块级作用域内声明函数。</li>
+<li>函数声明类似于var，即会提升到全局作用域或函数作用域的头部。</li>
+<li>同时，函数声明还会提升到所在的块级作用域的头部。</li>
+</ul>
+<h4>const命令</h4>
+<p><code>const</code>会声明一个只读的变量，不能更改，也不能再定义并且定义的同时要立即赋值。同时const也是存在暂时性死区和块级作用域。与之前let类似</p>
+<p>const只是定义数据所在的内存地址不能变动，而不是数据不能改动，即如果const定义一个数组或者对象，数组的push()，push()方法依然有效，对象设置属性也正常，但是对const定义的数组或者对象等再次赋值，负责会报错。如果永久冻结，不能变动，有一个冻结方法是<code>Object.freeze</code></p>
+<p>如果有如下的定义：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> foo = <span class="built_in">Object</span>.freeze(&#123;&#125;);</span><br><span class="line">foo.prop = <span class="number">123</span>;</span><br></pre></td></tr></table></figure>
+<p>正常模式会无效，而严格模式会报错（具体没有尝试，还没有具体碰到两种模式，只是了解）</p>
+<h4>ES6申明变量6种方法</h4>
+<ul>
+  <li><code>var</code></li>
+  <li><code>function</code></li>
+  <li><code>let</code></li>
+  <li><code>const</code></li>
+  <li><code>import</code></li><a href="#">具体介绍</a>
+  <li><code>class</code></li><a href="#">具体介绍</a>
+</ul>
+<h4>globalThis对象</h4>
+<p>ES6还引入了globalThis对象，用来表示顶层对象，比如浏览器的顶层对象是<code>window</code>，WebWorker的顶层对象是<code>self</code>，Node里面是<code>global</code></p>
+<span style="float:right">本次博客主要参考自阮一峰的ECMAScript6入门(一)</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <tags>
+        <tag>ES6</tag>
+        <tag>let</tag>
+        <tag>const</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>浏览器渲染过程（长期更）</title>
     <url>/2020/04/02/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E8%BF%87%E7%A8%8B%EF%BC%88%E9%95%BF%E6%9C%9F%E6%9B%B4%EF%BC%89/</url>
     <content><![CDATA[<p>最近看到很多面试问到了浏览器渲染的原理方面的问题，感觉自己还不熟悉，就来做个总结。<br></p>
@@ -161,36 +240,7 @@
 <code>xhr.send()</code>
 </ul>
 <p>下面是一个验证用户名的ajax例子</p>
-<pre>
-username.onblur = function(){
-var usernameValue = username.value;
-//将usernameValue提交给服务器，有服务器进行唯一性的校验
-//1、创建对象 兼容处理
-var xhr = null;
-if(window.XMLHttpRequest) {
-    xhr = new XMLHttpRequest();
-} else {
-    xhr = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    //2、准备发送
-    xhr.open("get","./server/checkUsername.php?uname=" + usernameValue,true);
-    //3、执行发送
-    xhr.send(null);
-    //制定回调函数
-    xhr.onreadystatechange = function(){
-    if(xhr.readyState == 4) {
-    if(xhr.status == 200) {
-        var result = xhr.responseText;
-    var username_result = document.querySelector("#username_result");
-    if(result == "ok") {
-    username_result.innerText = "用户名可以使用";
-} else {
-        username_result.innerText = "用户名已经被注册";
-         }
-      }
-     }
-};
-</pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">username.onblur = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="keyword">var</span> usernameValue = username.value;</span><br><span class="line"><span class="comment">//将usernameValue提交给服务器，有服务器进行唯一性的校验</span></span><br><span class="line"><span class="comment">//1、创建对象 兼容处理</span></span><br><span class="line"><span class="keyword">var</span> xhr = <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">window</span>.XMLHttpRequest) &#123;</span><br><span class="line">	xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	xhr = <span class="keyword">new</span> ActiveXObject(<span class="string">"Microsoft.XMLHTTP"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//2、准备发送</span></span><br><span class="line">	xhr.open(<span class="string">"get"</span>,<span class="string">"./server/checkUsername.php?uname="</span> + usernameValue,<span class="literal">true</span>);</span><br><span class="line">	<span class="comment">//3、执行发送</span></span><br><span class="line">	xhr.send(<span class="literal">null</span>);</span><br><span class="line">	<span class="comment">//制定回调函数</span></span><br><span class="line">	xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(xhr.readyState == <span class="number">4</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span>(xhr.status == <span class="number">200</span>) &#123;</span><br><span class="line">		<span class="keyword">var</span> result = xhr.responseText;</span><br><span class="line">	<span class="keyword">var</span> username_result = <span class="built_in">document</span>.querySelector(<span class="string">"#username_result"</span>);</span><br><span class="line">	<span class="keyword">if</span>(result == <span class="string">"ok"</span>) &#123;</span><br><span class="line">	username_result.innerText = <span class="string">"用户名可以使用"</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		username_result.innerText = <span class="string">"用户名已经被注册"</span>;</span><br><span class="line">		 &#125;</span><br><span class="line">	  &#125;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h4 id="XMLHttpRequest对象在IE和Firefox中创建方式有没有不同？">XMLHttpRequest对象在IE和Firefox中创建方式有没有不同？</h4>
 <span>
 IE中通过new ActiveXObject()得到，Firefox中通过newXMLHttpRequest()得到.
@@ -245,18 +295,7 @@ IE中通过new ActiveXObject()得到，Firefox中通过newXMLHttpRequest()得到
 <p>3：请求处理中，解析服务器响应内容</p>
 <p>4：请求已完成，且响应就绪</p>
 <h4 id="jquery ajax的实现">jquery ajax的实现</h4>
-<pre>
-$.ajax({
-     url:发送请求的地址,
-     data:数据的拼接,//发送到服务器的数据
-     type:'get',//请求方式，默认get请求
-     dataType:'json',//服务器返回的数据类型
-     async:true,//是否异步，默认true
-     cache:false,//设置为 false 将不会从浏览器缓存中加载请求信息
-     success:function(){},//请求成功后的回调函数
-     error: function(){}//请求失败时调用此函数
-})
-</pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">     url:发送请求的地址,</span><br><span class="line">     data:数据的拼接,<span class="comment">//发送到服务器的数据</span></span><br><span class="line">     type:<span class="string">'get'</span>,<span class="comment">//请求方式，默认get请求</span></span><br><span class="line">     dataType:<span class="string">'json'</span>,<span class="comment">//服务器返回的数据类型</span></span><br><span class="line">     <span class="keyword">async</span>:<span class="literal">true</span>,<span class="comment">//是否异步，默认true</span></span><br><span class="line">     cache:<span class="literal">false</span>,<span class="comment">//设置为 false 将不会从浏览器缓存中加载请求信息</span></span><br><span class="line">     success:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;,<span class="comment">//请求成功后的回调函数</span></span><br><span class="line">     error: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;<span class="comment">//请求失败时调用此函数</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 不足之处：
 
 <p>　　（1）针对MVC的编程,不符合现在前端MVVM的浪潮</p>
@@ -296,38 +335,18 @@ ajax: { }
 <code>window.onload = scondFunction;</code>
 </pre>
 secondFunction将取代firstFunction。所以得出结论：每个事件处理函数只能绑定一条指令
-<pre><code>
-<span style="color:orange">function</span> <span style="color:purple">addLoadEvent</span><span>(func){
-  var oldload = window.onload;
-  if(typeof window.onload != 'function'){
-    window.onload = fnc;
-  }else{
-    window.onload = function(){
-      oldonload();
-      func();
-    }
-  }
-}</span>
-</code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addLoadEvent</span>(<span class="params">func</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> oldload = <span class="built_in">window</span>.onload;</span><br><span class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> <span class="built_in">window</span>.onload != <span class="string">'function'</span>)&#123;</span><br><span class="line">    <span class="built_in">window</span>.onload = fnc;</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      oldonload();</span><br><span class="line">      func();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;&lt;<span class="regexp">/span&gt;</span></span><br></pre></td></tr></table></figure>
 这相当于把那些将在页面加载完毕时执行的函数创建为一个队列。如果想把刚才那两个函数添加到这个队列里去，只需要写如下代码：
-<pre>
-addLoadEvent(firstFunction)
-addLoadEvent(secondFunction)
-</pre>
----未完待续]]></content>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">addLoadEvent(firstFunction)</span><br><span class="line">addLoadEvent(secondFunction)</span><br></pre></td></tr></table></figure>
+---未完待续
+]]></content>
   </entry>
   <entry>
     <title>http状态码</title>
     <url>/2020/03/29/http%E7%8A%B6%E6%80%81%E7%A0%81/</url>
     <content><![CDATA[<div><image src="http://pic.netbian.com/uploads/allimg/180803/084010-15332568107994.jpg"></image></div>
 <h4 style="font-weight:bold">一些常见的状态码有</h4>
-<pre>
-<span style="color:MediumSlateBlue">200</span>       //服务器请求成功
-<span style="color:MediumSlateBlue">403</span>       //服务器理解请求客户端的请求，但是拒绝执行此请求
-<span style="color:MediumSlateBlue">404</span>       //服务器请求的网页不存在
-<span style="color:MediumSlateBlue">503</span>       //服务器不可用
-</pre>
-
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>200<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //服务器请求成功</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>403<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //服务器理解请求客户端的请求，但是拒绝执行此请求</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>404<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //服务器请求的网页不存在</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>503<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //服务器不可用</span><br></pre></td></tr></table></figure>
 <p>所有状态解释：</p>
 <h4 style="font-weight:bold">1XX(临时响应)</h4>
 <p>表示临时响应需要请求者继续执行操作的状态码</p>
@@ -337,54 +356,13 @@ addLoadEvent(secondFunction)
 </pre>
 <h4 style="font-weight:bold">2XX(成功)</h4>
 <p>表示响应成功--status</p>
-<pre>
-<span style="color:MediumSlateBlue">200</span>       //OK    请求成功。一般用于GET与POST请求
-<span style="color:MediumSlateBlue">201</span>       //Created    已创建。成功请求并创建了新的资源
-<span style="color:MediumSlateBlue">202</span>       //Accepted    已接受。已经接受请求，但未处理完成
-<span style="color:MediumSlateBlue">203</span>       //Non-Authoritative Information    非授权信息。请求成功。但返回的meta信息不在原始的服务器，而是一个副本
-<span style="color:MediumSlateBlue">204</span>       //无内容。服务器成功处理，但未返回内容。在未更新网页的情况下，可确保浏览器继续显示当前文档
-<span style="color:MediumSlateBlue">205</span>       //重置内容。服务器处理成功，用户终端（例如：浏览器）应重置文档视图。可通过此返回码清除浏览器的表单域
-<span style="color:MediumSlateBlue">206</span>       //部分内容。服务器成功处理了部分GET请求
-</pre>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>200<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //OK    请求成功。一般用于GET与POST请求</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>201<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //Created    已创建。成功请求并创建了新的资源</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>202<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //Accepted    已接受。已经接受请求，但未处理完成</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>203<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //Non-Authoritative Information    非授权信息。请求成功。但返回的meta信息不在原始的服务器，而是一个副本</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>204<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //无内容。服务器成功处理，但未返回内容。在未更新网页的情况下，可确保浏览器继续显示当前文档</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>205<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //重置内容。服务器处理成功，用户终端（例如：浏览器）应重置文档视图。可通过此返回码清除浏览器的表单域</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>206<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //部分内容。服务器成功处理了部分GET请求</span><br></pre></td></tr></table></figure>
 <h4 style="font-weight:bold">3XX(重定向)</h4>
 <p>表示要完成请求，需要进一步操作。通常，这些状态代码用来重定向</p>
-<pre>
-<span style="color:MediumSlateBlue">300</span>       //多种选择。请求的资源可包括多个位置，相应可返回一个资源特征与地址的列表用于用户终端（例如：浏览器）选择
-<span style="color:MediumSlateBlue">301</span>       //永久移动。请求的资源已被永久的移动到新URI，返回信息会包括新的URI，浏览器会自动定向到新URI。今后任何新的请求都应使用新的URI代替
-<span style="color:MediumSlateBlue">302</span>       //临时移动。与301类似。但资源只是临时被移动。客户端应继续使用原有URI
-<span style="color:MediumSlateBlue">303</span>       // 查看其它地址。与301类似。使用GET和POST请求查看
-<span style="color:MediumSlateBlue">304</span>       // 未修改。所请求的资源未修改，服务器返回此状态码时，不会返回任何资源。客户端通常会缓存访问过的资源，通过提供一个头信息指出客户端希望只返回在指定日期之后修改的资源
-<span style="color:MediumSlateBlue">305</span>       // 使用代理。所请求的资源必须通过代理访问
-<span style="color:MediumSlateBlue">306</span>       //已经被废弃的HTTP状态码
-<span style="color:MediumSlateBlue">307</span>       //临时重定向。与302类似。使用GET请求重定向
-</pre>
-<h4 style="font-weight:bold">4XX(请求错误)</h4>
-<p>这些状态码表示请求可能出错，妨碍了服务器的处理。</p>
-<pre>
-<span style="color:MediumSlateBlue">400</span>       //客户端请求的语法错误，服务器无法理解
-<span style="color:MediumSlateBlue">401</span>       //请求要求用户的身份认证
-<span style="color:MediumSlateBlue">402</span>       //保留，将来使用
-<span style="color:MediumSlateBlue">403</span>       //服务器理解请求客户端的请求，但是拒绝执行此请求
-<span style="color:MediumSlateBlue">404</span>       //服务器无法根据客户端的请求找到资源（网页）。通过此代码，网站设计人员可设置"您所请求的资源无法找到"的个性页面
-<span style="color:MediumSlateBlue">405</span>       //客户端请求中的方法被禁止
-<span style="color:MediumSlateBlue">406</span>       //服务器无法根据客户端请求的内容特性完成请求
-<span style="color:MediumSlateBlue">407</span>       //请求要求代理的身份认证，与401类似，但请求者应当使用代理进行授权
-<span style="color:MediumSlateBlue">408</span>       //服务器等待客户端发送的请求时间过长，超时
-<span style="color:MediumSlateBlue">409</span>       //服务器完成客户端的PUT请求是可能返回此代码，服务器处理请求时发生了冲突
-<span style="color:MediumSlateBlue">410</span>       //客户端请求的资源已经不存在。410不同于404，如果资源以前有现在被永久删除了可使用410代码，网站设计人员可通过301代码指定资源的新位置
-<span style="color:MediumSlateBlue">411</span>       //服务器无法处理客户端发送的不带Content-Length的请求信息
-.....
-</pre>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>300<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //多种选择。请求的资源可包括多个位置，相应可返回一个资源特征与地址的列表用于用户终端（例如：浏览器）选择</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>301<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //永久移动。请求的资源已被永久的移动到新URI，返回信息会包括新的URI，浏览器会自动定向到新URI。今后任何新的请求都应使用新的URI代替</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>302<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //临时移动。与301类似。但资源只是临时被移动。客户端应继续使用原有URI</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>303<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       // 查看其它地址。与301类似。使用GET和POST请求查看</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>304<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       // 未修改。所请求的资源未修改，服务器返回此状态码时，不会返回任何资源。客户端通常会缓存访问过的资源，通过提供一个头信息指出客户端希望只返回在指定日期之后修改的资源</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>305<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       // 使用代理。所请求的资源必须通过代理访问</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>306<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //已经被废弃的HTTP状态码</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>307<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //临时重定向。与302类似。使用GET请求重定向</span><br><span class="line"><span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h4</span> <span class="attr">style</span>=<span class="string">"font-weight:bold"</span>&gt;</span>4XX(请求错误)<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>这些状态码表示请求可能出错，妨碍了服务器的处理。<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">```html</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>400<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //客户端请求的语法错误，服务器无法理解</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>401<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //请求要求用户的身份认证</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>402<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //保留，将来使用</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>403<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //服务器理解请求客户端的请求，但是拒绝执行此请求</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>404<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //服务器无法根据客户端的请求找到资源（网页）。通过此代码，网站设计人员可设置"您所请求的资源无法找到"的个性页面</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>405<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //客户端请求中的方法被禁止</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>406<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //服务器无法根据客户端请求的内容特性完成请求</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>407<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //请求要求代理的身份认证，与401类似，但请求者应当使用代理进行授权</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>408<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //服务器等待客户端发送的请求时间过长，超时</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>409<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //服务器完成客户端的PUT请求是可能返回此代码，服务器处理请求时发生了冲突</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>410<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //客户端请求的资源已经不存在。410不同于404，如果资源以前有现在被永久删除了可使用410代码，网站设计人员可通过301代码指定资源的新位置</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>411<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //服务器无法处理客户端发送的不带Content-Length的请求信息</span><br><span class="line">.....</span><br></pre></td></tr></table></figure>
 <h4 style="font-weight:bold">5XX(服务器错误)</h4>
 <p>这些状态码表示服务器在尝试处理请求时发生内部错误。这些错误可能是服务器本身的错误，而不是请求出错。</p>
-<pre>
-<span style="color:MediumSlateBlue">100</span>       // 服务器内部错误，无法完成请求
-<span style="color:MediumSlateBlue">101</span>       //服务器不支持请求的功能，无法完成请求
-<span style="color:MediumSlateBlue">102</span>       //作为网关或者代理工作的服务器尝试执行请求时，从远程服务器接收到了一个无效的响应
-<span style="color:MediumSlateBlue">103</span>       //由于超载或系统维护，服务器暂时的无法处理客户端的请求。延时的长度可包含在服务器的Retry-After头信息中
-<span style="color:MediumSlateBlue">104</span>       //充当网关或代理的服务器，未及时从远端服务器获取请求
-<span style="color:MediumSlateBlue">105</span>       //服务器不支持请求的HTTP协议的版本，无法完成处理
-</pre>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>100<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       // 服务器内部错误，无法完成请求</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>101<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //服务器不支持请求的功能，无法完成请求</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>102<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //作为网关或者代理工作的服务器尝试执行请求时，从远程服务器接收到了一个无效的响应</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>103<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //由于超载或系统维护，服务器暂时的无法处理客户端的请求。延时的长度可包含在服务器的Retry-After头信息中</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>104<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //充当网关或代理的服务器，未及时从远端服务器获取请求</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color:MediumSlateBlue"</span>&gt;</span>105<span class="tag">&lt;/<span class="name">span</span>&gt;</span>       //服务器不支持请求的HTTP协议的版本，无法完成处理</span><br></pre></td></tr></table></figure>
 <ul><li><h4 style="font-weight:bold">强，协商缓存</h4></li></ul>
 <p>顺便记录一下强缓存和协商缓存</p>
 缓存分为两种：强缓存和协商缓存，根据响应的header内容来决定。
@@ -409,18 +387,10 @@ addLoadEvent(secondFunction)
 是，通过服务器来告知缓存是否可用</th>
 </tr>
 </table>
-<a href="https://591616.coding-pages.com/2020/03/29/http状态码/" target="_blank" rel="noopener">本文链接(https://591616.coding-pages.com/2020/03/29/http状态码/)</a>]]></content>
-      <tags>
-        <tag>http状态码</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>图片</title>
-    <url>/2020/03/27/post-0/</url>
-    <content><![CDATA[<p><image src="http://pic.netbian.com/uploads/allimg/200102/193708-15779650287a6a.jpg"></image><br>卡哇伊</p>
+<a href="https://591616.coding-pages.com/2020/03/29/http状态码/" target="_blank" rel="noopener">本文链接(https://591616.coding-pages.com/2020/03/29/http状态码/)</a>
 ]]></content>
       <tags>
-        <tag>图片</tag>
+        <tag>http状态码</tag>
       </tags>
   </entry>
   <entry>
@@ -434,21 +404,7 @@ addLoadEvent(secondFunction)
 Average Case of Shell Sort”（http:bit.ly/1b04YFv,2001）中定义的间隔序列。这个间隔序列
 是：701, 301, 132, 57, 23, 10, 4, 1。</p>
 <h5>首先是希尔排序的js写法</h5>
-<pre>
-var arr=[2,3,5,6,2,1,5,123,34,5,66,3,4,2,43,52,45,47,48]
-var gaps=[5,3,1]
-function shellSort(arr,gaps){
-  for(let g=0;g < gaps.length; ++g){
-    for( let i = 0 ; i < arr.length ; ++i){
-      var temp = arr[i]
-      for(var j=i; j >= gaps[g] && arr[j-gaps[g]] > temp ; j-=gaps[g]){
-        arr[j]=arr[j-gaps[g]]
-      }
-      arr[j]=temp
-    }
-  }
-}
-</pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr=[<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">123</span>,<span class="number">34</span>,<span class="number">5</span>,<span class="number">66</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">43</span>,<span class="number">52</span>,<span class="number">45</span>,<span class="number">47</span>,<span class="number">48</span>]</span><br><span class="line"><span class="keyword">var</span> gaps=[<span class="number">5</span>,<span class="number">3</span>,<span class="number">1</span>]</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shellSort</span>(<span class="params">arr,gaps</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> g=<span class="number">0</span>;g &lt; gaps.length; ++g)&#123;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">let</span> i = <span class="number">0</span> ; i &lt; arr.length ; ++i)&#123;</span><br><span class="line">      <span class="keyword">var</span> temp = arr[i]</span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">var</span> j=i; j &gt;= gaps[g] &amp;&amp; arr[j-gaps[g]] &gt; temp ; j-=gaps[g])&#123;</span><br><span class="line">        arr[j]=arr[j-gaps[g]]</span><br><span class="line">      &#125;</span><br><span class="line">      arr[j]=temp</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h5>实际就是:</h5>
 <p>外循环控制间隔序列的移动。也就是说，算法在第一次处理数据集时，会检查所有间隔为
 5 的元素。下一次遍历会检查所有间隔为 3 的元素。最后一次则会对间隔为 1 的元素，也
@@ -466,41 +422,16 @@ function shellSort(arr,gaps){
 Sedgewick 的算法是通过下面的代码片段来决定初始间隔值的：
 </p>
 
-<pre>
-var N = this.dataStore.length;
-var h = 1;
-while (h < N/3) {
-  h = 3 * h + 1;
-}
-</pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> N = <span class="keyword">this</span>.dataStore.length</span><br><span class="line"><span class="keyword">var</span> h = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> (h &lt; N / <span class="number">3</span>) &#123;</span><br><span class="line">  h = <span class="number">3</span> * h + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>间隔值确定好后，这个函数就可以像之前定义的 shellsort() 函数一样运行了，唯一的区
 别是，回到外循环之前的最后一条语句会计算一个新的间隔值：</p>
 
-<pre>
-h = 3 * h + 1
-</pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">h = <span class="number">3</span> * h + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
 <h6>举例如下:</h6>
 
-<pre>
-function shellSort (arr){
-var N = arr.length;
-var h = 1;
-while(h<N/3){
-h = h \* 3 + 1;
-}
-while(h>=1){
-for(var i=h;i<N;i++){
-for(j=i;j > = h && arr[j] < arr[j-h];j-=h){
-var temp = arr[j-h]
-arr[j-h]=arr[j]
-arr[j] = temp
-}
-}
-h=(h-1)/3
-}
-}
-</pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shellSort</span> (<span class="params">arr</span>)</span>&#123;</span><br><span class="line"><span class="keyword">var</span> N = arr.length;</span><br><span class="line"><span class="keyword">var</span> h = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span>(h&lt;N/<span class="number">3</span>)&#123;</span><br><span class="line">h = h \* <span class="number">3</span> + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span>(h&gt;=<span class="number">1</span>)&#123;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=h;i&lt;N;i++)&#123;</span><br><span class="line"><span class="keyword">for</span>(j=i;j &gt; = h &amp;&amp; arr[j] &lt; arr[j-h];j-=h)&#123;</span><br><span class="line"><span class="keyword">var</span> temp = arr[j-h]</span><br><span class="line">arr[j-h]=arr[j]</span><br><span class="line">arr[j] = temp</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">h=(h<span class="number">-1</span>)/<span class="number">3</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>在运算时间上，前后两个算法相差一个 while()循环来取 gaps[]值，前者设定了[5,3,1],后者通过计算得到 gaps 数组。</p>
 <h4>快速排序</h4>
@@ -509,83 +440,10 @@ h=(h-1)/3
 如图所示：
 <img src="/images/快速排序.jpg"></img>
 
-<pre>
-function QuickSort(arr) {
-  if (arr.length == 0) return []
-  var left = []
-  var right = []
-  var pivot = arr[0]
-  for (let i = 1; i < arr.length; i++) {//此处留意i=1
-    if (arr[i] < pivot) {
-      left.push(arr[i])
-    } else {
-      right.push(arr[i])
-    }
-  }
-  return QuickSort(left).concat(pivot, QuickSort(right))
-}
-</pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">QuickSort</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (arr.length == <span class="number">0</span>) <span class="keyword">return</span> []</span><br><span class="line">  <span class="keyword">var</span> left = []</span><br><span class="line">  <span class="keyword">var</span> right = []</span><br><span class="line">  <span class="keyword">var</span> pivot = arr[<span class="number">0</span>]</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">    <span class="comment">//此处留意i=1</span></span><br><span class="line">    <span class="keyword">if</span> (arr[i] &lt; pivot) &#123;</span><br><span class="line">      left.push(arr[i])</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      right.push(arr[i])</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> QuickSort(left).concat(pivot, QuickSort(right))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>以下获取每次循环的输出，解释了快速排序的运行原理。</p>
-<pre>
-9,3,93,9,65,94,50,90,12,65
-基准值：9 当前元素：3
-移动 3 到左边
-基准值：9 当前元素：93
-移动 93 到右边
-基准值：9 当前元素：9
-移动 9 到右边
-基准值：9 当前元素：65
-移动 65 到右边
-基准值：9 当前元素：94
-移动 94 到右边
-基准值：9 当前元素：50
-移动 50 到右边
-基准值：9 当前元素：90
-移动 90 到右边
-基准值：9 当前元素：12
-移动 12 到右边
-基准值：9 当前元素：65
-移动 65 到右边
-基准值：93 当前元素：9
-移动 9 到左边
-基准值：93 当前元素：65
-移动 65 到左边
-基准值：93 当前元素：94
-移动 94 到右边
-基准值：93 当前元素：50
-移动 50 到左边
-基准值：93 当前元素：90
-移动 90 到左边
-基准值：93 当前元素：12
-移动 12 到左边
-基准值：93 当前元素：65
-移动 65 到左边
-基准值：9 当前元素：65
-移动 65 到右边
-基准值：9 当前元素：50
-移动 50 到右边
-基准值：9 当前元素：90
-移动 90 到右边
-基准值：9 当前元素：12
-移动 12 到右边
-基准值：9 当前元素：65
-移动 65 到右边
-基准值：65 当前元素：50
-移动 50 到左边
-基准值：65 当前元素：90
-移动 90 到右边
-排序算法 ｜ 167
-基准值：65 当前元素：12
-移动 12 到左边
-基准值：65 当前元素：65
-移动 65 到右边
-基准值：50 当前元素：12
-移动 12 到左边
-基准值：90 当前元素：65
-移动 65 到左边
-3,9,9,12,50,65,65,90,93,94
-</pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="number">9</span>,<span class="number">3</span>,<span class="number">93</span>,<span class="number">9</span>,<span class="number">65</span>,<span class="number">94</span>,<span class="number">50</span>,<span class="number">90</span>,<span class="number">12</span>,<span class="number">65</span></span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">3</span></span><br><span class="line">移动 <span class="number">3</span> 到左边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">93</span></span><br><span class="line">移动 <span class="number">93</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">9</span></span><br><span class="line">移动 <span class="number">9</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">94</span></span><br><span class="line">移动 <span class="number">94</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">50</span></span><br><span class="line">移动 <span class="number">50</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">90</span></span><br><span class="line">移动 <span class="number">90</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">12</span></span><br><span class="line">移动 <span class="number">12</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到右边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">9</span></span><br><span class="line">移动 <span class="number">9</span> 到左边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到左边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">94</span></span><br><span class="line">移动 <span class="number">94</span> 到右边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">50</span></span><br><span class="line">移动 <span class="number">50</span> 到左边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">90</span></span><br><span class="line">移动 <span class="number">90</span> 到左边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">12</span></span><br><span class="line">移动 <span class="number">12</span> 到左边</span><br><span class="line">基准值：<span class="number">93</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到左边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">50</span></span><br><span class="line">移动 <span class="number">50</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">90</span></span><br><span class="line">移动 <span class="number">90</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">12</span></span><br><span class="line">移动 <span class="number">12</span> 到右边</span><br><span class="line">基准值：<span class="number">9</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到右边</span><br><span class="line">基准值：<span class="number">65</span> 当前元素：<span class="number">50</span></span><br><span class="line">移动 <span class="number">50</span> 到左边</span><br><span class="line">基准值：<span class="number">65</span> 当前元素：<span class="number">90</span></span><br><span class="line">移动 <span class="number">90</span> 到右边</span><br><span class="line">排序算法 ｜ <span class="number">167</span></span><br><span class="line">基准值：<span class="number">65</span> 当前元素：<span class="number">12</span></span><br><span class="line">移动 <span class="number">12</span> 到左边</span><br><span class="line">基准值：<span class="number">65</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到右边</span><br><span class="line">基准值：<span class="number">50</span> 当前元素：<span class="number">12</span></span><br><span class="line">移动 <span class="number">12</span> 到左边</span><br><span class="line">基准值：<span class="number">90</span> 当前元素：<span class="number">65</span></span><br><span class="line">移动 <span class="number">65</span> 到左边</span><br><span class="line"><span class="number">3</span>,<span class="number">9</span>,<span class="number">9</span>,<span class="number">12</span>,<span class="number">50</span>,<span class="number">65</span>,<span class="number">65</span>,<span class="number">90</span>,<span class="number">93</span>,<span class="number">94</span></span><br></pre></td></tr></table></figure>
 
 <p>本次文章到此结束</p>
 ]]></content>

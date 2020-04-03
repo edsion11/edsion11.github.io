@@ -93,36 +93,7 @@ Ajax是全称是asynchronous JavaScript andXML，即异步JavaScript和xml，用
 <code>xhr.send()</code>
 </ul>
 <p>下面是一个验证用户名的ajax例子</p>
-<pre>
-username.onblur = function(){
-var usernameValue = username.value;
-//将usernameValue提交给服务器，有服务器进行唯一性的校验
-//1、创建对象 兼容处理
-var xhr = null;
-if(window.XMLHttpRequest) {
-    xhr = new XMLHttpRequest();
-} else {
-    xhr = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    //2、准备发送
-    xhr.open("get","./server/checkUsername.php?uname=" + usernameValue,true);
-    //3、执行发送
-    xhr.send(null);
-    //制定回调函数
-    xhr.onreadystatechange = function(){
-    if(xhr.readyState == 4) {
-    if(xhr.status == 200) {
-        var result = xhr.responseText;
-    var username_result = document.querySelector("#username_result");
-    if(result == "ok") {
-    username_result.innerText = "用户名可以使用";
-} else {
-        username_result.innerText = "用户名已经被注册";
-         }
-      }
-     }
-};
-</pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">username.onblur = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="keyword">var</span> usernameValue = username.value;</span><br><span class="line"><span class="comment">//将usernameValue提交给服务器，有服务器进行唯一性的校验</span></span><br><span class="line"><span class="comment">//1、创建对象 兼容处理</span></span><br><span class="line"><span class="keyword">var</span> xhr = <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">window</span>.XMLHttpRequest) &#123;</span><br><span class="line">	xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	xhr = <span class="keyword">new</span> ActiveXObject(<span class="string">"Microsoft.XMLHTTP"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//2、准备发送</span></span><br><span class="line">	xhr.open(<span class="string">"get"</span>,<span class="string">"./server/checkUsername.php?uname="</span> + usernameValue,<span class="literal">true</span>);</span><br><span class="line">	<span class="comment">//3、执行发送</span></span><br><span class="line">	xhr.send(<span class="literal">null</span>);</span><br><span class="line">	<span class="comment">//制定回调函数</span></span><br><span class="line">	xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(xhr.readyState == <span class="number">4</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span>(xhr.status == <span class="number">200</span>) &#123;</span><br><span class="line">		<span class="keyword">var</span> result = xhr.responseText;</span><br><span class="line">	<span class="keyword">var</span> username_result = <span class="built_in">document</span>.querySelector(<span class="string">"#username_result"</span>);</span><br><span class="line">	<span class="keyword">if</span>(result == <span class="string">"ok"</span>) &#123;</span><br><span class="line">	username_result.innerText = <span class="string">"用户名可以使用"</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		username_result.innerText = <span class="string">"用户名已经被注册"</span>;</span><br><span class="line">		 &#125;</span><br><span class="line">	  &#125;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h4 id="XMLHttpRequest对象在IE和Firefox中创建方式有没有不同？">XMLHttpRequest对象在IE和Firefox中创建方式有没有不同？</h4>
 <span>
 IE中通过new ActiveXObject()得到，Firefox中通过newXMLHttpRequest()得到.
@@ -177,18 +148,7 @@ IE中通过new ActiveXObject()得到，Firefox中通过newXMLHttpRequest()得到
 <p>3：请求处理中，解析服务器响应内容</p>
 <p>4：请求已完成，且响应就绪</p>
 <h4 id="jquery ajax的实现">jquery ajax的实现</h4>
-<pre>
-$.ajax({
-     url:发送请求的地址,
-     data:数据的拼接,//发送到服务器的数据
-     type:'get',//请求方式，默认get请求
-     dataType:'json',//服务器返回的数据类型
-     async:true,//是否异步，默认true
-     cache:false,//设置为 false 将不会从浏览器缓存中加载请求信息
-     success:function(){},//请求成功后的回调函数
-     error: function(){}//请求失败时调用此函数
-})
-</pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">     url:发送请求的地址,</span><br><span class="line">     data:数据的拼接,<span class="comment">//发送到服务器的数据</span></span><br><span class="line">     type:<span class="string">'get'</span>,<span class="comment">//请求方式，默认get请求</span></span><br><span class="line">     dataType:<span class="string">'json'</span>,<span class="comment">//服务器返回的数据类型</span></span><br><span class="line">     <span class="keyword">async</span>:<span class="literal">true</span>,<span class="comment">//是否异步，默认true</span></span><br><span class="line">     cache:<span class="literal">false</span>,<span class="comment">//设置为 false 将不会从浏览器缓存中加载请求信息</span></span><br><span class="line">     success:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;,<span class="comment">//请求成功后的回调函数</span></span><br><span class="line">     error: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;<span class="comment">//请求失败时调用此函数</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 不足之处：
 
 <p>　　（1）针对MVC的编程,不符合现在前端MVVM的浪潮</p>
