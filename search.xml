@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>你不知道的JavaScript（一）</title>
+    <url>/2020/05/19/%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84JavaScript%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+    <content><![CDATA[<h4 id="1-1-编译原理"><a href="#1-1-编译原理" class="headerlink" title="1.1 编译原理"></a>1.1 编译原理</h4><ul>
+<li><p>分词/词法分析<br>这个过程是将由字符组成的字符串分解成有意义的代码块<br>例如 <code>var x = 2</code>分解为<code>var</code> ,<code>x</code>,<code>=</code> ,<code>2</code>,一个个的字符。<br>分词和词法分析主要差异在于词法单元的识别是通过有状态还是无状态的方式进行的。</p>
+</li>
+<li><p>解析/语法分析<br>这个过程主要是将词法单元转换成一个由元素逐级嵌套组成的代表程序语法结构的树<br>这个树叫做抽象语法树（AST）✔</p>
+</li>
+<li><p>代码生成<br>将上面生成的语法树解析为可执行代码的过程称为代码生成<br>而 JavaScript 引擎要比上面复杂，JavaScript 是解释型语言，会存在性能问题，不过 Google 的 V8 引擎已经优化了很多，接近 C++/C 等语言了</p>
+</li>
+</ul>
+<h4 id="1-2-作用域"><a href="#1-2-作用域" class="headerlink" title="1.2 作用域"></a>1.2 作用域</h4><p>简洁的来说就是代码可被访问到的区域</p>
+<p>比如声明<code>var x = 2</code>,用一段代码说明</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//global</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>) <span class="comment">//指向空对象null，global是顶层作用域</span></span><br><span class="line"><span class="keyword">var</span> x = <span class="number">2</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>) <span class="comment">//指向global，指向上一层func1定义时所在的作用域</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">123</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i) <span class="comment">//这里是for循环的作用域</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(i) <span class="comment">//ReferenceError: i is not defined，这里访问不到let定义的块作用域，又称作用域死区</span></span><br><span class="line">  func2()</span><br><span class="line">&#125;</span><br><span class="line">func1()</span><br></pre></td></tr></table></figure>
+
+<h4 id="编译器（关于变量声明）"><a href="#编译器（关于变量声明）" class="headerlink" title="编译器（关于变量声明）"></a>编译器（关于变量声明）</h4><p>这里有 LHS 和 RHS 查询，即左值查询与右值查询（右值在 C 语言是一个专业术语）这里不过多解释<br>。这里 LHS 和 RHS 查询分别是对等号左右的值进行查询，例如<code>var x = 2</code>，编译器编译到这里会对 x 进 console.log(b)行 LHS 查询，如果在当前作用域没有查到，就会向上一层作用域继续查询，目的是为 2 找到一个赋值的目标，而<code>console.log(b)</code>则会进行 RHS 查询，目的是对<code>console.log()</code>引用地址的查询，找到 b 是谁，或者说在哪。如果 RHS 在所有的作用域中都没有找到所需要的变量，会抛出异常，是 ReferenceERROR 错误，引用错误。但是 LHS 如果在顶层作用域中也没找到变量时，则会创建一个该变量。（严格模式中会直接和 RHS 一样抛出错误）<br>这里有一个隐式说明要注意：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">function <span class="title">foo</span><span class="params">(a)</span></span>&#123;</span><br><span class="line">  console.log(a)</span><br><span class="line">&#125;</span><br><span class="line">foo(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/LHS%E5%92%8CRHS.jpg" alt="这里有个例子"><br>上面代码片段会有一次 LHS 查询，<code>a=2</code>,这是隐式的，可能会被忽略。</p>
+<h4 id="词法作用域"><a href="#词法作用域" class="headerlink" title="词法作用域"></a>词法作用域</h4><p>这里有两个关键词：</p>
+<ul>
+<li>词法化</li>
+<li>遮蔽效应<br>词法作用域是由你在写代码时将变量和块作用域写在哪里决定的。<br>遮蔽效应是如果在当前作用域和上一层作用域存在相同名称的变量，如果在当前作用域调用该变量，则当前作用域的变量会遮蔽外层作用域的变量</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line"><span class="function">function <span class="title">f1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a = <span class="number">2</span> <span class="comment">//这里如果注释掉，下面会输出1</span></span><br><span class="line">  console.log(a) <span class="comment">// 2</span></span><br><span class="line">&#125;</span><br><span class="line">f1()</span><br></pre></td></tr></table></figure>
+
+<p>在词法作用域中有两种欺骗词法：<code>eval()</code> 和 <code>with()</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">str, a</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">eval</span>(str) <span class="comment">//eval()将其中的参数会解析为js代码，并运行。</span></span><br><span class="line">  <span class="comment">//严格模式中。eval()运行时有自己的词法作用域，这样其中的参数将不会修改所在的作用域</span></span><br><span class="line">  <span class="built_in">console</span>.log(a, b)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> b = <span class="number">2</span></span><br><span class="line">foo(<span class="string">'var b=123'</span>, <span class="number">234</span>) <span class="comment">//</span></span><br></pre></td></tr></table></figure>
+
+<p>还有 with()</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">with</span> (obj) &#123;</span><br><span class="line">    a = <span class="number">2</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> o1 = &#123;</span><br><span class="line">  a: <span class="number">3</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> o2 = &#123;</span><br><span class="line">  b: <span class="number">3</span>,</span><br><span class="line">&#125;</span><br><span class="line">foo(o1)</span><br><span class="line"><span class="built_in">console</span>.log(o1.a)</span><br><span class="line">foo(o2)</span><br><span class="line"><span class="built_in">console</span>.log(o2.a) <span class="comment">//undefined</span></span><br><span class="line"><span class="built_in">console</span>.lgo(a) <span class="comment">//2,a被泄露到全局作用域里了</span></span><br></pre></td></tr></table></figure>
+
+<p>with()可以将一个没有或有多个属性的对象处理为一个完全隔离的词法作用域<br>当我们给 with()传 o1 时，o1 内部有 a 属性，直接赋值，而传 o2 时，内部没有，则进行 LHS 查询到全局作用域赋值<br>，with()实际是给传递给他的变量创造了一个新的词法作用域。</p>
+]]></content>
+      <tags>
+        <tag>作用域</tag>
+        <tag>闭包</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Promise和Observable区别</title>
     <url>/2020/05/12/Promise%E5%92%8CObservable%E5%8C%BA%E5%88%AB/</url>
     <content><![CDATA[<p>最近学 Angular 看大漠老师的视频看到了 Observable 这块，Observable 是 Rxjs 库里异步编程核心的一部分，相比于 Rxjs 又有那些区别呢</p>
