@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>你不知道的JavaScript（一） - EdsionGu的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="前端,Rust,javascript,"> 
+    <meta name="description" content="断剑重铸之日，骑士归来之时,1.1 编译原理
+分词/词法分析这个过程是将由字符组成的字符串分解成有意义的代码块例如 var x = 2分解为var ,x,= ,2,一个个的字符。分词和词法分析主要差异在于词法单元的识别是通过有,"> 
+    <meta name="author" content="Edsion Gu"> 
+    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/avatar.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EdsionGu的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+  <div id="top" style="display: block;">
+  <div class="bar" style="width: 0;"></div>
+  <a
+    class="iconfont icon-home image-icon"
+    href="javascript:;"
+    data-url="https://edsion11.github.io"
+  ></a>
+  <div title="播放/暂停" class="iconfont icon-play"></div>
+  <h3 class="subtitle">你不知道的JavaScript（一）</h3>
+  <div class="social">
+    <div>
+      <div class="share">
+        <a
+          title="获取二维码"
+          class="iconfont icon-scan"
+          href="javascript:;"
+        ></a>
+      </div>
+      <div id="qr"></div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+  <div class="section">
+    <div class="article">
+    <div class='main'>
+        <h1 class="title">你不知道的JavaScript（一）</h1>
+        <div class="stuff">
+            <span>五月 19, 2020</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E4%BD%9C%E7%94%A8%E5%9F%9F/" rel="tag">作用域</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E9%97%AD%E5%8C%85/" rel="tag">闭包</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h4 id="1-1-编译原理"><a href="#1-1-编译原理" class="headerlink" title="1.1 编译原理"></a>1.1 编译原理</h4><ul>
+<li><p>分词/词法分析<br>这个过程是将由字符组成的字符串分解成有意义的代码块<br>例如 <code>var x = 2</code>分解为<code>var</code> ,<code>x</code>,<code>=</code> ,<code>2</code>,一个个的字符。<br>分词和词法分析主要差异在于词法单元的识别是通过有状态还是无状态的方式进行的。</p>
+</li>
+<li><p>解析/语法分析<br>这个过程主要是将词法单元转换成一个由元素逐级嵌套组成的代表程序语法结构的树<br>这个树叫做抽象语法树（AST）✔</p>
+</li>
+<li><p>代码生成<br>将上面生成的语法树解析为可执行代码的过程称为代码生成<br>而 JavaScript 引擎要比上面复杂，JavaScript 是解释型语言，会存在性能问题，不过 Google 的 V8 引擎已经优化了很多，接近 C++/C 等语言了</p>
+</li>
+</ul>
+<h4 id="1-2-作用域"><a href="#1-2-作用域" class="headerlink" title="1.2 作用域"></a>1.2 作用域</h4><p>简洁的来说就是代码可被访问到的区域</p>
+<p>比如声明<code>var x = 2</code>,用一段代码说明</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//global</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>) <span class="comment">//指向空对象null，global是顶层作用域</span></span><br><span class="line"><span class="keyword">var</span> x = <span class="number">2</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>) <span class="comment">//指向global，指向上一层func1定义时所在的作用域</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">123</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i) <span class="comment">//这里是for循环的作用域</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(i) <span class="comment">//ReferenceError: i is not defined，这里访问不到let定义的块作用域，又称作用域死区</span></span><br><span class="line">  func2()</span><br><span class="line">&#125;</span><br><span class="line">func1()</span><br></pre></td></tr></table></figure>
+
+<h4 id="编译器（关于变量声明）"><a href="#编译器（关于变量声明）" class="headerlink" title="编译器（关于变量声明）"></a>编译器（关于变量声明）</h4><p>这里有 LHS 和 RHS 查询，即左值查询与右值查询（右值在 C 语言是一个专业术语）这里不过多解释<br>。这里 LHS 和 RHS 查询分别是对等号左右的值进行查询，例如<code>var x = 2</code>，编译器编译到这里会对 x 进 console.log(b)行 LHS 查询，如果在当前作用域没有查到，就会向上一层作用域继续查询，目的是为 2 找到一个赋值的目标，而<code>console.log(b)</code>则会进行 RHS 查询，目的是对<code>console.log()</code>引用地址的查询，找到 b 是谁，或者说在哪。如果 RHS 在所有的作用域中都没有找到所需要的变量，会抛出异常，是 ReferenceERROR 错误，引用错误。但是 LHS 如果在顶层作用域中也没找到变量时，则会创建一个该变量。（严格模式中会直接和 RHS 一样抛出错误）<br>这里有一个隐式说明要注意：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">foo</span><span class="params">(a)</span></span>&#123;</span><br><span class="line">  console.log(a)</span><br><span class="line">&#125;</span><br><span class="line">foo(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/LHS%E5%92%8CRHS.jpg" alt="这里有个例子"><br>上面代码片段会有一次 LHS 查询，<code>a=2</code>,这是隐式的，可能会被忽略。</p>
+<h4 id="词法作用域"><a href="#词法作用域" class="headerlink" title="词法作用域"></a>词法作用域</h4><p>这里有两个关键词：</p>
+<ul>
+<li>词法化</li>
+<li>遮蔽效应<br>词法作用域是由你在写代码时将变量和块作用域写在哪里决定的。<br>遮蔽效应是如果在当前作用域和上一层作用域存在相同名称的变量，如果在当前作用域调用该变量，则当前作用域的变量会遮蔽外层作用域的变量</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line"><span class="function">function <span class="title">f1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a = <span class="number">2</span> <span class="comment">//这里如果注释掉，下面会输出1</span></span><br><span class="line">  console.log(a) <span class="comment">// 2</span></span><br><span class="line">&#125;</span><br><span class="line">f1()</span><br></pre></td></tr></table></figure>
+
+<p>在词法作用域中有两种欺骗词法：<code>eval()</code> 和 <code>with()</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">str, a</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">eval</span>(str) <span class="comment">//eval()将其中的参数会解析为js代码，并运行。</span></span><br><span class="line">  <span class="comment">//严格模式中。eval()运行时有自己的词法作用域，这样其中的参数将不会修改所在的作用域</span></span><br><span class="line">  <span class="built_in">console</span>.log(a, b)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> b = <span class="number">2</span></span><br><span class="line">foo(<span class="string">'var b=123'</span>, <span class="number">234</span>) <span class="comment">//</span></span><br></pre></td></tr></table></figure>
+
+<p>还有 with()</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">with</span> (obj) &#123;</span><br><span class="line">    a = <span class="number">2</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> o1 = &#123;</span><br><span class="line">  a: <span class="number">3</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> o2 = &#123;</span><br><span class="line">  b: <span class="number">3</span>,</span><br><span class="line">&#125;</span><br><span class="line">foo(o1)</span><br><span class="line"><span class="built_in">console</span>.log(o1.a)</span><br><span class="line">foo(o2)</span><br><span class="line"><span class="built_in">console</span>.log(o2.a) <span class="comment">//undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">//2,a被泄露到全局作用域里了</span></span><br></pre></td></tr></table></figure>
+
+<p>with()可以将一个没有或有多个属性的对象处理为一个完全隔离的词法作用域<br>当我们给 with()传 o1 时，o1 内部有 a 属性，直接赋值，而传 o2 时，内部没有，则进行 LHS 查询到全局作用域赋值<br>，with()实际是给传递给他的变量创造了一个新的词法作用域。</p>
+<h4 id="this"><a href="#this" class="headerlink" title="this"></a>this</h4><p>常见 this 理解误区</p>
+<ul>
+<li>1.this 指向自身</li>
+<li>2.this 指向它的作用域（这种比较容易混淆，在某些状况是正确的，在其他状况是错误的）</li>
+</ul>
+<h5 id="this-绑定规则"><a href="#this-绑定规则" class="headerlink" title="this 绑定规则"></a>this 绑定规则</h5><ul>
+<li>默认绑定</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span></span><br><span class="line">f1() <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>隐式绑定</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  a: <span class="number">2</span>,</span><br><span class="line">  f2: f1,</span><br><span class="line">&#125;</span><br><span class="line">obj.f2()</span><br></pre></td></tr></table></figure>
+
+<p>隐式绑定一个常见的问题是隐式绑定的函数会丢失绑定对象<br>，会引用默认绑定</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  a: <span class="number">3</span>,</span><br><span class="line">  foo: foo,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> bar = obj.foo</span><br><span class="line">a = <span class="string">'123'</span></span><br><span class="line">bar()</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">这里的参数传递其实就是一种隐式赋值。传入函数时也会被隐式赋值</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">DoFoo</span>(<span class="params">f</span>) </span>&#123;</span><br><span class="line">  f()</span><br><span class="line">  obj.foo()</span><br><span class="line">&#125;</span><br><span class="line">a = <span class="string">'123'</span></span><br><span class="line">obj = &#123;</span><br><span class="line">  a: <span class="number">223</span>,</span><br><span class="line">  foo: foo,</span><br><span class="line">&#125;</span><br><span class="line">obj.foo()</span><br><span class="line">DoFoo(obj.foo)</span><br></pre></td></tr></table></figure>
+
+<p>还有一个问题是在回调函数中很容易出现 this 丢失的情况，而在一些回调函数中，还会出现修改 this 指向的情况<br>判断 this 的优先级</p>
+<ul>
+<li>函数是否在 new 中调用，(new 绑定)？如果是的话 this 绑定的是新创建的对象</li>
+<li><code>var bar = new foo()</code></li>
+<li>函数是否通过 call()，apply()或者硬绑定调用？如果是的话，this 绑定的是指定的对象</li>
+<li><code>var bar =foo.call(obj)</code></li>
+<li>函数是否在某个上下文对象中调用（隐式绑定）？如果是的话，this 绑定的是那个上下文对象</li>
+<li><code>var bar = obj1.foo()</code></li>
+<li>如果都不是的话，使用默认绑定，如果在严格模式下，就绑定到 undefined，负责绑定到全局对象。</li>
+<li><code>var bar = foo()</code></li>
+</ul>
+<h4 id="被忽略的-this"><a href="#被忽略的-this" class="headerlink" title="被忽略的 this"></a>被忽略的 this</h4><p>如果 call(),apply(),bind()，第一个参数传入的是 null 或者 undefined，那么实际绑定为默认绑定，常见的一种做法是用 apply(null,[…])，但是总是使用<code>null</code>有时会产生不必要的效果，比如 this 指向了全局作用域，这样会在不知不觉中修改了全局变量，一种安全的 this 做法是，利用<code>object.create(null)</code>创建一个空对象来作为 this 指向。</p>
+<h4 id="间接引用"><a href="#间接引用" class="headerlink" title="间接引用"></a>间接引用</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> o1 = &#123;</span><br><span class="line">  a: <span class="number">1</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> o2 = &#123;</span><br><span class="line">  a: <span class="number">3</span>,</span><br><span class="line">  foo: foo,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> o3 = &#123;</span><br><span class="line">  a: <span class="number">4</span>,</span><br><span class="line">&#125;</span><br><span class="line">o2.foo() <span class="comment">//3</span></span><br><span class="line">;(o3.foo = o2.foo)() <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>赋值表达式 o3.foo=o2.foo 返回值是目标函数的引用，因此调用位置是 foo()而不是 o3.foo(),于是会用默认绑定，绑定到全局作用域，而全局作用域没有定义<code>a</code>，输出 undefined。</p>
+<h4 id="this-词法"><a href="#this-词法" class="headerlink" title="this 词法"></a>this 词法</h4><p>上面是正常函数定义<code>function(){}</code>，而 ES6 中提出新的定义函数方式：箭头函数，箭头函数 this 指向有外层作用域来决定，来看一段代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (a) =&gt; &#123;</span><br><span class="line">    console.<span class="built_in">log</span>(<span class="keyword">this</span>.a)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">var obj1 = &#123;</span><br><span class="line">  a: <span class="number">2</span>,</span><br><span class="line">&#125;</span><br><span class="line">var obj2 = &#123;</span><br><span class="line">  a: <span class="number">3</span>,</span><br><span class="line">&#125;</span><br><span class="line">var bar = foo.call(obj1)</span><br><span class="line">bar.call(obj2) <span class="comment">//2</span></span><br></pre></td></tr></table></figure>
+
+<p>foo 内部 return 的箭头函数，this 调用时会捕获 foo()的 this，而 foo 的 this 绑定到来 obj1，所以 bar 的 call()无效了。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://music.163.com/song/media/outer/url?id=562598065.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://music.163.com/song/media/outer/url?id=28188425.mp3'></li>
+                        
+                    
+                        
+                            <li title='2' data-url='http://music.163.com/song/media/outer/url?id=534542079.mp3'></li>
+                        
+                    
+                        
+                            <li title='3' data-url='http://music.163.com/song/media/outer/url?id=30352891.mp3'></li>
+                        
+                    
+                        
+                            <li title='4' data-url='http://music.163.com/song/media/outer/url?id=28138493.mp3'></li>
+                        
+                    
+                        
+                            <li title='5' data-url='http://music.163.com/song/media/outer/url?id=421137682.mp3'></li>
+                        
+                    
+                        
+                            <li title='6' data-url='http://music.163.com/song/media/outer/url?id=208902.mp3'></li>
+                        
+                    
+                        
+                            <li title='7' data-url='http://music.163.com/song/media/outer/url?id=1363948882.mp3'></li>
+                        
+                    
+                        
+                            <li title='8' data-url='http://music.163.com/song/media/outer/url?id=574566207.mp3'></li>
+                        
+                    
+                        
+                            <li title='9' data-url='http://music.163.com/song/media/outer/url?id=1330348068.mp3'></li>
+                        
+                    
+                        
+                            <li title='10' data-url='http://music.163.com/song/media/outer/url?id=26418130.mp3'></li>
+                        
+                    
+                        
+                            <li title='11' data-url='http://music.163.com/song/media/outer/url?id=506196018.mp3'></li>
+                        
+                    
+                        
+                            <li title='12' data-url='http://music.163.com/song/media/outer/url?id=1309129239.mp3'></li>
+                        
+                    
+                        
+                            <li title='13' data-url='http://music.163.com/song/media/outer/url?id=450455548.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='93c58aa54b696342afaa'
+        data-cs='e593ee984f8640ebaed460b4b0bcc71c6d36289d'
+        data-r='gittalk'
+        data-o='edsion11'
+        data-a='edsion11'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-编译原理"><span class="toc-number">1.</span> <span class="toc-text">1.1 编译原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-作用域"><span class="toc-number">2.</span> <span class="toc-text">1.2 作用域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#编译器（关于变量声明）"><span class="toc-number">3.</span> <span class="toc-text">编译器（关于变量声明）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#词法作用域"><span class="toc-number">4.</span> <span class="toc-text">词法作用域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#this"><span class="toc-number">5.</span> <span class="toc-text">this</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#this-绑定规则"><span class="toc-number">5.1.</span> <span class="toc-text">this 绑定规则</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#被忽略的-this"><span class="toc-number">6.</span> <span class="toc-text">被忽略的 this</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#间接引用"><span class="toc-number">7.</span> <span class="toc-text">间接引用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#this-词法"><span class="toc-number">8.</span> <span class="toc-text">this 词法</span></a></li></ol>	
+        </div>
+    
+</div>
+
+
+  </div>
+</div>
+
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>

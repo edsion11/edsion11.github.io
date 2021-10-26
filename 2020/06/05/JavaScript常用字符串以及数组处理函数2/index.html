@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JavaScript常用字符串以及数组处理函数2 - EdsionGu的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="前端,Rust,javascript,"> 
+    <meta name="description" content="断剑重铸之日，骑士归来之时,includes()判断数组是否包含一个值，返回true 或者 false
+indexOf()和lastIndexOf()返回给定元素的第一个索引和最后一个索引
+pop()和push()pop()方,"> 
+    <meta name="author" content="Edsion Gu"> 
+    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/avatar.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EdsionGu的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+  <div id="top" style="display: block;">
+  <div class="bar" style="width: 0;"></div>
+  <a
+    class="iconfont icon-home image-icon"
+    href="javascript:;"
+    data-url="https://edsion11.github.io"
+  ></a>
+  <div title="播放/暂停" class="iconfont icon-play"></div>
+  <h3 class="subtitle">JavaScript常用字符串以及数组处理函数2</h3>
+  <div class="social">
+    <div>
+      <div class="share">
+        <a
+          title="获取二维码"
+          class="iconfont icon-scan"
+          href="javascript:;"
+        ></a>
+      </div>
+      <div id="qr"></div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+  <div class="section">
+    <div class="article">
+    <div class='main'>
+        <h1 class="title">JavaScript常用字符串以及数组处理函数2</h1>
+        <div class="stuff">
+            <span>六月 05, 2020</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag">字符串</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E6%95%B0%E7%BB%84/" rel="tag">数组</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h5 id="includes"><a href="#includes" class="headerlink" title="includes()"></a>includes()</h5><p>判断数组是否包含一个值，返回true 或者 false</p>
+<h5 id="indexOf-和lastIndexOf"><a href="#indexOf-和lastIndexOf" class="headerlink" title="indexOf()和lastIndexOf()"></a>indexOf()和lastIndexOf()</h5><p>返回给定元素的第一个索引和最后一个索引</p>
+<h5 id="pop-和push"><a href="#pop-和push" class="headerlink" title="pop()和push()"></a>pop()和push()</h5><p>pop()方法从数组中删除最后一个元素，并返回该元素的值。此方法更改数组的长度。<br>push() 方法将一个或多个元素添加到数组的末尾，并返回该数组的新长度。<br>pop(),push()具有通用性，可用call()或apply()用在类数组对象上(arguments)</p>
+<h5 id="shift-和unshift"><a href="#shift-和unshift" class="headerlink" title="shift()和unshift()"></a>shift()和unshift()</h5><p>shift() 方法从数组中删除第一个元素，并返回该元素的值。此方法更改数组的长度。<br>unshift() 方法将一个或多个元素添加到数组的开头，并返回该数组的新长度(该方法修改原有数组)。</p>
+<h5 id="reduce"><a href="#reduce" class="headerlink" title="reduce()"></a>reduce()</h5><p><code>reduce()</code> 方法对数组中的每个元素执行一个由您提供的reducer函数(升序执行)，将其结果汇总为单个返回值。<br>reduce()的callback接受五个参数（前两个为必选，后三个可选参数）：</p>
+<ul>
+<li>accumulator累计器累计回调的返回值; 它是上一次调用回调时返回的累积值，或initialValue。</li>
+<li>currentValue数组中正在处理的元素。</li>
+<li>index 数组中正在处理的当前元素的索引。 如果提供了initialValue，则起始索引号为0，否则从索引1起始。</li>
+<li>array 调用reduce()的数组</li>
+<li>initialValue 作为第一次调用 callback函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。<br>回调函数第一次执行时，accumulator 和currentValue的取值有两种情况：如果调用reduce()时提供了initialValue，accumulator取值为initialValue，currentValue取数组中的第一个值；如果没有提供 initialValue，那么accumulator取数组中的第一个值，currentValue取数组中的第二个值。<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> names = [<span class="string">'Alice'</span>, <span class="string">'Bob'</span>, <span class="string">'Tiff'</span>, <span class="string">'Bruce'</span>, <span class="string">'Alice'</span>];</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> countedNames = names.reduce(<span class="function"><span class="keyword">function</span> (<span class="params">allNames, name</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (name <span class="keyword">in</span> allNames) &#123;</span><br><span class="line">         allNames[name]++;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">else</span> &#123;</span><br><span class="line">         allNames[name] = <span class="number">1</span>;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> allNames;</span><br><span class="line"> &#125;, &#123;&#125;);</span><br><span class="line"> <span class="built_in">console</span>.log(names)</span><br><span class="line"> <span class="built_in">console</span>.log(countedNames)</span><br><span class="line"></span><br><span class="line"> <span class="comment">//数组去重</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">let</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">4</span>];</span><br><span class="line"><span class="keyword">let</span> result = arr.sort().reduce(<span class="function">(<span class="params">init, current</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(init.length === <span class="number">0</span> || init[init.length<span class="number">-1</span>] !== current) &#123;</span><br><span class="line">        init.push(current);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> init;</span><br><span class="line">&#125;, []);</span><br><span class="line"><span class="built_in">console</span>.log(result); <span class="comment">//[1,2,3,4,5</span></span><br><span class="line">  <span class="comment">//--还有按顺序运行Promise</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h5 id="slice"><a href="#slice" class="headerlink" title="slice()"></a>slice()</h5><p>slice() 方法返回一个新的数组对象，这一对象是一个由 begin 和 end 决定的原数组的浅拷贝（包括 begin，不包括end）。原始数组不会被改变。<br>slice可以一般化用在类数组对象昂，即Array.prototype.slice.call(arguments)</p>
+<h5 id="splice"><a href="#splice" class="headerlink" title="splice()"></a>splice()</h5><p>splice() 方法通过删除或替换现有元素或者原地添加新的元素来修改数组,并以数组形式返回被修改的内容。此方法会改变原数组。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> months = [<span class="string">'Jan'</span>, <span class="string">'March'</span>, <span class="string">'April'</span>, <span class="string">'June'</span>];</span><br><span class="line">months.splice(<span class="number">1</span>, <span class="number">0</span>, <span class="string">'Feb'</span>);</span><br><span class="line"><span class="comment">// inserts at index 1</span></span><br><span class="line"><span class="built_in">console</span>.log(months);</span><br><span class="line"><span class="comment">// expected output: Array ["Jan", "Feb", "March", "April", "June"]</span></span><br><span class="line"></span><br><span class="line">months.splice(<span class="number">4</span>, <span class="number">1</span>, <span class="string">'May'</span>);</span><br><span class="line"><span class="comment">// replaces 1 element at index 4</span></span><br><span class="line"><span class="built_in">console</span>.log(months);</span><br><span class="line"><span class="comment">// expected output: Array ["Jan", "Feb", "March", "April", "May"]</span></span><br></pre></td></tr></table></figure>
+<h5 id="sort"><a href="#sort" class="headerlink" title="sort()"></a>sort()</h5><p>对数组进行排序<br>默认排序顺序是在将元素转换为字符串，然后比较它们的UTF-16代码单元值序列时构建的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> items = [</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">'Edward'</span>, <span class="attr">value</span>: <span class="number">21</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">'Sharpe'</span>, <span class="attr">value</span>: <span class="number">37</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">'And'</span>, <span class="attr">value</span>: <span class="number">45</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">'The'</span>, <span class="attr">value</span>: <span class="number">-12</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">'Magnetic'</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">'Zeros'</span>, <span class="attr">value</span>: <span class="number">37</span> &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// sort by value</span></span><br><span class="line">items.sort(<span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (a.value - b.value)</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(items)</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* [</span></span><br><span class="line"><span class="comment">  &#123; name: 'The', value: -12 &#125;,</span></span><br><span class="line"><span class="comment">  &#123; name: 'Edward', value: 21 &#125;,</span></span><br><span class="line"><span class="comment">  &#123; name: 'Sharpe', value: 37 &#125;,</span></span><br><span class="line"><span class="comment">  &#123; name: 'And', value: 45 &#125;,</span></span><br><span class="line"><span class="comment">  &#123; name: 'Magnetic' &#125;,</span></span><br><span class="line"><span class="comment">  &#123; name: 'Zeros', value: 37 &#125;</span></span><br><span class="line"><span class="comment">]</span></span><br><span class="line"><span class="comment">* */</span></span><br><span class="line"><span class="comment">// sort by name</span></span><br><span class="line">items.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> nameA = a.name.toUpperCase(); <span class="comment">// ignore upper and lowercase</span></span><br><span class="line">    <span class="keyword">var</span> nameB = b.name.toUpperCase(); <span class="comment">// ignore upper and lowercase</span></span><br><span class="line">    <span class="keyword">if</span> (nameA &lt; nameB) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (nameA &gt; nameB) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// names must be equal</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(items)</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">[</span></span><br><span class="line"><span class="comment">  &#123; name: 'And', value: 45 &#125;,</span></span><br><span class="line"><span class="comment">  &#123; name: 'Edward', value: 21 &#125;,</span></span><br><span class="line"><span class="comment">  &#123; name: 'Magnetic' &#125;,</span></span><br><span class="line"><span class="comment">  &#123; name: 'Sharpe', value: 37 &#125;,</span></span><br><span class="line"><span class="comment">  &#123; name: 'The', value: -12 &#125;,</span></span><br><span class="line"><span class="comment">  &#123; name: 'Zeros', value: 37 &#125;</span></span><br><span class="line"><span class="comment">]</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h5 id="toString-和join"><a href="#toString-和join" class="headerlink" title="toString()和join()"></a>toString()和join()</h5><p>join() 方法将一个数组（或一个类数组对象）的所有元素连接成一个字符串并返回这个字符串。如果数组只有一个项目，那么将返回该项目而不使用分隔符。<br>toString() 返回一个字符串，表示指定的数组及其元素。<br>两者区别不大，只是join()可以接受一个作为分隔符。</p>
+<h4 id="String-prototype方法"><a href="#String-prototype方法" class="headerlink" title="String.prototype方法"></a>String.prototype方法</h4><h5 id="fromCharCode"><a href="#fromCharCode" class="headerlink" title="fromCharCode()"></a>fromCharCode()</h5><p>静态 String.fromCharCode() 方法返回由指定的UTF-16代码单元序列创建的字符串。</p>
+<h5 id="charAt"><a href="#charAt" class="headerlink" title="charAt()"></a>charAt()</h5><p>charAt() 方法从一个字符串中返回指定的字符。参数为下标</p>
+<h5 id="charCodeAt"><a href="#charCodeAt" class="headerlink" title="charCodeAt()"></a>charCodeAt()</h5><p>返回指定下标出对应字符的UTF-16的编码值</p>
+<h5 id="concat"><a href="#concat" class="headerlink" title="concat()"></a>concat()</h5><p>concat() 方法将一个或多个字符串与原字符串连接合并，形成一个新的字符串并返回。</p>
+<h5 id="match"><a href="#match" class="headerlink" title="match()"></a>match()</h5><p>match() 方法检索返回一个字符串匹配正则表达式的的结果。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'</span>;</span><br><span class="line"><span class="keyword">var</span> regexp = <span class="regexp">/[A-E]/gi</span>;</span><br><span class="line"><span class="keyword">var</span> matches_array = str.match(regexp);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(matches_array);</span><br><span class="line"><span class="comment">// ['A', 'B', 'C', 'D', 'E', 'a', 'b', 'c', 'd', 'e']</span></span><br></pre></td></tr></table></figure>
+<h5 id="substring"><a href="#substring" class="headerlink" title="substring()"></a>substring()</h5><p>substring() 方法返回一个字符串在开始索引到结束索引之间的一个子集, 或从开始索引直到字符串的末尾的一个子集。</p>
+<h5 id="replace"><a href="#replace" class="headerlink" title="replace()"></a>replace()</h5><p>replace() 方法返回一个由替换值（replacement）替换一些或所有匹配的模式（pattern）后的新字符串。模式可以是一个字符串或者一个正则表达式，替换值可以是一个字符串或者一个每次匹配都要调用的回调函数。<br>原字符串不会改变。<br>语法：str.replace(regexp|substr, newSubStr|function)</p>
+<ul>
+<li>regexp (pattern)一个RegExp 对象或者其字面量。该正则所匹配的内容会被第二个参数的返回值替换掉。</li>
+<li>substr (pattern)一个将被 newSubStr 替换的 字符串。其被视为一整个字符串，而不是一个正则表达式。仅第一个匹配项会被替换。</li>
+<li>newSubStr (replacement)用于替换掉第一个参数在原字符串中的匹配部分的字符串。该字符串中可以内插一些特殊的变量名。参考下面的使用字符串作为参数。</li>
+<li>function (replacement)一个用来创建新子字符串的函数，该函数的返回值将替换掉第一个参数匹配到的结果。参考下面的指定一个函数作为参数。<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">'Twas the night before Xmas...'</span>;</span><br><span class="line"><span class="keyword">var</span> newstr = str.replace(<span class="regexp">/xmas/i</span>, <span class="string">'Christmas'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(newstr);  <span class="comment">// Twas the night before Christmas...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> re = <span class="regexp">/apples/gi</span>;</span><br><span class="line"><span class="keyword">var</span> str = <span class="string">"Apples are round, and apples are juicy."</span>;</span><br><span class="line"><span class="keyword">var</span> newstr = str.replace(re, <span class="string">"oranges"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// oranges are round, and oranges are juicy.</span></span><br><span class="line"><span class="built_in">console</span>.log(newstr);</span><br></pre></td></tr></table></figure>
+<h5 id="search"><a href="#search" class="headerlink" title="search()"></a>search()</h5>search() 方法执行正则表达式和 String 对象之间的一个搜索匹配。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">"hey JudE"</span>;</span><br><span class="line"><span class="keyword">var</span> re = <span class="regexp">/[A-Z]/g</span>;</span><br><span class="line"><span class="keyword">var</span> re2 = <span class="regexp">/[.]/g</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str.search(re)); <span class="comment">// returns 4, which is the index of the first capital letter "J"</span></span><br><span class="line"><span class="built_in">console</span>.log(str.search(re2)); <span class="comment">// returns -1 cannot find '.' dot punctuation</span></span><br></pre></td></tr></table></figure>
+<h5 id="trim"><a href="#trim" class="headerlink" title="trim()"></a>trim()</h5><p>trim() 方法会从一个字符串的两端删除空白字符。在这个上下文中的空白字符是所有的空白字符 (space, tab, no-break space 等) 以及所有行终止符字符（如 LF，CR等）。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> orig = <span class="string">'   foo  '</span>;</span><br><span class="line"><span class="built_in">console</span>.log(orig.trim()); <span class="comment">// 'foo'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 另一个 .trim() 例子，只从一边删除</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> orig = <span class="string">'foo    '</span>;</span><br><span class="line"><span class="built_in">console</span>.log(orig.trim()); <span class="comment">// 'foo'</span></span><br></pre></td></tr></table></figure>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://music.163.com/song/media/outer/url?id=562598065.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://music.163.com/song/media/outer/url?id=28188425.mp3'></li>
+                        
+                    
+                        
+                            <li title='2' data-url='http://music.163.com/song/media/outer/url?id=534542079.mp3'></li>
+                        
+                    
+                        
+                            <li title='3' data-url='http://music.163.com/song/media/outer/url?id=30352891.mp3'></li>
+                        
+                    
+                        
+                            <li title='4' data-url='http://music.163.com/song/media/outer/url?id=28138493.mp3'></li>
+                        
+                    
+                        
+                            <li title='5' data-url='http://music.163.com/song/media/outer/url?id=421137682.mp3'></li>
+                        
+                    
+                        
+                            <li title='6' data-url='http://music.163.com/song/media/outer/url?id=208902.mp3'></li>
+                        
+                    
+                        
+                            <li title='7' data-url='http://music.163.com/song/media/outer/url?id=1363948882.mp3'></li>
+                        
+                    
+                        
+                            <li title='8' data-url='http://music.163.com/song/media/outer/url?id=574566207.mp3'></li>
+                        
+                    
+                        
+                            <li title='9' data-url='http://music.163.com/song/media/outer/url?id=1330348068.mp3'></li>
+                        
+                    
+                        
+                            <li title='10' data-url='http://music.163.com/song/media/outer/url?id=26418130.mp3'></li>
+                        
+                    
+                        
+                            <li title='11' data-url='http://music.163.com/song/media/outer/url?id=506196018.mp3'></li>
+                        
+                    
+                        
+                            <li title='12' data-url='http://music.163.com/song/media/outer/url?id=1309129239.mp3'></li>
+                        
+                    
+                        
+                            <li title='13' data-url='http://music.163.com/song/media/outer/url?id=450455548.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='93c58aa54b696342afaa'
+        data-cs='e593ee984f8640ebaed460b4b0bcc71c6d36289d'
+        data-r='gittalk'
+        data-o='edsion11'
+        data-a='edsion11'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+			<ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#includes"><span class="toc-number">1.</span> <span class="toc-text">includes()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#indexOf-和lastIndexOf"><span class="toc-number">2.</span> <span class="toc-text">indexOf()和lastIndexOf()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#pop-和push"><span class="toc-number">3.</span> <span class="toc-text">pop()和push()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#shift-和unshift"><span class="toc-number">4.</span> <span class="toc-text">shift()和unshift()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#reduce"><span class="toc-number">5.</span> <span class="toc-text">reduce()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#slice"><span class="toc-number">6.</span> <span class="toc-text">slice()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#splice"><span class="toc-number">7.</span> <span class="toc-text">splice()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#sort"><span class="toc-number">8.</span> <span class="toc-text">sort()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#toString-和join"><span class="toc-number">9.</span> <span class="toc-text">toString()和join()</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#String-prototype方法"><span class="toc-number"></span> <span class="toc-text">String.prototype方法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#fromCharCode"><span class="toc-number">1.</span> <span class="toc-text">fromCharCode()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#charAt"><span class="toc-number">2.</span> <span class="toc-text">charAt()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#charCodeAt"><span class="toc-number">3.</span> <span class="toc-text">charCodeAt()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#concat"><span class="toc-number">4.</span> <span class="toc-text">concat()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#match"><span class="toc-number">5.</span> <span class="toc-text">match()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#substring"><span class="toc-number">6.</span> <span class="toc-text">substring()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#replace"><span class="toc-number">7.</span> <span class="toc-text">replace()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#search"><span class="toc-number">8.</span> <span class="toc-text">search()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#trim"><span class="toc-number">9.</span> <span class="toc-text">trim()</span></a></li></ol>	
+        </div>
+    
+</div>
+
+
+  </div>
+</div>
+
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>

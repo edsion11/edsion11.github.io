@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rust学习小记录 - EdsionGu的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="前端,Rust,javascript,"> 
+    <meta name="description" content="断剑重铸之日，骑士归来之时,Rust 入坑首先介绍一下 Rust:A language for the next 40 years 在油管上某视频被称为下一个 40 年所用的语言。那么 Rust 的特点有哪些呢，官网对其的介绍,"> 
+    <meta name="author" content="Edsion Gu"> 
+    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/avatar.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EdsionGu的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+  <div id="top" style="display: block;">
+  <div class="bar" style="width: 0;"></div>
+  <a
+    class="iconfont icon-home image-icon"
+    href="javascript:;"
+    data-url="https://edsion11.github.io"
+  ></a>
+  <div title="播放/暂停" class="iconfont icon-play"></div>
+  <h3 class="subtitle">Rust学习小记录</h3>
+  <div class="social">
+    <div>
+      <div class="share">
+        <a
+          title="获取二维码"
+          class="iconfont icon-scan"
+          href="javascript:;"
+        ></a>
+      </div>
+      <div id="qr"></div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+  <div class="section">
+    <div class="article">
+    <div class='main'>
+        <h1 class="title">Rust学习小记录</h1>
+        <div class="stuff">
+            <span>十月 03, 2020</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <h4 id="Rust-入坑"><a href="#Rust-入坑" class="headerlink" title="Rust 入坑"></a>Rust 入坑</h4><p>首先介绍一下 Rust:A language for the next 40 years 在油管上某视频被称为下一个 40 年所用的语言。那么 Rust 的特点有哪些呢，官网对其的介绍有三个特点：</p>
+<pre><code>- 高性能
+- 可靠性
+- 生产力</code></pre><p>rust 是由 Mozila 公司推出是为构建高性能应用的语言，直接竞争对手有 C，C++语言。Rust 一些比较吸引人的是，具有很高的性能，类似于 npm 的包管理器（前端友好）,稳定的 async await 异步模型，前端的朋友应该很熟悉了。还有诸如泛型，trait，错误处理，生命周期，所有权提供内存安全，以及并发时的数据安全，智能指针+无 GC 更灵活。但 Rust 目前还处于成长状态，有友好的社区支持，但是整体生态不是很完善，可用的包较少，还需要较长时间的实践与发展。</p>
+<h4 id="WebAssembly"><a href="#WebAssembly" class="headerlink" title="WebAssembly"></a>WebAssembly</h4><p>WebAssembly 是由主流浏览器厂商组成的 W3C 社区团体制定的新的规范，作为可用于前端开发的第四种“语言”。WebAssembly 有一套完整的语义，目标是将其他语言编译成<code>wasm</code> 或<code>wat</code>二进制文件，目标是充分发挥硬件能力以达到原生执行效率。<br>作为一种编程语言，WebAssembly 由两种表示相同结构的格式组成，尽管使用的方式不同：</p>
+<ul>
+<li>wat 文件是 WebAssembly 的一种体现，用的是一种 S-expressions,用的是一种类似于 Clojure 的语言。</li>
+<li>而.wasm 二进制格式是低级别和用于通过 WASM 虚拟机直接消耗。从概念上讲，它类似于 ELF 和 Mach-O。</li>
+</ul>
+<h4 id="rust-构建-wasm-之准备"><a href="#rust-构建-wasm-之准备" class="headerlink" title="rust 构建 wasm 之准备"></a>rust 构建 wasm 之准备</h4><p>首先是工具链<br>需要 rust 的构建工具 <code>rustup</code>，<code>rustc</code>， <code>cargo</code>.<br><code>rustup</code>是用来安装 <code>rust</code> 的工具，<code>rustc</code>是用来编译<code>rust</code>代码的命令行工具，<code>cargo</code>则是 rust 官方的包管理器。接下来安装<code>wasm-pack</code>，用来构建，测试，发布 rust 生成的 webAssembly。安装地址：<a href="https://rustwasm.github.io/wasm-pack/installer/" target="_blank" rel="noopener">wasm-pack</a>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cargo install cargo-generate</span><br></pre></td></tr></table></figure>
+
+<p><code>cargo-generate</code>用来启动和运行 rust 项目<br>当然将<code>wasm</code>运行在 web 上，还需要<code>npm</code>包管理器</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install npm@latest -g</span><br></pre></td></tr></table></figure>
+
+<h4 id="正式开始"><a href="#正式开始" class="headerlink" title="正式开始"></a>正式开始</h4><p>首先用刚才安装的<code>cargo-generate</code>克隆远程仓库的项目模板。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cargo generate --git https:<span class="comment">//github.com/rustwasm/wasm-pack-template</span></span><br></pre></td></tr></table></figure>
+
+<p>运行之后会提示输入项目名称,比如<code>hello</code>。<br>克隆完成后，进入项目</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd wasm-game-<span class="keyword">of</span>-life</span><br></pre></td></tr></table></figure>
+
+<p>项目结构如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hello/</span><br><span class="line">├── Cargo.toml</span><br><span class="line">├── LICENSE_APACHE</span><br><span class="line">├── LICENSE_MIT</span><br><span class="line">├── README.md</span><br><span class="line">└── src</span><br><span class="line">    ├── lib.rs</span><br><span class="line">    └── utils.rs</span><br></pre></td></tr></table></figure>
+
+<p>首先是 cargo.toml 文件，学习过 rust 的都应该了解了这个文件。这个文件类似与 npm 的<code>package.json</code>文件,里面保存了当前的项目的版本以及依赖的包。还有一个比较重要的文件是<code>src</code>下面的<code>lib.rs</code>文件,这个文件类似于一个模块，是我们即将编译为<code>wasm</code>文件的 rust 源文件,它主要用于<code>wasm-bingen</code>和<code>javascript</code>交互</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#![allow(unused_variables)]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line"><span class="keyword">mod</span> utils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> wasm_bindgen::prelude::*;</span><br><span class="line"></span><br><span class="line"><span class="comment">// When the `wee_alloc` feature is enabled, use `wee_alloc` as the global</span></span><br><span class="line"><span class="comment">// allocator.</span></span><br><span class="line"><span class="meta">#[cfg(feature = <span class="meta-string">"wee_alloc"</span>)]</span></span><br><span class="line"><span class="meta">#[global_allocator]</span></span><br><span class="line"><span class="keyword">static</span> ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[wasm_bindgen]</span></span><br><span class="line"><span class="keyword">extern</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">alert</span></span>(s: &amp;<span class="built_in">str</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[wasm_bindgen]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">greet</span></span>() &#123;</span><br><span class="line">    alert(<span class="string">"Hello, hello!"</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来在当前目录下面运行</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wasm-pack build</span><br></pre></td></tr></table></figure>
+
+<p>会将我们的 rust 项目打包为 WebAssembly 文件和 js 文件，编译后的文件在<code>pkg</code>文件夹内</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pkg/</span><br><span class="line">├── package.json</span><br><span class="line">├── README.md</span><br><span class="line">├── hello_bg.wasm</span><br><span class="line">├── hello.d.ts</span><br><span class="line">└── hello.js</span><br></pre></td></tr></table></figure>
+
+<p>同时也生成了 ts 文件，更有助与工程化的构建 web 程序</p>
+<p>接下来在当前目录下克隆一个 wasm 的 web 项目模板,</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init wasm-app www</span><br></pre></td></tr></table></figure>
+
+<p>可看<a href="https://github.com/rustwasm/create-wasm-app" target="_blank" rel="noopener">wasm-app Github 介绍</a></p>
+<p>接下来修改目录下的文件的部分内容，让他能找到我们的 WebAssembly 文件，并运行在本地环境</p>
+<p>首先是修改<code>www</code>目录下的<code>package.json</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="string">"dependencies"</span>: &#123;                     <span class="comment">// Add this three lines block!</span></span><br><span class="line">    <span class="string">"wasm-game-of-life"</span>: <span class="string">"file:../pkg"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"devDependencies"</span>: &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来修改<code>www/index.js</code>为：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> wasm <span class="keyword">from</span> <span class="string">'wasm-game-of-life'</span></span><br><span class="line"></span><br><span class="line">wasm.greet()</span><br></pre></td></tr></table></figure>
+
+<p>接下来在该目录下运行</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br><span class="line">npm run start</span><br></pre></td></tr></table></figure>
+
+<p>即可在本地环境看到了<code>alert</code><br>这样一个简单的 wasm 项目就运行起来了，接着我们可以在 rust 目录下写 lib.rs 来丰富我们的应用了。</p>
+<p>下一次分享利用 rust 构建一个小型服务器，用来操作 mongoDB 数据库。<br>在之后可以尝试将<code>tensorflow</code>上的个别深度学习模型，编译为 wasm 运行在浏览器中，进行尝试。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://music.163.com/song/media/outer/url?id=562598065.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://music.163.com/song/media/outer/url?id=28188425.mp3'></li>
+                        
+                    
+                        
+                            <li title='2' data-url='http://music.163.com/song/media/outer/url?id=534542079.mp3'></li>
+                        
+                    
+                        
+                            <li title='3' data-url='http://music.163.com/song/media/outer/url?id=30352891.mp3'></li>
+                        
+                    
+                        
+                            <li title='4' data-url='http://music.163.com/song/media/outer/url?id=28138493.mp3'></li>
+                        
+                    
+                        
+                            <li title='5' data-url='http://music.163.com/song/media/outer/url?id=421137682.mp3'></li>
+                        
+                    
+                        
+                            <li title='6' data-url='http://music.163.com/song/media/outer/url?id=208902.mp3'></li>
+                        
+                    
+                        
+                            <li title='7' data-url='http://music.163.com/song/media/outer/url?id=1363948882.mp3'></li>
+                        
+                    
+                        
+                            <li title='8' data-url='http://music.163.com/song/media/outer/url?id=574566207.mp3'></li>
+                        
+                    
+                        
+                            <li title='9' data-url='http://music.163.com/song/media/outer/url?id=1330348068.mp3'></li>
+                        
+                    
+                        
+                            <li title='10' data-url='http://music.163.com/song/media/outer/url?id=26418130.mp3'></li>
+                        
+                    
+                        
+                            <li title='11' data-url='http://music.163.com/song/media/outer/url?id=506196018.mp3'></li>
+                        
+                    
+                        
+                            <li title='12' data-url='http://music.163.com/song/media/outer/url?id=1309129239.mp3'></li>
+                        
+                    
+                        
+                            <li title='13' data-url='http://music.163.com/song/media/outer/url?id=450455548.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='93c58aa54b696342afaa'
+        data-cs='e593ee984f8640ebaed460b4b0bcc71c6d36289d'
+        data-r='gittalk'
+        data-o='edsion11'
+        data-a='edsion11'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Rust-入坑"><span class="toc-number">1.</span> <span class="toc-text">Rust 入坑</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WebAssembly"><span class="toc-number">2.</span> <span class="toc-text">WebAssembly</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rust-构建-wasm-之准备"><span class="toc-number">3.</span> <span class="toc-text">rust 构建 wasm 之准备</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#正式开始"><span class="toc-number">4.</span> <span class="toc-text">正式开始</span></a></li></ol>	
+        </div>
+    
+</div>
+
+
+  </div>
+</div>
+
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>

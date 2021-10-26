@@ -1,0 +1,294 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>有关Angular新一代编译引擎Ivy的介绍 - EdsionGu的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="前端,Rust,javascript,"> 
+    <meta name="description" content="断剑重铸之日，骑士归来之时,AngularAngular是目前全球最受欢迎的框架之一，但由于在框架中有许多库以及编译知识需要学习，在国内的使用率并不高。同时由于加载时间长，因为Angular生成的项目文件较大也被React以及,"> 
+    <meta name="author" content="Edsion Gu"> 
+    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/avatar.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EdsionGu的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+  <div id="top" style="display: block;">
+  <div class="bar" style="width: 0;"></div>
+  <a
+    class="iconfont icon-home image-icon"
+    href="javascript:;"
+    data-url="https://edsion11.github.io"
+  ></a>
+  <div title="播放/暂停" class="iconfont icon-play"></div>
+  <h3 class="subtitle">有关Angular新一代编译引擎Ivy的介绍</h3>
+  <div class="social">
+    <div>
+      <div class="share">
+        <a
+          title="获取二维码"
+          class="iconfont icon-scan"
+          href="javascript:;"
+        ></a>
+      </div>
+      <div id="qr"></div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+  <div class="section">
+    <div class="article">
+    <div class='main'>
+        <h1 class="title">有关Angular新一代编译引擎Ivy的介绍</h1>
+        <div class="stuff">
+            <span>七月 22, 2021</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <h4 id="Angular"><a href="#Angular" class="headerlink" title="Angular"></a>Angular</h4><p>Angular是目前全球最受欢迎的框架之一，但由于在框架中有许多库以及编译知识需要学习，在国内的使用率并不高。同时由于加载时间长，因为Angular生成的项目文件较大也被<code>React</code>以及<code>Vue</code>更优秀的打包体积以及更好的开发体验所打败。但如果掌握了<code>Angular</code>的原理之后，我们也能开发出与React应用性能所差无几的<code>Web App</code>。而由于之前<code>Angular 8.0</code>版本之前使用的是View Engine编译器来对<code>Angular</code>项目文件进行编译，造成了打包体积较大以及不容易追踪bug。于是<code>Angular</code>团队推出了<code>Ivy</code>编译器。</p>
+<h4 id="什么是Ivy编译"><a href="#什么是Ivy编译" class="headerlink" title="什么是Ivy编译"></a>什么是<code>Ivy</code>编译</h4><p><code>Ivy</code>是下一代模板编译引擎以及渲染的管道工具，他非常先进，并提供了以前没有的高级功能以及更快的编译速度。实际是<code>Ivy</code>是<code>Angular</code>之前渲染引擎的完全重写，具体来说是第四次重写，使用<code>Ivy</code>可以独立得编译组件，同时对于热更新也支持的更好，在重写编译应用程序时会只涉及编译发生更改的组件。</p>
+<h5 id="treeshakable"><a href="#treeshakable" class="headerlink" title="treeshakable"></a>treeshakable</h5><p>同时<code>Ivy</code>另一个重要的点是对于项目文件的<code>treeshaking</code>，意思是在编译打包过程中删除未使用的代码，这也可以通过一些工具如<code>Rollup</code>以及<code>Uglify</code>来完成。在构建的过程中，<code>treeshaking</code>工具使用静态分析消除未使用以及未引用的代码。由于代码的静态分析依赖与引用，当有条件的逻辑判断代码存在的时候，工具不能正确识别，会出现失败的情况。</p>
+<h5 id="局限性"><a href="#局限性" class="headerlink" title="局限性"></a>局限性</h5><p>局限性指的是在使用本地代码独立的编译每个组件的过程，通过对于修改部分的重编译而不是整个项目文件的重新编译来更快地构建，这会显著的提升构建速度。在之前的<code>Angular</code>代码中，每个组件都存在它的父信息，这就导致了编译依赖，从而编译的文件变多。而在<code>Ivy</code>中，每个组件只会生成关于该组件自身的信息，除去了可申明依赖项的名词和包的名称。</p>
+<h5 id="Ivy编译样例"><a href="#Ivy编译样例" class="headerlink" title="Ivy编译样例"></a>Ivy编译样例</h5><p>在Angular中尝试编写如下代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>ivy works<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">app-child</span>&gt;</span><span class="tag">&lt;/<span class="name">app-child</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这里的<code>app-child</code>代表一个引用的子组件。通过<code>Ivy</code>编译得到的<code>Ivy.component.js</code>如图</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a22734f0afaf43d98561cade040d3112~tplv-k3u1fbpfcp-watermark.image" alt="Ivy编译.png"><br>而我们再通过在未开启<code>Ivy</code>的条件下进行再一次编译，这一次得到如下的目录结构：<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1fdf990b34f54e9288a7073178bffed0~tplv-k3u1fbpfcp-watermark.image" alt="编译目录.png"></p>
+<p>这里挑两个主要的文件<code>ivy.component.js</code>和<code>ivy.component.ngfactory.js</code>来展示<code>View Engine</code>编译后的文件：<br><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3c62e9374ba94143b933a79f7825ba7b~tplv-k3u1fbpfcp-watermark.image" alt="viewEngine-IvyComponent.png"><br><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6979761349be489ba389dc2ab993bdfb~tplv-k3u1fbpfcp-watermark.image" alt="viewEngine-IvyFactory.png"><br>可以看到，编译后的文件种类以及代码量相较于<code>Ivy</code>编译都变多了不少。</p>
+<h4 id="AOT编译和JIT编译"><a href="#AOT编译和JIT编译" class="headerlink" title="AOT编译和JIT编译"></a>AOT编译和JIT编译</h4><p><code>Angular</code> 应用主要由组件及其 <code>HTML</code> 模板组成。组件是由<code>Typescript</code>语言编写以及使用装饰器定义而成，由于浏览器无法直接理解 <code>Angular</code> 所提供的组件和模板，因此 <code>Angular</code> 应用程序需要先进行编译才能在浏览器中运行。在浏览器下载和运行代码之前的编译阶段，Angular 预先（AOT）编译器会先把你的 Angular HTML 和 TypeScript 代码转换成高效的 JavaScript 代码。 在构建期间编译应用可以让浏览器中的渲染更快速。而在官方文档中给出了使用AOT的部分原因：</p>
+<ul>
+<li>更快的渲染</li>
+<li>更少的异步请求</li>
+<li>较小的 <code>Angular</code> 框架下载大小</li>
+<li>尽早检测模板错误</li>
+<li>更高的安全性( <code>AOT</code> 在将 <code>HTML</code> 模板和组件提供给客户端之前就将其编译为 <code>JavaScript</code> 文件。没有要读取的模板，没有潜藏风险的客户端 HTML 或 <code>JavaScript eval</code>，受到注入攻击的机会就更少了。)</li>
+</ul>
+<p>在早期的<code>Angular8</code>版本之前，<code>Angular</code>并没有采用AOT编译的方法，而是采用了JIT(即时编译)编译来生成应用，它会在运行期间在浏览器中编译你的应用。JIT编的一般步骤是、<br>首先将<code>Typescript</code>代码（包括用户编写的代码，以及<code>Angular</code>框架、<code>Angular</code>编译器代码）编译成<code>JavaScript</code>代码。接着将这些代码部署到服务器端然后浏览器发起请求下载代码开始执行，接着Angular启动，Angular调用Angular编译器。对于每个组件类、ngModule、Pipe等都需要编译，之前<code>typescript</code>代码编译为<code>javascript</code>代码所保存的<code>metadata</code>，根据<code>metadata</code>编译出浏览器可以执行的<code>Javascript</code>代码前面图里的<code>NgFactory</code>文件。接着通过<code>NgFactories</code>文件来构建整个应用的具体组件。</p>
+<p>这里有对AOT与JIT编译详解的文章：<a href="https://segmentfault.com/a/1190000011562077" target="_blank" rel="noopener">Angular编译机制AOT和JIT</a></p>
+<h4 id="开启Ivy编译"><a href="#开启Ivy编译" class="headerlink" title="开启Ivy编译"></a>开启Ivy编译</h4><p>Ivy编译默认采用的是<code>AOT</code>编译方法，在之前<code>angular</code>主要使用的都是JIT编译，如果需要使用Ivy编译，需要修改<code>tsconfig.app.ts</code>中添加<code>angularCompilerOptions</code>选项以及开启<code>enableIvy</code>。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   <span class="string">"compilerOptions"</span>: &#123; ... &#125;,</span><br><span class="line">  <span class="string">"angularCompilerOptions"</span>: &#123;</span><br><span class="line">    <span class="string">"enableIvy"</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其次要确认的是<code>angular</code>配置文件<code>angular.json</code>中<code>aot</code>设置为<code>true</code>。</p>
+<h4 id="Ivy运行时"><a href="#Ivy运行时" class="headerlink" title="Ivy运行时"></a>Ivy运行时</h4><p>新的运行时引擎基于<strong><strong>increnmental DOM</strong></strong>的概念。这是一种使用指令表达和应用更新到 DOM 树的方法。DOM 更新是 <code>Angular</code> 中变化检测的主要部分，因此这个概念可以方便地应用到框架中。<a href="https://medium.com/google-developers/introducing-incremental-dom-e98f79ce2c5f" target="_blank" rel="noopener">在在这篇文章中</a>可以了解更多关于它<a href="https://medium.com/google-developers/introducing-incremental-dom-e98f79ce2c5f" target="_blank" rel="noopener">的内容</a>，它解释了这个概念背后的推理，并将它与React 中的<strong><strong>Virtual DOM</strong></strong>进行了对比。增量 DOM 也恰好是一个<a href="https://github.com/google/incremental-dom" target="_blank" rel="noopener">库</a>，但是新的 Ivy 引擎没有使用它，而是实现了自己的增量DOM版本。</p>
+<p>在之前<code>Angular</code>的主要实现逻辑是实例化组件、创建DOM节点以及进行更改检测，而这个整体是通过一个很小的原子单元实现的(atomic unit)。编译器只是生成有关的组件以及组件中定义元素的元数据<code>meta data</code>。如下图</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/699211f8e8054439859d7919ba50aea4~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<p>而新的<code>Ivy</code>引擎下的步骤如下：<br><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4ef88ce4c5f045e2bcef1709d93dcb42~tplv-k3u1fbpfcp-watermark.image" alt="image.png"><br>可与看出模板指令是实例化组件、创建 DOM 节点和运行变更检测的逻辑所在。但是它已经从整体的解释器转移到了单个的指令中。而<code>Ivy</code>带来的另一个优点是对于变更检测(change detection)的调试。新的<code>Ivy</code>编译环境下可以直接在模板函数中放置断点即可调试组件的变更检测。</p>
+<p>新的编译器还会将一组独立的<code>Typescript类转换</code>编译为表示<code>Class组件</code>的的AST。这些转换都会被实现为一种<strong>纯函数</strong>，这个函数接受表示装饰器的<code>元数据meta data</code>并将该定义作为静态字段添加到组件类中。</p>
+<p>以上便是关于<code>Ivy</code>编译引擎的介绍，而新的<code>Ivy</code>对于原来的变更检测也会带来变化，这个在下次关于变更检测的文章中进行总结。</p>
+<p>参考文章：</p>
+<ul>
+<li><a href="https://indepth.dev/posts/1062/ivy-engine-in-angular-first-in-depth-look-at-compilation-runtime-and-change-detection" target="_blank" rel="noopener">Angular 中的 Ivy 引擎：首次深入了解编译、运行时和更改检测</a></li>
+<li><a href="https://www.angularminds.com/blog/article/what-is-angular-ivy.html" target="_blank" rel="noopener">5分钟了解Ivy</a><ul>
+<li><a href="https://blog.lacolaco.net/2021/02/angular-ivy-library-compilation-design-in-depth-en/" target="_blank" rel="noopener">Understanding Angular Ivy Library Compilation</a></li>
+<li><a href="https://www.youtube.com/watch?v=qWmqiYDrnDc" target="_blank" rel="noopener">Renderer and ViewContainerRef over directly manipulating the DOM</a></li>
+<li><a href="https://www.youtube.com/watch?v=nbeQdMGtIcU" target="_blank" rel="noopener">Eliran Eliassy — Get ready for Ivy — Angular 3rd generation renderer engine</a><br>强烈推荐<strong><em>Eliassy</em></strong>大佬对于<code>Ivy</code>的介绍，以及展示了调试Angular应用的黑科技！</li>
+</ul>
+</li>
+</ul>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nbeQdMGtIcU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://music.163.com/song/media/outer/url?id=562598065.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://music.163.com/song/media/outer/url?id=28188425.mp3'></li>
+                        
+                    
+                        
+                            <li title='2' data-url='http://music.163.com/song/media/outer/url?id=534542079.mp3'></li>
+                        
+                    
+                        
+                            <li title='3' data-url='http://music.163.com/song/media/outer/url?id=30352891.mp3'></li>
+                        
+                    
+                        
+                            <li title='4' data-url='http://music.163.com/song/media/outer/url?id=28138493.mp3'></li>
+                        
+                    
+                        
+                            <li title='5' data-url='http://music.163.com/song/media/outer/url?id=421137682.mp3'></li>
+                        
+                    
+                        
+                            <li title='6' data-url='http://music.163.com/song/media/outer/url?id=208902.mp3'></li>
+                        
+                    
+                        
+                            <li title='7' data-url='http://music.163.com/song/media/outer/url?id=1363948882.mp3'></li>
+                        
+                    
+                        
+                            <li title='8' data-url='http://music.163.com/song/media/outer/url?id=574566207.mp3'></li>
+                        
+                    
+                        
+                            <li title='9' data-url='http://music.163.com/song/media/outer/url?id=1330348068.mp3'></li>
+                        
+                    
+                        
+                            <li title='10' data-url='http://music.163.com/song/media/outer/url?id=26418130.mp3'></li>
+                        
+                    
+                        
+                            <li title='11' data-url='http://music.163.com/song/media/outer/url?id=506196018.mp3'></li>
+                        
+                    
+                        
+                            <li title='12' data-url='http://music.163.com/song/media/outer/url?id=1309129239.mp3'></li>
+                        
+                    
+                        
+                            <li title='13' data-url='http://music.163.com/song/media/outer/url?id=450455548.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='93c58aa54b696342afaa'
+        data-cs='e593ee984f8640ebaed460b4b0bcc71c6d36289d'
+        data-r='gittalk'
+        data-o='edsion11'
+        data-a='edsion11'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Angular"><span class="toc-number">1.</span> <span class="toc-text">Angular</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是Ivy编译"><span class="toc-number">2.</span> <span class="toc-text">什么是Ivy编译</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#treeshakable"><span class="toc-number">2.1.</span> <span class="toc-text">treeshakable</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#局限性"><span class="toc-number">2.2.</span> <span class="toc-text">局限性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Ivy编译样例"><span class="toc-number">2.3.</span> <span class="toc-text">Ivy编译样例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AOT编译和JIT编译"><span class="toc-number">3.</span> <span class="toc-text">AOT编译和JIT编译</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#开启Ivy编译"><span class="toc-number">4.</span> <span class="toc-text">开启Ivy编译</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Ivy运行时"><span class="toc-number">5.</span> <span class="toc-text">Ivy运行时</span></a></li></ol>	
+        </div>
+    
+</div>
+
+
+  </div>
+</div>
+
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>

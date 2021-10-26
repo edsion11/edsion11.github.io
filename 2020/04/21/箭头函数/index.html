@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>箭头函数 - EdsionGu的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="前端,Rust,javascript,"> 
+    <meta name="description" content="断剑重铸之日，骑士归来之时,箭头函数箭头函数表达式的语法比函数表达式更简洁，并且没有自己的this，arguments，super或new.target。箭头函数表达式更适用于那些本来需要匿名函数的地方，并且它不能用作构造函数,"> 
+    <meta name="author" content="Edsion Gu"> 
+    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/avatar.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EdsionGu的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+  <div id="top" style="display: block;">
+  <div class="bar" style="width: 0;"></div>
+  <a
+    class="iconfont icon-home image-icon"
+    href="javascript:;"
+    data-url="https://edsion11.github.io"
+  ></a>
+  <div title="播放/暂停" class="iconfont icon-play"></div>
+  <h3 class="subtitle">箭头函数</h3>
+  <div class="social">
+    <div>
+      <div class="share">
+        <a
+          title="获取二维码"
+          class="iconfont icon-scan"
+          href="javascript:;"
+        ></a>
+      </div>
+      <div id="qr"></div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+  <div class="section">
+    <div class="article">
+    <div class='main'>
+        <h1 class="title">箭头函数</h1>
+        <div class="stuff">
+            <span>四月 21, 2020</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/javascript%E5%87%BD%E6%95%B0/" rel="tag">javascript函数</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/" rel="tag">箭头函数</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h3 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h3><p>箭头函数表达式的语法比函数表达式更简洁，并且没有自己的<code>this</code>，<code>arguments</code>，<code>super</code>或<code>new.target</code>。箭头函数表达式更适用于那些本来需要匿名函数的地方，并且它不能用作构造函数。</p>
+<h4 id="例"><a href="#例" class="headerlink" title="例"></a>例</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> materials = [<span class="string">'Hydrogen'</span>, <span class="string">'Helium'</span>, <span class="string">'Lithium'</span>, <span class="string">'Beryllium'</span>]</span><br><span class="line"><span class="built_in">console</span>.log(materials.map(<span class="function">(<span class="params">material</span>) =&gt;</span> material.length))</span><br><span class="line"><span class="comment">// expected output: Array [8, 6, 7, 9]</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(param1, param2, …, paramN) =&gt; &#123; statements &#125;</span><br><span class="line">(param1, param2, …, paramN) =&gt; expression</span><br><span class="line"><span class="comment">//相当于：(param1, param2, …, paramN) =&gt;&#123; return expression; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 当只有一个参数时，圆括号是可选的：</span></span><br><span class="line">(singleParam) =&gt; &#123; statements &#125;</span><br><span class="line">singleParam =&gt; &#123; statements &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 没有参数的函数应该写成一对圆括号。</span></span><br><span class="line">() =&gt; &#123; statements &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="高级语法"><a href="#高级语法" class="headerlink" title="高级语法"></a>高级语法</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//加括号的函数体返回对象字面量表达式：</span></span><br><span class="line">params =&gt; (&#123;<span class="attr">foo</span>: bar&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//支持剩余参数和默认参数</span></span><br><span class="line">(param1, param2, ...rest) =&gt; &#123; statements &#125;</span><br><span class="line">(param1 = defaultValue1, param2, …, paramN = defaultValueN) =&gt; &#123;</span><br><span class="line">statements &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//同样支持参数列表解构</span></span><br><span class="line"><span class="keyword">let</span> f = <span class="function">(<span class="params">[a, b] = [<span class="number">1</span>, <span class="number">2</span>], &#123;x: c&#125; = &#123;x: a + b&#125;</span>) =&gt;</span> a + b + c;</span><br><span class="line">f();  <span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="引入箭头函数主要有两个方面的作用-更简短的函数而且不绑定-this"><a href="#引入箭头函数主要有两个方面的作用-更简短的函数而且不绑定-this" class="headerlink" title="引入箭头函数主要有两个方面的作用:更简短的函数而且不绑定 this"></a>引入箭头函数主要有两个方面的作用:更简短的函数而且不绑定 this</h5><p>箭头函数不会创建自己的<code>this</code>,它只会从自己的作用域链的上一层继承<code>this</code>。因此，在下面的代码中，传递给<code>setInterval</code>的函数内的 this 与封闭函数中的<code>this</code>值相同：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.age = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.age++ <span class="comment">// |this| 正确地指向 p 实例</span></span><br><span class="line">  &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> Person()</span><br></pre></td></tr></table></figure>
+
+<h4 id="通过call和apply调用"><a href="#通过call和apply调用" class="headerlink" title="通过call和apply调用"></a>通过<code>call</code>和<code>apply</code>调用</h4><p>由于 箭头函数没有自己的 this 指针，通过 call() 或 apply() 方法调用一个函数时，只能传递参数（不能绑定 this），他们的第一个参数会被忽略。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> adder = &#123;</span><br><span class="line">  base : <span class="number">1</span>,</span><br><span class="line"></span><br><span class="line">  add : function(a) &#123;</span><br><span class="line">    <span class="keyword">var</span> f = v =&gt; v + <span class="keyword">this</span>.base;</span><br><span class="line">    <span class="keyword">return</span> f(a);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  addThruCall: function(a) &#123;</span><br><span class="line">    <span class="keyword">var</span> f = v =&gt; v + <span class="keyword">this</span>.base;</span><br><span class="line">    <span class="keyword">var</span> b = &#123;</span><br><span class="line">      base : <span class="number">2</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> f.call(b, a);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">console.log(adder.add(<span class="number">1</span>));         <span class="comment">// 输出 2</span></span><br><span class="line">console.log(adder.addThruCall(<span class="number">1</span>)); <span class="comment">// 仍然输出 2</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="使用箭头函数作为方法"><a href="#使用箭头函数作为方法" class="headerlink" title="使用箭头函数作为方法"></a>使用箭头函数作为方法</h5><p>箭头函数作为方法时，由于没有定义<code>this</code>绑定，方法里指向里上一个作用链的作用域。下面是例子中指向的是全局作用域。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用箭头函数作为方法</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  a: <span class="number">1</span>,</span><br><span class="line">  b: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a, <span class="keyword">this</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  c: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a, <span class="keyword">this</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//obj.b() //undefined &#123;&#125;</span></span><br><span class="line"><span class="comment">//上面是在node环境下运行的，在浏览器环境下运行会输出：undefined,window</span></span><br><span class="line"><span class="comment">//obj.c() //1 &#123;a:1.b:[Function:b],c:[Function:c]&#125;</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(obj, <span class="string">'b'</span>, &#123;</span><br><span class="line">  <span class="keyword">get</span>: () =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a, <span class="keyword">typeof</span> <span class="keyword">this</span>.a, <span class="keyword">this</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.a++</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">//obj.b //undefined 'undefined' &#123;&#125;</span></span><br><span class="line"><span class="comment">//箭头函数不能用作构造器，和new一起用会报错</span></span><br><span class="line"><span class="comment">/*(var Foo = () =&gt; &#123;&#125;</span></span><br><span class="line"><span class="comment">var f = new Foo()*/</span></span><br><span class="line"><span class="comment">//箭头函数也没有prototype属性，同样报错</span></span><br><span class="line"><span class="comment">//箭头函数不能用作函数生成器。</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="还有几点注意："><a href="#还有几点注意：" class="headerlink" title="还有几点注意："></a>还有几点注意：</h6><ul>
+<li>箭头函数返回子面量对象时要加括号（这是因为花括号（{} ）里面的代码被解析为一系列语句（即 foo 被认为是一个标签，而非对象字面量的组成部分）。）</li>
+<li>箭头函数的作用域注意，是局部作用域</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 常规写法</span></span><br><span class="line"><span class="keyword">var</span> greeting = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> now = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'Good'</span> + (now.getHours() &gt; <span class="number">17</span> ? <span class="string">' evening.'</span> : <span class="string">' day.'</span>)</span><br><span class="line">&#125;</span><br><span class="line">greeting() <span class="comment">//"Good day."</span></span><br><span class="line"><span class="built_in">console</span>.log(now) <span class="comment">// ReferenceError: now is not defined 标准的let作用域</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 参数括号内定义的变量是局部变量（默认参数）</span></span><br><span class="line"><span class="keyword">var</span> greeting = <span class="function">(<span class="params">now = <span class="keyword">new</span> <span class="built_in">Date</span>(</span>)) =&gt;</span></span><br><span class="line">  <span class="string">'Good'</span> + (now.getHours() &gt; <span class="number">17</span> ? <span class="string">' evening.'</span> : <span class="string">' day.'</span>)</span><br><span class="line">greeting() <span class="comment">//"Good day."</span></span><br><span class="line"><span class="built_in">console</span>.log(now) <span class="comment">// ReferenceError: now is not defined</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对比：函数体内&#123;&#125;不使用var定义的变量是全局变量</span></span><br><span class="line"><span class="keyword">var</span> greeting = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  now = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'Good'</span> + (now.getHours() &gt; <span class="number">17</span> ? <span class="string">' evening.'</span> : <span class="string">' day.'</span>)</span><br><span class="line">&#125;</span><br><span class="line">greeting() <span class="comment">//"Good day."</span></span><br><span class="line"><span class="built_in">console</span>.log(now) <span class="comment">// Fri Dec 22 2017 10:01:00 GMT+0800 (中国标准时间)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对比：函数体内&#123;&#125; 用var定义的变量是局部变量</span></span><br><span class="line"><span class="keyword">var</span> greeting = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> now = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'Good'</span> + (now.getHours() &gt; <span class="number">17</span> ? <span class="string">' evening.'</span> : <span class="string">' day.'</span>)</span><br><span class="line">&#125;</span><br><span class="line">greeting() <span class="comment">//"Good day."</span></span><br><span class="line"><span class="built_in">console</span>.log(now) <span class="comment">// ReferenceError: now is not defined</span></span><br></pre></td></tr></table></figure>
+
+<p>上面是 MDN 的例子。</p>
+<ul>
+<li>同样的箭头函数还可以使用闭包和递归</li>
+</ul>
+<h5 id="2020-4-25-补充"><a href="#2020-4-25-补充" class="headerlink" title="2020/4/25 补充"></a>2020/4/25 补充</h5><h5 id="箭头函数与匿名函数的区别"><a href="#箭头函数与匿名函数的区别" class="headerlink" title="箭头函数与匿名函数的区别"></a>箭头函数与匿名函数的区别</h5><ul>
+<li><p>this 指向区别</p>
+<ul>
+<li>箭头函数根据所在的环境（我在哪个环境中，this 就指向谁），Arrow functions bind the parent context。按照词法作用域绑定 this</li>
+<li>匿名函数中 this 指向 window</li>
+</ul>
+</li>
+</ul>
+<h6 id="使用箭头函数注意几点"><a href="#使用箭头函数注意几点" class="headerlink" title="使用箭头函数注意几点"></a>使用箭头函数注意几点</h6><ul>
+<li><p>1、函数体内的 this 对象就是定义时所在的对象，而不是使用时所在对象；</p>
+</li>
+<li><p>2、不可以当作构造函数使用，也就是不能用 new 命令实例化一个对象，否则会抛出一个错误；</p>
+</li>
+<li><p>3、不可以使用 arguments 对象，该对象在函数体内不存在，如果要用的话，可以用 rest 参数代替；</p>
+</li>
+<li><p>4、不可以使用 yield 命令，箭头函数不能用作 Generator 函数；</p>
+</li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://music.163.com/song/media/outer/url?id=562598065.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://music.163.com/song/media/outer/url?id=28188425.mp3'></li>
+                        
+                    
+                        
+                            <li title='2' data-url='http://music.163.com/song/media/outer/url?id=534542079.mp3'></li>
+                        
+                    
+                        
+                            <li title='3' data-url='http://music.163.com/song/media/outer/url?id=30352891.mp3'></li>
+                        
+                    
+                        
+                            <li title='4' data-url='http://music.163.com/song/media/outer/url?id=28138493.mp3'></li>
+                        
+                    
+                        
+                            <li title='5' data-url='http://music.163.com/song/media/outer/url?id=421137682.mp3'></li>
+                        
+                    
+                        
+                            <li title='6' data-url='http://music.163.com/song/media/outer/url?id=208902.mp3'></li>
+                        
+                    
+                        
+                            <li title='7' data-url='http://music.163.com/song/media/outer/url?id=1363948882.mp3'></li>
+                        
+                    
+                        
+                            <li title='8' data-url='http://music.163.com/song/media/outer/url?id=574566207.mp3'></li>
+                        
+                    
+                        
+                            <li title='9' data-url='http://music.163.com/song/media/outer/url?id=1330348068.mp3'></li>
+                        
+                    
+                        
+                            <li title='10' data-url='http://music.163.com/song/media/outer/url?id=26418130.mp3'></li>
+                        
+                    
+                        
+                            <li title='11' data-url='http://music.163.com/song/media/outer/url?id=506196018.mp3'></li>
+                        
+                    
+                        
+                            <li title='12' data-url='http://music.163.com/song/media/outer/url?id=1309129239.mp3'></li>
+                        
+                    
+                        
+                            <li title='13' data-url='http://music.163.com/song/media/outer/url?id=450455548.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='93c58aa54b696342afaa'
+        data-cs='e593ee984f8640ebaed460b4b0bcc71c6d36289d'
+        data-r='gittalk'
+        data-o='edsion11'
+        data-a='edsion11'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#箭头函数"><span class="toc-number">1.</span> <span class="toc-text">箭头函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例"><span class="toc-number">1.1.</span> <span class="toc-text">例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#基础语法"><span class="toc-number">1.2.</span> <span class="toc-text">基础语法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#高级语法"><span class="toc-number">1.3.</span> <span class="toc-text">高级语法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#引入箭头函数主要有两个方面的作用-更简短的函数而且不绑定-this"><span class="toc-number">1.3.1.</span> <span class="toc-text">引入箭头函数主要有两个方面的作用:更简短的函数而且不绑定 this</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#通过call和apply调用"><span class="toc-number">1.4.</span> <span class="toc-text">通过call和apply调用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#使用箭头函数作为方法"><span class="toc-number">1.4.1.</span> <span class="toc-text">使用箭头函数作为方法</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#还有几点注意："><span class="toc-number">1.4.1.1.</span> <span class="toc-text">还有几点注意：</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2020-4-25-补充"><span class="toc-number">1.4.2.</span> <span class="toc-text">2020&#x2F;4&#x2F;25 补充</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#箭头函数与匿名函数的区别"><span class="toc-number">1.4.3.</span> <span class="toc-text">箭头函数与匿名函数的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#使用箭头函数注意几点"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">使用箭头函数注意几点</span></a></li></ol></li></ol></li></ol></li></ol>	
+        </div>
+    
+</div>
+
+
+  </div>
+</div>
+
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>
