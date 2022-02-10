@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JavaScript设计模式之观察者模式 - EdsionGu的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="前端,Rust,javascript,"> 
+    <meta name="description" content="断剑重铸之日，骑士归来之时,发布-订阅模式发布订阅模式又称为观察者模式，它定义了对象间的一种一对多的依赖关系，当一个对象发生改变时，所有依赖与它的对象都会得到通知。在前端开发中，DOM事件是一个典型的发布-订阅模型。比如我们监,"> 
+    <meta name="author" content="Edsion Gu"> 
+    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/avatar.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EdsionGu的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+  <div id="top" style="display: block;">
+  <div class="bar" style="width: 0;"></div>
+  <a
+    class="iconfont icon-home image-icon"
+    href="javascript:;"
+    data-url="https://edsion11.github.io"
+  ></a>
+  <div title="播放/暂停" class="iconfont icon-play"></div>
+  <h3 class="subtitle">JavaScript设计模式之观察者模式</h3>
+  <div class="social">
+    <div>
+      <div class="share">
+        <a
+          title="获取二维码"
+          class="iconfont icon-scan"
+          href="javascript:;"
+        ></a>
+      </div>
+      <div id="qr"></div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+  <div class="section">
+    <div class="article">
+    <div class='main'>
+        <h1 class="title">JavaScript设计模式之观察者模式</h1>
+        <div class="stuff">
+            <span>七月 25, 2020</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h3 id="发布-订阅模式"><a href="#发布-订阅模式" class="headerlink" title="发布-订阅模式"></a>发布-订阅模式</h3><p>发布订阅模式又称为观察者模式，它定义了对象间的一种一对多的依赖关系，当一个对象发生改变时，所有依赖与它的对象都会得到通知。在前端开发中，DOM事件是一个典型的发布-订阅模型。比如我们监听一个点击事件，设置一个回调函数负责收到通知。<br>现在来看看如何来实现一个JavaScript版的发布-订阅模式<br>先实现一个发布者工厂：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> event = &#123;</span><br><span class="line">    clientList:[],</span><br><span class="line">    subscribe(key,fn) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.clientList[key]) &#123;</span><br><span class="line">            <span class="keyword">this</span>.clientList[key] = []</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.clientList[key].push(fn)</span><br><span class="line">    &#125;,</span><br><span class="line">    trigger()&#123;</span><br><span class="line">        <span class="keyword">var</span> key = <span class="built_in">Array</span>.prototype.shift.call(<span class="built_in">arguments</span>),</span><br><span class="line">        fns = <span class="keyword">this</span>.clientList[key];</span><br><span class="line">        <span class="keyword">if</span>(!fns||fns.length===<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>,fn;fn = fns[i++];)&#123;</span><br><span class="line">            fn.apply(<span class="keyword">this</span>,<span class="built_in">arguments</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    unsubscribe(key,fn) &#123;</span><br><span class="line">        <span class="keyword">var</span> fns = <span class="keyword">this</span>.clientList[key];</span><br><span class="line">        <span class="keyword">if</span>(!fns)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!fn)&#123;</span><br><span class="line">            fns&amp;&amp;(fns.length=<span class="number">0</span>)</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">let</span> l = fns.length<span class="number">-1</span>;l&gt;=<span class="number">0</span>;l--)&#123;</span><br><span class="line">                <span class="keyword">let</span> _fn = fns[l];</span><br><span class="line">                <span class="keyword">if</span>(_fn===fn)&#123;</span><br><span class="line">                    fns.splice(l,<span class="number">1</span>)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这个发布者工厂里我们先是定义个<code>subscribe</code>函数来对特定的属性进行订阅，并将订阅者存在属性订阅者列表中。接着定义一个<code>trigger</code>用来发布通知给所有的订阅者，接下来是一个<code>unsubscribe</code>来取消订阅，对对应属性的特定订阅者取消该属性的订阅。</p>
+<p>接着写一个给对象布置“发布-订阅”功能的函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> installEvent = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i <span class="keyword">in</span> event)&#123;</span><br><span class="line">        obj[i] = event[i]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//测试</span></span><br><span class="line"><span class="keyword">let</span> xiaoming = <span class="function">(<span class="params">price</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"apple-price"</span>,price)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> xiaoHong =<span class="function">(<span class="params">price</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"banana-price"</span>,price)</span><br><span class="line">&#125;</span><br><span class="line">sales.subscribe(<span class="string">"apple"</span>,xiaoming)</span><br><span class="line">sales.subscribe(<span class="string">"banana"</span>,xiaoHong)</span><br><span class="line">sales.trigger(<span class="string">"apple"</span>,<span class="number">500</span>)<span class="comment">//apple-price 500</span></span><br><span class="line">sales.trigger(<span class="string">"banana"</span>,<span class="number">600</span>)<span class="comment">//banana-price 600</span></span><br><span class="line">sales.trigger(<span class="string">"apple"</span>,<span class="number">1200</span>)<span class="comment">//apple-price 1200</span></span><br><span class="line">sales.unsubscribe(<span class="string">"apple"</span>,xiaoming)<span class="comment">//取消订阅</span></span><br><span class="line">sales.trigger(<span class="string">"apple"</span>,<span class="number">1</span>)<span class="comment">//</span></span><br></pre></td></tr></table></figure>
+<p>以上就实现了一个简单的发布-订阅模式</p>
+<h3 id="Vue中的发布-订阅"><a href="#Vue中的发布-订阅" class="headerlink" title="Vue中的发布-订阅"></a>Vue中的发布-订阅</h3><p>发布-订阅在目前的前端框架有诸多的应用，常见的是Vue2.0的双向绑定就利用了观察者模式<br>在Vue2.0中使用<code>Object.defineProperty</code>对数据的属性进行劫持可以收到数据更改的消息，而如何通知视图更新呢，Vue中定义了一个依赖类：<code>dep</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 源码位置：src/core/observer/dep.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">Dep</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span> () &#123;</span><br><span class="line">    <span class="keyword">this</span>.subs = []</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  addSub (sub) &#123;</span><br><span class="line">    <span class="keyword">this</span>.subs.push(sub)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 删除一个依赖</span></span><br><span class="line">  removeSub (sub) &#123;</span><br><span class="line">    remove(<span class="keyword">this</span>.subs, sub)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 添加一个依赖</span></span><br><span class="line">  depend () &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.target) &#123;</span><br><span class="line">      <span class="keyword">this</span>.addSub(<span class="built_in">window</span>.target)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 通知所有依赖更新</span></span><br><span class="line">  notify () &#123;</span><br><span class="line">    <span class="keyword">const</span> subs = <span class="keyword">this</span>.subs.slice()</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = subs.length; i &lt; l; i++) &#123;</span><br><span class="line">      subs[i].update()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Remove an item from an array</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">remove</span> (<span class="params">arr, item</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (arr.length) &#123;</span><br><span class="line">    <span class="keyword">const</span> index = arr.indexOf(item)</span><br><span class="line">    <span class="keyword">if</span> (index &gt; <span class="number">-1</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> arr.splice(index, <span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的依赖管理器Dep类中，我们先初始化了一个subs数组，用来存放依赖，并且定义了几个实例方法用来对依赖进行添加，删除，通知等操作。</p>
+<p>有了依赖管理器后，我们就可以在getter中收集依赖，在setter中通知依赖更新了，代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">defineReactive</span> (<span class="params">obj,key,val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">arguments</span>.length === <span class="number">2</span>) &#123;</span><br><span class="line">    val = obj[key]</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> val === <span class="string">'object'</span>)&#123;</span><br><span class="line">    <span class="keyword">new</span> Observer(val)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> dep = <span class="keyword">new</span> Dep()  <span class="comment">//实例化一个依赖管理器，生成一个依赖管理数组dep</span></span><br><span class="line">  <span class="built_in">Object</span>.defineProperty(obj, key, &#123;</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    configurable: <span class="literal">true</span>,</span><br><span class="line">    <span class="keyword">get</span>()&#123;</span><br><span class="line">      dep.depend()    <span class="comment">// 在getter中收集依赖</span></span><br><span class="line">      <span class="keyword">return</span> val;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span>(newVal)&#123;</span><br><span class="line">      <span class="keyword">if</span>(val === newVal)&#123;</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      val = newVal;</span><br><span class="line">      dep.notify()   <span class="comment">// 在setter中通知依赖更新</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实在Vue中还实现了一个叫做<code>Watcher</code>的类，而<code>Watcher</code>类的实例就是我们上面所说的那个”谁”。换句话说就是：谁用到了数据，谁就是依赖，我们就为谁创建一个<code>Watcher</code>实例。在之后数据变化时，我们不直接去通知依赖更新，而是通知依赖对应的<code>Watch</code>实例，由<code>Watcher</code>实例去通知真正的视图。</p>
+<p><code>Watcher</code>类的具体实现如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">Watcher</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span> (vm,expOrFn,cb) &#123;</span><br><span class="line">    <span class="keyword">this</span>.vm = vm;</span><br><span class="line">    <span class="keyword">this</span>.cb = cb;</span><br><span class="line">    <span class="keyword">this</span>.getter = parsePath(expOrFn)</span><br><span class="line">    <span class="keyword">this</span>.value = <span class="keyword">this</span>.get()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">get</span> () &#123;</span><br><span class="line">    <span class="built_in">window</span>.target = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">const</span> vm = <span class="keyword">this</span>.vm</span><br><span class="line">    <span class="keyword">let</span> value = <span class="keyword">this</span>.getter.call(vm, vm)</span><br><span class="line">    <span class="built_in">window</span>.target = <span class="literal">undefined</span>;</span><br><span class="line">    <span class="keyword">return</span> value</span><br><span class="line">  &#125;</span><br><span class="line">  update () &#123;</span><br><span class="line">    <span class="keyword">const</span> oldValue = <span class="keyword">this</span>.value</span><br><span class="line">    <span class="keyword">this</span>.value = <span class="keyword">this</span>.get()</span><br><span class="line">    <span class="keyword">this</span>.cb.call(<span class="keyword">this</span>.vm, <span class="keyword">this</span>.value, oldValue)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Parse simple path.</span></span><br><span class="line"><span class="comment"> * 把一个形如'data.a.b.c'的字符串路径所表示的值，从真实的data对象中取出来</span></span><br><span class="line"><span class="comment"> * 例如：</span></span><br><span class="line"><span class="comment"> * data = &#123;a:&#123;b:&#123;c:2&#125;&#125;&#125;</span></span><br><span class="line"><span class="comment"> * parsePath('a.b.c')(data)  // 2</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> bailRE = <span class="regexp">/[^\w.$]/</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">parsePath</span> (<span class="params">path</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (bailRE.test(path)) &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> segments = path.split(<span class="string">'.'</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; segments.length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!obj) <span class="keyword">return</span></span><br><span class="line">      obj = obj[segments[i]]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> obj</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此处附上一张Vue双向绑定的图解<br><img src="/images/Vue.jpg" alt="Vue"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://music.163.com/song/media/outer/url?id=562598065.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://music.163.com/song/media/outer/url?id=28188425.mp3'></li>
+                        
+                    
+                        
+                            <li title='2' data-url='http://music.163.com/song/media/outer/url?id=534542079.mp3'></li>
+                        
+                    
+                        
+                            <li title='3' data-url='http://music.163.com/song/media/outer/url?id=30352891.mp3'></li>
+                        
+                    
+                        
+                            <li title='4' data-url='http://music.163.com/song/media/outer/url?id=28138493.mp3'></li>
+                        
+                    
+                        
+                            <li title='5' data-url='http://music.163.com/song/media/outer/url?id=421137682.mp3'></li>
+                        
+                    
+                        
+                            <li title='6' data-url='http://music.163.com/song/media/outer/url?id=208902.mp3'></li>
+                        
+                    
+                        
+                            <li title='7' data-url='http://music.163.com/song/media/outer/url?id=1363948882.mp3'></li>
+                        
+                    
+                        
+                            <li title='8' data-url='http://music.163.com/song/media/outer/url?id=574566207.mp3'></li>
+                        
+                    
+                        
+                            <li title='9' data-url='http://music.163.com/song/media/outer/url?id=1330348068.mp3'></li>
+                        
+                    
+                        
+                            <li title='10' data-url='http://music.163.com/song/media/outer/url?id=26418130.mp3'></li>
+                        
+                    
+                        
+                            <li title='11' data-url='http://music.163.com/song/media/outer/url?id=506196018.mp3'></li>
+                        
+                    
+                        
+                            <li title='12' data-url='http://music.163.com/song/media/outer/url?id=1309129239.mp3'></li>
+                        
+                    
+                        
+                            <li title='13' data-url='http://music.163.com/song/media/outer/url?id=450455548.mp3'></li>
+                        
+                    
+                        
+                            <li title='14' data-url='http://music.163.com/song/media/outer/url?id=1860032684.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='93c58aa54b696342afaa'
+        data-cs='e593ee984f8640ebaed460b4b0bcc71c6d36289d'
+        data-r='gittalk'
+        data-o='edsion11'
+        data-a='edsion11'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#发布-订阅模式"><span class="toc-number">1.</span> <span class="toc-text">发布-订阅模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue中的发布-订阅"><span class="toc-number">2.</span> <span class="toc-text">Vue中的发布-订阅</span></a></li></ol>	
+        </div>
+    
+</div>
+
+
+  </div>
+</div>
+
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ES6语法总结（一） - EdsionGu的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="前端,Rust,javascript,"> 
+    <meta name="description" content="断剑重铸之日，骑士归来之时,let 和 const
+在原来的ES5时，定义变量，函数用的var会造成变量提升，于是ES6新增了let和const语法。接下来用代码说明
+1234567891011121314151617var ,"> 
+    <meta name="author" content="Edsion Gu"> 
+    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/avatar.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EdsionGu的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+  <div id="top" style="display: block;">
+  <div class="bar" style="width: 0;"></div>
+  <a
+    class="iconfont icon-home image-icon"
+    href="javascript:;"
+    data-url="https://edsion11.github.io"
+  ></a>
+  <div title="播放/暂停" class="iconfont icon-play"></div>
+  <h3 class="subtitle">ES6语法总结（一）</h3>
+  <div class="social">
+    <div>
+      <div class="share">
+        <a
+          title="获取二维码"
+          class="iconfont icon-scan"
+          href="javascript:;"
+        ></a>
+      </div>
+      <div id="qr"></div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+  <div class="section">
+    <div class="article">
+    <div class='main'>
+        <h1 class="title">ES6语法总结（一）</h1>
+        <div class="stuff">
+            <span>四月 02, 2020</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/ES6/" rel="tag">ES6</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/const/" rel="tag">const</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/let/" rel="tag">let</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h4>let 和 const</h4>
+<p>在原来的ES5时，定义变量，函数用的var会造成变量提升，于是ES6新增了<code>let</code>和<code>const</code>语法。接下来用代码说明</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a=[]</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">  a[i] = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line">a[<span class="number">6</span>]()</span><br><span class="line"><span class="keyword">var</span> b = [];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; <span class="number">10</span> ;j++)&#123;</span><br><span class="line">  b[j] = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(j)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">b[<span class="number">6</span>]()</span><br><span class="line"><span class="comment">//输出：</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">6</span></span><br></pre></td></tr></table></figure>
+上下仅有的不同是for循环里面的<code> i </code>，<code> j </code>定义方式不同，上面定义的<code> i </code>为全局变量，for循环结束，<code> i </code>为10。而下面定义的<code> j </code>为局部变量，只在for（）｛｝的作用域内有效，于是形成了上面的结果。
+<p>另外for循环的的设置循环变量括号内部是父作用域，而循环体则是子作用域。---来自阮一峰老师的博客介绍</p>
+<code>var</code>的变量存在变量提升，什么意思呢，就是<code>var</code>定义的变量，在js运行时，会在运行开始的时候执行一条语句<code> var a </code>此时<code>a</code>为<code>undefined</code>，如果在定义<code>a</code>变量之前调用<code>a</code>变量,会显示<code>undefined</code>。而现在ES6为了减少这种情况，同时规范代码，新提出了<code>let</code>指令，let定义的变量，只有在let的块作用域内有效，出了作用域调用就会报错<code>// 报错ReferenceError</code><br>
+<h4>暂时性死区</h4>
+ES6 明确规定，如果区块中存在let和const命令，这个区块对这些命令声明的变量，从一开始就形成了封闭作用域。凡是在声明之前就使用这些变量，就会报错。即在代码块内，使用let命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”（temporal dead zone，简称 TDZ）。有了这个，<code>typeof</code>就会更加安全，如果let定义之前typeof，会报错，而如果没有定义，则会输出undefined。<br>
+还有一点：<code> let </code>不允许重复定义，不能同时定义相同的变量两次。
+<h4>块作用域</h4>
+<p>在ES5中只有全局作用域和局部作用域，带来了很多不合理的场景，所以如今ES6提出了块作用域，强调规范</p>
+第一种场景，内层变量可能会覆盖外层变量。
+第二种场景，用来计数的循环变量泄露为全局变量。(上面开头例子)
+详见阮一峰老师的博客<a href="https://es6.ruanyifeng.com/#docs/let" target="_blank" rel="noopener">阮一峰-let和const</a>
+<h4>关于函数声明</h4>
+<p>ES5中规定：函数只能在顶层作用域或者函数作用域中声明，不能在块级作用域申明。但是浏览器中还是支持在块级作用域中申明函数，不会报错。</p>
+<p>而ES6引入了块级作用域，规定块级作用域外不可引用作用域内的函数</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fnc</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'I am outside!'</span>);</span><br><span class="line">   &#125;</span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="number">0</span>) &#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log(<span class="string">'I am inside!'</span>); &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  f();</span><br><span class="line">&#125;());</span><br></pre></td></tr></table></figure>
+上面的代码在ES5中会输出<code>I am inside!</code>，因为类似于<code>var</code>变量，函数会var声明提前，将if作用域内的<code>function</code>会提前至if之前，即<code> var f = undefined</code>于是在ES6中回报错。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  test.js:<span class="number">10</span></span><br><span class="line">  f();</span><br><span class="line">  ^</span><br><span class="line"><span class="built_in">TypeError</span>: f is not a <span class="function"><span class="keyword">function</span></span></span><br></pre></td></tr></table></figure>
+原因是ES6 在附录 B里面规定，浏览器的实现可以不遵守上面的规定，有自己的行为方式。
+<ul>
+<li>允许在块级作用域内声明函数。</li>
+<li>函数声明类似于var，即会提升到全局作用域或函数作用域的头部。</li>
+<li>同时，函数声明还会提升到所在的块级作用域的头部。</li>
+</ul>
+<h4>const命令</h4>
+<p><code>const</code>会声明一个只读的变量，不能更改，也不能再定义并且定义的同时要立即赋值。同时const也是存在暂时性死区和块级作用域。与之前let类似</p>
+<p>const只是定义数据所在的内存地址不能变动，而不是数据不能改动，即如果const定义一个数组或者对象，数组的push()，push()方法依然有效，对象设置属性也正常，但是对const定义的数组或者对象等再次赋值，负责会报错。如果永久冻结，不能变动，有一个冻结方法是<code>Object.freeze</code></p>
+<p>如果有如下的定义：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> foo = <span class="built_in">Object</span>.freeze(&#123;&#125;);</span><br><span class="line">foo.prop = <span class="number">123</span>;</span><br></pre></td></tr></table></figure>
+<p>正常模式会无效，而严格模式会报错（具体没有尝试，还没有具体碰到两种模式，只是了解）</p>
+<h4>ES6申明变量6种方法</h4>
+<ul>
+  <li><code>var</code></li>
+  <li><code>function</code></li>
+  <li><code>let</code></li>
+  <li><code>const</code></li>
+  <li><code>import</code></li><a href="#">具体介绍</a>
+  <li><code>class</code></li><a href="#">具体介绍</a>
+</ul>
+<h4>globalThis对象</h4>
+<p>ES6还引入了globalThis对象，用来表示顶层对象，比如浏览器的顶层对象是<code>window</code>，WebWorker的顶层对象是<code>self</code>，Node里面是<code>global</code></p>
+<span style="float:right">本次博客主要参考自阮一峰的ECMAScript6入门(一)</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://music.163.com/song/media/outer/url?id=562598065.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://music.163.com/song/media/outer/url?id=28188425.mp3'></li>
+                        
+                    
+                        
+                            <li title='2' data-url='http://music.163.com/song/media/outer/url?id=534542079.mp3'></li>
+                        
+                    
+                        
+                            <li title='3' data-url='http://music.163.com/song/media/outer/url?id=30352891.mp3'></li>
+                        
+                    
+                        
+                            <li title='4' data-url='http://music.163.com/song/media/outer/url?id=28138493.mp3'></li>
+                        
+                    
+                        
+                            <li title='5' data-url='http://music.163.com/song/media/outer/url?id=421137682.mp3'></li>
+                        
+                    
+                        
+                            <li title='6' data-url='http://music.163.com/song/media/outer/url?id=208902.mp3'></li>
+                        
+                    
+                        
+                            <li title='7' data-url='http://music.163.com/song/media/outer/url?id=1363948882.mp3'></li>
+                        
+                    
+                        
+                            <li title='8' data-url='http://music.163.com/song/media/outer/url?id=574566207.mp3'></li>
+                        
+                    
+                        
+                            <li title='9' data-url='http://music.163.com/song/media/outer/url?id=1330348068.mp3'></li>
+                        
+                    
+                        
+                            <li title='10' data-url='http://music.163.com/song/media/outer/url?id=26418130.mp3'></li>
+                        
+                    
+                        
+                            <li title='11' data-url='http://music.163.com/song/media/outer/url?id=506196018.mp3'></li>
+                        
+                    
+                        
+                            <li title='12' data-url='http://music.163.com/song/media/outer/url?id=1309129239.mp3'></li>
+                        
+                    
+                        
+                            <li title='13' data-url='http://music.163.com/song/media/outer/url?id=450455548.mp3'></li>
+                        
+                    
+                        
+                            <li title='14' data-url='http://music.163.com/song/media/outer/url?id=1860032684.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='93c58aa54b696342afaa'
+        data-cs='e593ee984f8640ebaed460b4b0bcc71c6d36289d'
+        data-r='gittalk'
+        data-o='edsion11'
+        data-a='edsion11'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text">let 和 const</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#"><span class="toc-number">2.</span> <span class="toc-text">暂时性死区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#"><span class="toc-number">3.</span> <span class="toc-text">块作用域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#"><span class="toc-number">4.</span> <span class="toc-text">关于函数声明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#"><span class="toc-number">5.</span> <span class="toc-text">const命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#"><span class="toc-number">6.</span> <span class="toc-text">ES6申明变量6种方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#"><span class="toc-number">7.</span> <span class="toc-text">globalThis对象</span></a></li></ol>	
+        </div>
+    
+</div>
+
+
+  </div>
+</div>
+
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>

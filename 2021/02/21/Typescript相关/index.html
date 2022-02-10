@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Typescript相关 - EdsionGu的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="前端,Rust,javascript,"> 
+    <meta name="description" content="断剑重铸之日，骑士归来之时,最近复习基础看到了Learning Typescript这本书，翻开学习，发现了不少知识，在此记录一下。
+面向对象编程SOLID原则利用Typescript进行面向对象编程要注意五个点，简称为“SO,"> 
+    <meta name="author" content="Edsion Gu"> 
+    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/avatar.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EdsionGu的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+  <div id="top" style="display: block;">
+  <div class="bar" style="width: 0;"></div>
+  <a
+    class="iconfont icon-home image-icon"
+    href="javascript:;"
+    data-url="https://edsion11.github.io"
+  ></a>
+  <div title="播放/暂停" class="iconfont icon-play"></div>
+  <h3 class="subtitle">Typescript相关</h3>
+  <div class="social">
+    <div>
+      <div class="share">
+        <a
+          title="获取二维码"
+          class="iconfont icon-scan"
+          href="javascript:;"
+        ></a>
+      </div>
+      <div id="qr"></div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+  <div class="section">
+    <div class="article">
+    <div class='main'>
+        <h1 class="title">Typescript相关</h1>
+        <div class="stuff">
+            <span>二月 21, 2021</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Typescript/" rel="tag">Typescript</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>最近复习基础看到了Learning Typescript这本书，翻开学习，发现了不少知识，在此记录一下。</p>
+<h4 id="面向对象编程"><a href="#面向对象编程" class="headerlink" title="面向对象编程"></a>面向对象编程</h4><h4 id="SOLID原则"><a href="#SOLID原则" class="headerlink" title="SOLID原则"></a>SOLID原则</h4><p>利用Typescript进行面向对象编程要注意五个点，简称为“SOLID”原则</p>
+<ul>
+<li>单一职责原则(SRP): 表明软件组件(函数，类，模块)必须专注于单一的任务(只有单一的职责)</li>
+<li>开/闭原则(OCP): 表明软件设计时必须时刻考虑到(代码)可能的发展(具有扩展性)，但是程序的发展必须最少地修改已有的代码(对已有的修改封闭)</li>
+<li>里氏替换原则(LSP): 表明只要继承的是同一个接口，程序里任意一个类都可以被其他的类替换。在替换完成后，不需要其他额外的工作程序就能像原来一样运行。</li>
+<li>接口隔离原则(ISP): 表明我们应该将那些非常大的接口拆分成一些更具体的接口，这样客户端就只需要关心他们需要用到的接口</li>
+<li>依赖反转原则(DIP): 表明一个方法应该遵从依赖于抽象（接口）而不是一个实例（类）的概念。<br>用<code>Typesciript</code>编写一个类如下：<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">    public name: string;</span><br><span class="line">    public surname: string;</span><br><span class="line">    public email: string;</span><br><span class="line">    <span class="keyword">constructor</span>(name: string, surname: string, email: string)&#123;</span><br><span class="line">        <span class="keyword">this</span>.email = email;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.surname = surname;</span><br><span class="line">    &#125;</span><br><span class="line">    greet()&#123;</span><br><span class="line">        alert(<span class="string">"hello"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p : Person = <span class="keyword">new</span> Person(<span class="string">"liming"</span>, <span class="string">"li"</span>, <span class="string">"123@163.com"</span>);</span><br></pre></td></tr></table></figure>
+如果要验证<code>email</code>的格式，在<code>Person</code>上增加代码会使<code>Person</code>类变得非常大，我们可以八<code>email</code>抽象成一个类分离出来，这体现了第一个单一职责原则。<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Email&#123;</span><br><span class="line">    <span class="keyword">public</span> email: <span class="built_in">string</span>;</span><br><span class="line">    <span class="keyword">constructor</span>(<span class="params">email: <span class="built_in">string</span></span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.validateEmail(email))&#123;</span><br><span class="line">            <span class="keyword">this</span>.email = email</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Invalid email!"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> validateEmail(email: <span class="built_in">string</span>)&#123;</span><br><span class="line">        <span class="keyword">var</span> re = <span class="string">'/\S+@\S+\.\S+/'</span>;</span><br><span class="line">        <span class="keyword">return</span> re.test(email)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> Person&#123;</span><br><span class="line">       <span class="keyword">public</span> name: <span class="built_in">string</span>;</span><br><span class="line">       <span class="keyword">public</span> surname: <span class="built_in">string</span>;</span><br><span class="line">       <span class="keyword">public</span> email: Email;</span><br><span class="line">       <span class="keyword">constructor</span>(<span class="params">name: <span class="built_in">string</span>, surname: <span class="built_in">string</span>, email: <span class="built_in">string</span></span>)&#123;</span><br><span class="line">           <span class="keyword">this</span>.email = email;</span><br><span class="line">           <span class="keyword">this</span>.name = name;</span><br><span class="line">           <span class="keyword">this</span>.surname = surname;</span><br><span class="line">       &#125;</span><br><span class="line">       greet()&#123;</span><br><span class="line">           alert(<span class="string">"hello"</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+在面向对象的过程中，类与类有一些关系，比如关联，聚合，组合，继承，混合等，接下来并不介绍他们的概念，而是介绍一下泛型类和泛型约束</li>
+</ul>
+<h4 id="泛型类"><a href="#泛型类" class="headerlink" title="泛型类"></a>泛型类</h4><p>泛型类如同泛型函数，可以介绍很多重复的代码，接下来用代码说明<br>首先是一个类<br><img src="/images/typescript/ts_1.png" alt="代码"><br>这里包括一个<code>User</code>的类和一个<code>NotGenericUserRepository</code>的类，后面这个类是获取User的列表，并传给JSON文件，当我们想获取一个会议，或者一个歌曲列表时，不同的类形成的这个<code>GenericRepository</code>类也就要重写，这时可以利用泛型类。如下所示：<br><img src="/images/typescript/ts_2.png" alt="代码"><br>有时候，我们需要泛型约束，如上述例子，新需求是增加一些变更来验证通过Ajax请求的数据:</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">success: <span class="function">(<span class="params">data</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> list: T[]</span><br><span class="line">    <span class="keyword">var</span> items = &lt;T[]&gt;data.items</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;items.length;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(items[i].isValid())&#123; <span class="comment">// 验证</span></span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    resolve(list)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那我们可以写一个验证接口，将泛型进行约束：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> User <span class="keyword">implements</span> ValidatableInterface&#123;</span><br><span class="line">    <span class="keyword">public</span> name: <span class="built_in">string</span></span><br><span class="line">    <span class="keyword">public</span> password: <span class="built_in">string</span></span><br><span class="line">    <span class="keyword">constructor</span>(<span class="params">name: <span class="built_in">string</span>, password: <span class="built_in">string</span></span>)&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name</span><br><span class="line">        <span class="keyword">this</span>.password = password</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> isValid()&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> Talk <span class="keyword">implements</span> ValidatableInterface&#123;</span><br><span class="line">    <span class="keyword">public</span> name: <span class="built_in">string</span></span><br><span class="line">    <span class="keyword">constructor</span>(<span class="params">name: <span class="built_in">string</span>, password: <span class="built_in">string</span></span>)&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> isValid()&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> NotGenericUserRepository&lt;T <span class="keyword">extends</span> ValidatableInterface&gt;&#123;</span><br><span class="line">    <span class="keyword">private</span> _url: <span class="built_in">string</span></span><br><span class="line">    <span class="keyword">constructor</span>(<span class="params">url: <span class="built_in">string</span></span>)&#123;</span><br><span class="line">        <span class="keyword">this</span>._url = url</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> getAsync()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve: (<span class="params">users: T[]</span>) =&gt; <span class="built_in">void</span>. reject</span>) =&gt;</span> &#123;</span><br><span class="line">            $.ajax(&#123;</span><br><span class="line">                url: <span class="keyword">this</span>._url,</span><br><span class="line">                <span class="keyword">type</span>: <span class="string">"GET"</span>,</span><br><span class="line">                dataType: <span class="string">"JSON"</span>,</span><br><span class="line">                success: <span class="function">(<span class="params">data</span>)=&gt;</span>&#123;</span><br><span class="line">                    <span class="keyword">var</span> list: T[]</span><br><span class="line">                    <span class="keyword">var</span> items = &lt;T[]&gt;data.items</span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;items.length;i++)&#123;</span><br><span class="line">                        <span class="keyword">if</span>(items[i].isValid())&#123;</span><br><span class="line">                            list.push(items[i])</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    resolve(list)</span><br><span class="line">                &#125;,</span><br><span class="line">                error: <span class="function">(<span class="params">e</span>)=&gt;</span>&#123;</span><br><span class="line">                    reject(e)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">class</span> User <span class="keyword">implements</span> ValidatableInterface&#123;</span><br><span class="line">    <span class="keyword">public</span> name: <span class="built_in">string</span></span><br><span class="line">    <span class="keyword">public</span> password: <span class="built_in">string</span></span><br><span class="line">    <span class="keyword">constructor</span>(<span class="params">name: <span class="built_in">string</span>, password: <span class="built_in">string</span></span>)&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name</span><br><span class="line">        <span class="keyword">this</span>.password = password</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> isValid()&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> Talk <span class="keyword">implements</span> ValidatableInterface&#123;</span><br><span class="line">    <span class="keyword">public</span> name: <span class="built_in">string</span></span><br><span class="line">    <span class="keyword">constructor</span>(<span class="params">name: <span class="built_in">string</span>, password: <span class="built_in">string</span></span>)&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> isValid()&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> NotGenericUserRepository&lt;T <span class="keyword">extends</span> ValidatableInterface&gt;&#123;</span><br><span class="line">    <span class="keyword">private</span> _url: <span class="built_in">string</span></span><br><span class="line">    <span class="keyword">constructor</span>(<span class="params">url: <span class="built_in">string</span></span>)&#123;</span><br><span class="line">        <span class="keyword">this</span>._url = url</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> getAsync()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve: (<span class="params">users: T[]</span>) =&gt; <span class="built_in">void</span>. reject</span>) =&gt;</span> &#123;</span><br><span class="line">            $.ajax(&#123;</span><br><span class="line">                url: <span class="keyword">this</span>._url,</span><br><span class="line">                <span class="keyword">type</span>: <span class="string">"GET"</span>,</span><br><span class="line">                dataType: <span class="string">"JSON"</span>,</span><br><span class="line">                success: <span class="function">(<span class="params">data</span>)=&gt;</span>&#123;</span><br><span class="line">                    <span class="keyword">var</span> list: T[]</span><br><span class="line">                    <span class="keyword">var</span> items = &lt;T[]&gt;data.items</span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;items.length;i++)&#123;</span><br><span class="line">                        <span class="keyword">if</span>(items[i].isValid())&#123;</span><br><span class="line">                            list.push(items[i])</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    resolve(list)</span><br><span class="line">                &#125;,</span><br><span class="line">                error: <span class="function">(<span class="params">e</span>)=&gt;</span>&#123;</span><br><span class="line">                    reject(e)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="泛型中的new操作"><a href="#泛型中的new操作" class="headerlink" title="泛型中的new操作"></a>泛型中的new操作</h4><p>要通过代码来创建新的对象，我们需要声明泛型T拥有构造函数，这意味着我们需要像下面一样，用<code>type: {new() :T;}</code>替代<code>type:T</code><br><img src="/images/typescript/ts_4.png" alt="代码"><br>####</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://music.163.com/song/media/outer/url?id=562598065.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://music.163.com/song/media/outer/url?id=28188425.mp3'></li>
+                        
+                    
+                        
+                            <li title='2' data-url='http://music.163.com/song/media/outer/url?id=534542079.mp3'></li>
+                        
+                    
+                        
+                            <li title='3' data-url='http://music.163.com/song/media/outer/url?id=30352891.mp3'></li>
+                        
+                    
+                        
+                            <li title='4' data-url='http://music.163.com/song/media/outer/url?id=28138493.mp3'></li>
+                        
+                    
+                        
+                            <li title='5' data-url='http://music.163.com/song/media/outer/url?id=421137682.mp3'></li>
+                        
+                    
+                        
+                            <li title='6' data-url='http://music.163.com/song/media/outer/url?id=208902.mp3'></li>
+                        
+                    
+                        
+                            <li title='7' data-url='http://music.163.com/song/media/outer/url?id=1363948882.mp3'></li>
+                        
+                    
+                        
+                            <li title='8' data-url='http://music.163.com/song/media/outer/url?id=574566207.mp3'></li>
+                        
+                    
+                        
+                            <li title='9' data-url='http://music.163.com/song/media/outer/url?id=1330348068.mp3'></li>
+                        
+                    
+                        
+                            <li title='10' data-url='http://music.163.com/song/media/outer/url?id=26418130.mp3'></li>
+                        
+                    
+                        
+                            <li title='11' data-url='http://music.163.com/song/media/outer/url?id=506196018.mp3'></li>
+                        
+                    
+                        
+                            <li title='12' data-url='http://music.163.com/song/media/outer/url?id=1309129239.mp3'></li>
+                        
+                    
+                        
+                            <li title='13' data-url='http://music.163.com/song/media/outer/url?id=450455548.mp3'></li>
+                        
+                    
+                        
+                            <li title='14' data-url='http://music.163.com/song/media/outer/url?id=1860032684.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='93c58aa54b696342afaa'
+        data-cs='e593ee984f8640ebaed460b4b0bcc71c6d36289d'
+        data-r='gittalk'
+        data-o='edsion11'
+        data-a='edsion11'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#面向对象编程"><span class="toc-number">1.</span> <span class="toc-text">面向对象编程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SOLID原则"><span class="toc-number">2.</span> <span class="toc-text">SOLID原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#泛型类"><span class="toc-number">3.</span> <span class="toc-text">泛型类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#泛型中的new操作"><span class="toc-number">4.</span> <span class="toc-text">泛型中的new操作</span></a></li></ol>	
+        </div>
+    
+</div>
+
+
+  </div>
+</div>
+
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>

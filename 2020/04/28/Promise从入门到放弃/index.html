@@ -1,0 +1,328 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Promise从入门到放弃 - EdsionGu的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="前端,Rust,javascript,"> 
+    <meta name="description" content="断剑重铸之日，骑士归来之时,Promise 从入门到放弃javascript 异步操作执行历史JavaScript 语言的执行环境是“单线程”， 所谓单线程，就是一次只能完成一件任务， 如果有多个任务就需要排队，一个完成了，继,"> 
+    <meta name="author" content="Edsion Gu"> 
+    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/avatar.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EdsionGu的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+  <div id="top" style="display: block;">
+  <div class="bar" style="width: 0;"></div>
+  <a
+    class="iconfont icon-home image-icon"
+    href="javascript:;"
+    data-url="https://edsion11.github.io"
+  ></a>
+  <div title="播放/暂停" class="iconfont icon-play"></div>
+  <h3 class="subtitle">Promise从入门到放弃</h3>
+  <div class="social">
+    <div>
+      <div class="share">
+        <a
+          title="获取二维码"
+          class="iconfont icon-scan"
+          href="javascript:;"
+        ></a>
+      </div>
+      <div id="qr"></div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+  <div class="section">
+    <div class="article">
+    <div class='main'>
+        <h1 class="title">Promise从入门到放弃</h1>
+        <div class="stuff">
+            <span>四月 28, 2020</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Promise/" rel="tag">Promise</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/async-await/" rel="tag">async/await</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E5%AE%8F%E9%98%9F%E5%88%97/" rel="tag">宏队列</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E5%BE%AE%E9%98%9F%E5%88%97/" rel="tag">微队列</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h3 id="Promise-从入门到放弃"><a href="#Promise-从入门到放弃" class="headerlink" title="Promise 从入门到放弃"></a>Promise 从入门到放弃</h3><h4 id="javascript-异步操作执行历史"><a href="#javascript-异步操作执行历史" class="headerlink" title="javascript 异步操作执行历史"></a>javascript 异步操作执行历史</h4><p>JavaScript 语言的执行环境是“单线程”， 所谓单线程，就是一次只能完成一件任务， 如果有多个任务就需要排队，一个完成了，继续下一个，这种方式在实现来说是非常简单的，但是如果一个任务耗时很长，那么后面的任务就需要排队等着，会拖延整个程序的执行。 常见的浏览器无响应（假死）就是因为某一段 JavaScript 代码长时间运行（比如死循环），导致整个页面卡死，其他任务无法执行。</p>
+<h4 id="javascript-异步操作的类型"><a href="#javascript-异步操作的类型" class="headerlink" title="javascript 异步操作的类型"></a>javascript 异步操作的类型</h4><ul>
+<li>回调函数</li>
+<li>事件监听</li>
+<li>发布/订阅</li>
+<li>promise</li>
+<li>generator（ES6）</li>
+<li>async/await （ES7）</li>
+</ul>
+<h4 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h4><ul>
+<li>同步回调<br>立即执行，完全执行完之后才结束，不会放入回调队列<br>example : Promise(()=&gt;{}) 数组的 forEach()</li>
+<li>异步回调<br>setTimeout((()=&gt;{}))</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]</span><br><span class="line">arr.forEach(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(value)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'over'</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>异步回调<br>进入回调队列，等待执行</p>
+</li>
+<li><p>回调函数</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params">func</span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'我是f1'</span>)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; <span class="number">50000</span>; i++) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'我是f1的'</span> + i)</span><br><span class="line">    &#125;</span><br><span class="line">    func(Zz)</span><br><span class="line">  &#125;, <span class="number">500</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  alert(<span class="string">'我是f2'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f3</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  alert(<span class="string">'我是f3'</span>)</span><br><span class="line">&#125;</span><br><span class="line">f1(f2) <span class="comment">//这里f1(),f2()不会阻塞f3()的运行</span></span><br><span class="line">f3()</span><br></pre></td></tr></table></figure>
+
+<p>这里主要利用<code>setTimeout()</code>函数来进行异步操作，f3<code>()</code>的执行不会受到<code>f1()</code>影响。主要是因为<code>setTimeout()</code>是异步函数。</p>
+<ul>
+<li>为什么要用 Promise<ul>
+<li>1.指定回调函数的而方式更加灵活</li>
+<li>2.支持链式调用，可解决回调地狱问题<br>回调地狱就是传统的回调函数嵌套所产生的问题，不利于阅读，不利于异常处理，解决方案有 Promise 链式调用以及最新的 async 和 await</li>
+</ul>
+</li>
+</ul>
+<h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h3><ul>
+<li>Promise 是 ES6 中提出的新的异步编程解决方案<br>语法上来看：Promise 是一个构造函数<br>功能上来看；Promise 对象用来封装了一个异步操作并可以获取其结果</li>
+<li>Promise 状态<br>pending 状态–&gt;初始状态<br>fullFilled 状态–&gt;对应 Promise 内函数执行成功–&gt;对应 resolve(params)<br>rejected 状态–&gt;对应 Promise 内函数执行失败或抛出异常–&gt;对应 reject(params)</li>
+<li>Promise 执行流程<br><img src="/images/Promise.png" alt="Promise执行"></li>
+</ul>
+<h3 id="如何改变-promise-的状态"><a href="#如何改变-promise-的状态" class="headerlink" title="如何改变 promise 的状态"></a>如何改变 promise 的状态</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">resolve(value)<span class="comment">//---pedding-&gt;fullfilled</span></span><br><span class="line">reject(reason)<span class="comment">//---pedding-&gt;rejected</span></span><br><span class="line"><span class="keyword">throw</span> <span class="comment">//抛出异常，rejected，reason为throw的值</span></span><br></pre></td></tr></table></figure>
+
+<p>定义两个 then()，都会输出</p>
+<p>promise 状态的改变和 then 回调函数的执行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//先指定回调函数，在改变状态</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">//这里是同步执行</span></span><br><span class="line">  <span class="built_in">console</span>.log<span class="string">`先指定回调函数，在改变状态`</span></span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    resolve(<span class="number">1</span>) <span class="comment">//再改变pedding状态，同时改变数据</span></span><br><span class="line">  &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;).then(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">//先指定回调函数</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'value1----&gt;'</span> + value)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">//先改变状态，再指定函数</span></span><br><span class="line"><span class="comment">//第一种，去掉异步的定时器</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log<span class="string">`//先改变状态，再指定函数`</span></span><br><span class="line">  resolve(<span class="number">2</span>)</span><br><span class="line">&#125;).then(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'value2---&gt;'</span> + value)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">//第二种都设置定时器</span></span><br><span class="line"><span class="keyword">const</span> p3 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log<span class="string">`//先改变状态，再指定函数`</span></span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    resolve(<span class="number">3</span>)</span><br><span class="line">  &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;)</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  p3.then(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'value3---&gt;'</span> + value)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;, <span class="number">1200</span>)</span><br><span class="line"><span class="comment">/*输出：</span></span><br><span class="line"><span class="comment">[ '先指定回调函数，在改变状态' ]</span></span><br><span class="line"><span class="comment">[ '//先改变状态，再指定函数' ]</span></span><br><span class="line"><span class="comment">[ '//先改变状态，再指定函数' ]</span></span><br><span class="line"><span class="comment">value2---&gt;2</span></span><br><span class="line"><span class="comment">value1----&gt;1</span></span><br><span class="line"><span class="comment">value3---&gt;3</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Promise-all-和-Promise-race"><a href="#Promise-all-和-Promise-race" class="headerlink" title="Promise.all() 和 Promise.race()"></a>Promise.all() 和 Promise.race()</h3><ul>
+<li>Promise.all()<br>Promise.all(iterable) 方法返回一个 Promise 实例，此实例在 iterable 参数内所有的 promise 都“完成（resolved）”或参数中不包含 promise 时回调完成（resolve）；如果参数中 promise 有一个失败（rejected），此实例回调失败（reject），失败的原因是第一个失败 promise 的结果。</li>
+<li>Promise.race()<br>Promise.race(iterable) 方法返回一个 promise，一旦迭代器中的某个 promise 解决或拒绝，返回的 promise 就会解决或拒绝。</li>
+</ul>
+<h3 id="Promise-值穿透问题"><a href="#Promise-值穿透问题" class="headerlink" title="Promise 值穿透问题"></a>Promise 值穿透问题</h3><ul>
+<li>.then 或者 .catch 的参数期望是函数，传入非函数则会发生值穿透。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.resolve(<span class="string">'foo'</span>)</span><br><span class="line">  .then(<span class="built_in">Promise</span>.resolve(<span class="string">'bar'</span>))</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span> (<span class="params">result</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(result) <span class="comment">//foo</span></span><br><span class="line">  &#125;)</span><br><span class="line"><span class="comment">//-----------------------------</span></span><br><span class="line"><span class="built_in">Promise</span>.resolve(<span class="number">1</span>)</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">  &#125;)</span><br><span class="line">  .then(<span class="built_in">Promise</span>.resolve(<span class="number">3</span>))</span><br><span class="line">  .then(<span class="built_in">console</span>.log) <span class="comment">//2</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>异常穿透<br>(1)当使用 promise 的 then 链式调用时, 可以在最后指定失败的回调,<br>(2)前面任何操作出了异常, 都会传到最后失败的回调中处理</li>
+</ul>
+<h3 id="中断-promise-链"><a href="#中断-promise-链" class="headerlink" title="中断 promise 链"></a>中断 promise 链</h3><p>(1)当使用 promise 的 then 链式调用时, 在中间中断, 不再调用后面的回调函数<br>(2)办法: 在回调函数中返回一个 pendding 状态的 promise 对象</p>
+<h3 id="手写-Promise-对象"><a href="#手写-Promise-对象" class="headerlink" title="手写 Promise 对象"></a>手写 Promise 对象</h3><p>已上传到 GIthub <a href="https://github.com/edsion11/guzhenxu.github.io/blob/master/Study/javascript/%E5%BC%82%E6%AD%A5javascript/%E6%89%8B%E5%86%99Promise.js" target="_blank" rel="noopener" title="With a Title">手写 Promise(ES5)</a>.</p>
+<h3 id="async-和-await"><a href="#async-和-await" class="headerlink" title="async 和 await"></a>async 和 await</h3><ul>
+<li>async 函数<br>函数的返回值为 Promise 对象<br>Promise 对象的结果由 async 函数执行的返回值决定</li>
+<li>await 函数<br>await 右侧的表达式一般为 Promise 对象，但也可以是其他值<br>如果表达式是 Promise 对象，await 返回 Promise 成功的值<br>如果为其他值，则直接作为 await 的返回值</li>
+<li>注意<br>await 必须写在 async 函数中，但 async 函数中可以没有 await<br>await 的 Promise 对象失败，会抛出异常，用 try…catch 捕获异常 🍎</li>
+</ul>
+<h3 id="宏队列-和-微队列"><a href="#宏队列-和-微队列" class="headerlink" title="宏队列 和 微队列"></a>宏队列 和 微队列</h3><ul>
+<li>宏队列<br>DOM 事件回调 Ajax 回调 定时器回调</li>
+<li>微队列<br>Mutation() Promise()<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">  <span class="comment">//微队列优先级高</span></span></span><br><span class="line"><span class="javascript">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="actionscript">    <span class="comment">//立即进入宏队列</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(<span class="string">'timeout1'</span>)</span></span><br><span class="line"><span class="javascript">    <span class="built_in">Promise</span>.resolve(<span class="number">2</span>).then(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="built_in">console</span>.log(<span class="string">'setTimeout的Promise1'</span> + value)</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;, 0)</span><br><span class="line"><span class="javascript">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="actionscript">    <span class="comment">//立即进入宏队列</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(<span class="string">'timeout2'</span>)</span></span><br><span class="line">    /*</span><br><span class="line">      每次准备取出一个宏队列的任务时，都会先执行所有的微任务</span><br><span class="line">      */</span><br><span class="line"><span class="javascript">    <span class="built_in">Promise</span>.resolve(<span class="number">2</span>).then(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="built_in">console</span>.log(<span class="string">'setTimeout的Promise2'</span> + value)</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;, 0)</span><br><span class="line"><span class="javascript">  <span class="built_in">Promise</span>.resolve(<span class="number">1</span>).then(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="actionscript">    <span class="comment">//立即进入微队列</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(<span class="string">'Promise onResolved'</span> + value)</span></span><br><span class="line">  &#125;)</span><br><span class="line"><span class="actionscript">  <span class="comment">//Promise onResolved 1.</span></span></span><br><span class="line"><span class="actionscript">  <span class="comment">//timeout</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://music.163.com/song/media/outer/url?id=562598065.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://music.163.com/song/media/outer/url?id=28188425.mp3'></li>
+                        
+                    
+                        
+                            <li title='2' data-url='http://music.163.com/song/media/outer/url?id=534542079.mp3'></li>
+                        
+                    
+                        
+                            <li title='3' data-url='http://music.163.com/song/media/outer/url?id=30352891.mp3'></li>
+                        
+                    
+                        
+                            <li title='4' data-url='http://music.163.com/song/media/outer/url?id=28138493.mp3'></li>
+                        
+                    
+                        
+                            <li title='5' data-url='http://music.163.com/song/media/outer/url?id=421137682.mp3'></li>
+                        
+                    
+                        
+                            <li title='6' data-url='http://music.163.com/song/media/outer/url?id=208902.mp3'></li>
+                        
+                    
+                        
+                            <li title='7' data-url='http://music.163.com/song/media/outer/url?id=1363948882.mp3'></li>
+                        
+                    
+                        
+                            <li title='8' data-url='http://music.163.com/song/media/outer/url?id=574566207.mp3'></li>
+                        
+                    
+                        
+                            <li title='9' data-url='http://music.163.com/song/media/outer/url?id=1330348068.mp3'></li>
+                        
+                    
+                        
+                            <li title='10' data-url='http://music.163.com/song/media/outer/url?id=26418130.mp3'></li>
+                        
+                    
+                        
+                            <li title='11' data-url='http://music.163.com/song/media/outer/url?id=506196018.mp3'></li>
+                        
+                    
+                        
+                            <li title='12' data-url='http://music.163.com/song/media/outer/url?id=1309129239.mp3'></li>
+                        
+                    
+                        
+                            <li title='13' data-url='http://music.163.com/song/media/outer/url?id=450455548.mp3'></li>
+                        
+                    
+                        
+                            <li title='14' data-url='http://music.163.com/song/media/outer/url?id=1860032684.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='93c58aa54b696342afaa'
+        data-cs='e593ee984f8640ebaed460b4b0bcc71c6d36289d'
+        data-r='gittalk'
+        data-o='edsion11'
+        data-a='edsion11'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-从入门到放弃"><span class="toc-number">1.</span> <span class="toc-text">Promise 从入门到放弃</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#javascript-异步操作执行历史"><span class="toc-number">1.1.</span> <span class="toc-text">javascript 异步操作执行历史</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#javascript-异步操作的类型"><span class="toc-number">1.2.</span> <span class="toc-text">javascript 异步操作的类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#回调函数"><span class="toc-number">1.3.</span> <span class="toc-text">回调函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise"><span class="toc-number">2.</span> <span class="toc-text">Promise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何改变-promise-的状态"><span class="toc-number">3.</span> <span class="toc-text">如何改变 promise 的状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-all-和-Promise-race"><span class="toc-number">4.</span> <span class="toc-text">Promise.all() 和 Promise.race()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-值穿透问题"><span class="toc-number">5.</span> <span class="toc-text">Promise 值穿透问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#中断-promise-链"><span class="toc-number">6.</span> <span class="toc-text">中断 promise 链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#手写-Promise-对象"><span class="toc-number">7.</span> <span class="toc-text">手写 Promise 对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#async-和-await"><span class="toc-number">8.</span> <span class="toc-text">async 和 await</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#宏队列-和-微队列"><span class="toc-number">9.</span> <span class="toc-text">宏队列 和 微队列</span></a></li></ol>	
+        </div>
+    
+</div>
+
+
+  </div>
+</div>
+
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>

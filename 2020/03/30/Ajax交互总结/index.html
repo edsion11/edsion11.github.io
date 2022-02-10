@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ajax交互总结 - EdsionGu的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="前端,Rust,javascript,"> 
+    <meta name="description" content="断剑重铸之日，骑士归来之时,什么是Ajax和JSON，它们的优缺点
+
+Ajax是全称是asynchronous JavaScript andXML，即异步JavaScript和xml，用于在Web页面中实现异步数据交互，实现页,"> 
+    <meta name="author" content="Edsion Gu"> 
+    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/avatar.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">EdsionGu的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+  <div id="top" style="display: block;">
+  <div class="bar" style="width: 0;"></div>
+  <a
+    class="iconfont icon-home image-icon"
+    href="javascript:;"
+    data-url="https://edsion11.github.io"
+  ></a>
+  <div title="播放/暂停" class="iconfont icon-play"></div>
+  <h3 class="subtitle">Ajax交互总结</h3>
+  <div class="social">
+    <div>
+      <div class="share">
+        <a
+          title="获取二维码"
+          class="iconfont icon-scan"
+          href="javascript:;"
+        ></a>
+      </div>
+      <div id="qr"></div>
+    </div>
+  </div>
+  <div class="scrollbar"></div>
+</div>
+
+  <div class="section">
+    <div class="article">
+    <div class='main'>
+        <h1 class="title">Ajax交互总结</h1>
+        <div class="stuff">
+            <span>三月 30, 2020</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Ajax/" rel="tag">Ajax</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/JSONP/" rel="tag">JSONP</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h4 id="什么是Ajax和JSON，它们的优缺点">什么是Ajax和JSON，它们的优缺点</h4>
+<ul>
+<li>Ajax是全称是asynchronous JavaScript andXML，即异步JavaScript和xml，用于在Web页面中实现异步数据交互，实现页面局部刷新</li>
+<li>优点：可以实现异步通信效果，页面局部刷新，带来更好的用户体验</li>
+<li>JSON是一种轻量级的数据交换格式，看着像对象，本质是字符串</li>
+<li>优点：轻量级、易于人的阅读和编写，便于js解析，支持复合数据类型</li>
+</ul>
+<h4 id="Ajax的交互流程有哪几步？">Ajax的交互流程有哪几步？</h4>
+<ul>
+<li>创建ajax对象</li>
+<code>xhr = new XMLHttpRequest</code>
+<li>规定请求地址</li>
+<code>xhr.open(method,url,async)</code>
+<li>等待服务器相应</li>
+<code>xhr.onload</code>
+<li>向服务器发送请求</li>
+<code>xhr.send()</code>
+</ul>
+<p>下面是一个验证用户名的ajax例子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">username.onblur = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="keyword">var</span> usernameValue = username.value;</span><br><span class="line"><span class="comment">//将usernameValue提交给服务器，有服务器进行唯一性的校验</span></span><br><span class="line"><span class="comment">//1、创建对象 兼容处理</span></span><br><span class="line"><span class="keyword">var</span> xhr = <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">window</span>.XMLHttpRequest) &#123;</span><br><span class="line">	xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	xhr = <span class="keyword">new</span> ActiveXObject(<span class="string">"Microsoft.XMLHTTP"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//2、准备发送</span></span><br><span class="line">	xhr.open(<span class="string">"get"</span>,<span class="string">"./server/checkUsername.php?uname="</span> + usernameValue,<span class="literal">true</span>);</span><br><span class="line">	<span class="comment">//3、执行发送</span></span><br><span class="line">	xhr.send(<span class="literal">null</span>);</span><br><span class="line">	<span class="comment">//制定回调函数</span></span><br><span class="line">	xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(xhr.readyState == <span class="number">4</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span>(xhr.status == <span class="number">200</span>) &#123;</span><br><span class="line">		<span class="keyword">var</span> result = xhr.responseText;</span><br><span class="line">	<span class="keyword">var</span> username_result = <span class="built_in">document</span>.querySelector(<span class="string">"#username_result"</span>);</span><br><span class="line">	<span class="keyword">if</span>(result == <span class="string">"ok"</span>) &#123;</span><br><span class="line">	username_result.innerText = <span class="string">"用户名可以使用"</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		username_result.innerText = <span class="string">"用户名已经被注册"</span>;</span><br><span class="line">		 &#125;</span><br><span class="line">	  &#125;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="XMLHttpRequest对象在IE和Firefox中创建方式有没有不同？">XMLHttpRequest对象在IE和Firefox中创建方式有没有不同？</h4>
+<span>
+IE中通过new ActiveXObject()得到，Firefox中通过newXMLHttpRequest()得到.
+使用jquery封装好的ajax，会避免这些问题
+</span>
+
+<h4 id="简述ajax的优缺点">简述ajax的优缺点</h4>
+<span>
+优点：
+　　<li>无刷新更新数据（在不刷新整个页面的情况下维持与服务器通信）
+　　<li>异步与服务器通信（使用异步的方式与服务器通信，不打断用户的操作）
+　　<li>前端和后端负载均衡（将一些后端的工作交给前端，减少服务器与宽度的负担）
+　　<li>界面和应用相分离（ajax将界面和应用分离也就是数据与呈现相分离）
+　　<li>缺点：
+　　<li>ajax不支持浏览器back按钮
+　　<li>安全问题 Aajax暴露了与服务器交互的细节
+　　<li>对搜索引擎的支持比较弱
+　　<li>破坏了Back与History后退按钮的正常行为等浏览器机制
+</span>
+<h4 id="get与post的区别，什么时候使用post？">get与post的区别，什么时候使用post？</h4>
+<p>get和post在HTTP中都代表着请求数据，其中get请求相对来说更简单、快速，效率高些</p>
+<ul>
+<li>get相对post安全性低</li>
+<li>get有缓存，post没有</li>
+<li>get体积小，post可以无限大</li>
+<li>get的url参数可见，post不可见</li>
+<li>get只接受ASCII字符的参数数据类型，post没有限制</li>
+<li>get请求参数会保留历史记录，post中参数不会保留</li>
+<li>get会被浏览器主动catch，post不会，需要手动设置</li>
+<li>get在浏览器回退时无害，post会再次提交请求</li>
+</ul>
+<p>post一般用于修改服务器上的资源，对所发送的信息没有限制。比如</p>
+<ul><li>无法使用缓存文件（更新服务器上的文件或数据库）</li>
+<li>向服务器发送大量数据（POST 没有数据量限制）</li>
+<li>发送包含未知字符的用户输入时，POST 比 GET 更稳定也更可靠</li>
+</ul>
+<h4 id="XMLHttpRequest常用方法和属性">XMLHttpRequest常用方法和属性</h4>
+
+<p>open(get/post,url,是否异步)创建http请求</p>
+<p>send()发送请求给服务器</p>
+<p>setRequestHeader()设置头信息（使用post才会用到，get并不需要调用该方法）</p>
+<p>常用的属性：</p>
+<p>onreadystatechange 用于监听ajax的工作状态（readyState变化时会调用此方法）</p>
+<p>readyState 用来存放XMLHttpRequest的状态</p>
+<p>status 服务器返回的状态码</p>
+<p>responseText 服务器返回的文本内容</p>
+<h4 id="readyState的几个状态">readyState的几个状态</h4>
+0：请求未初始化（此时还没有调用open）
+
+<p>1：服务器连接已建立，已经发送请求开始监听</p>
+<p>2：请求已接收，已经收到服务器返回的内容</p>
+<p>3：请求处理中，解析服务器响应内容</p>
+<p>4：请求已完成，且响应就绪</p>
+<h4 id="jquery ajax的实现">jquery ajax的实现</h4>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">     url:发送请求的地址,</span><br><span class="line">     data:数据的拼接,<span class="comment">//发送到服务器的数据</span></span><br><span class="line">     type:<span class="string">'get'</span>,<span class="comment">//请求方式，默认get请求</span></span><br><span class="line">     dataType:<span class="string">'json'</span>,<span class="comment">//服务器返回的数据类型</span></span><br><span class="line">     <span class="keyword">async</span>:<span class="literal">true</span>,<span class="comment">//是否异步，默认true</span></span><br><span class="line">     cache:<span class="literal">false</span>,<span class="comment">//设置为 false 将不会从浏览器缓存中加载请求信息</span></span><br><span class="line">     success:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;,<span class="comment">//请求成功后的回调函数</span></span><br><span class="line">     error: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;<span class="comment">//请求失败时调用此函数</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+不足之处：
+
+<p>　　（1）针对MVC的编程,不符合现在前端MVVM的浪潮</p>
+<p>　　（2）基于原生的XHR开发，XHR本身的架构不清晰，已经有了fetch的替代方案</p>
+<h4>同步和异步</h4>
+同步：程序运行从上而下，浏览器必须把这个任务执行完毕，才能继续执行下一个任务
+
+<p>异步：程序运行从上而下，浏览器任务没有执行完，但是可以继续执行下一行代码</p>
+<h4 id="跨域">跨域</h4>
+跨域的概念：协议、域名、端口都相同才同域，否则都是跨域
+
+<p>解决跨域问题：</p>
+<p>1.使用JSONP（json+padding）把数据内填充起来</p>
+<p>2.CORS方式（跨域资源共享），在后端上配置可跨域</p>
+<p>3.服务器代理，通过服务器的文件能访问第三方资源</p>
+<h4>JSONP原理</h4>
+ajax请求受同源策略影响，不允许进行跨域请求，而script标签src属性中的链接却可以访问跨域的js脚本，利用这个特性，服务端不再返回JSON格式的数据，而是返回一段调用某个函数的js代码，在src中进行了调用，这样实现了跨域。
+<h4 id="Ajax和JSONP">Ajax和JSONP</h4>
+ajax: { }
+
+<p>jsonp:fn( { } )</p>
+<p>ajax的数据jsonp不能用，jsonp的数据ajax是可以用的</p>
+<p>jsonp本质是通过URL的方式进行请求的，所以它是get方式请求，没有post</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://music.163.com/song/media/outer/url?id=562598065.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://music.163.com/song/media/outer/url?id=28188425.mp3'></li>
+                        
+                    
+                        
+                            <li title='2' data-url='http://music.163.com/song/media/outer/url?id=534542079.mp3'></li>
+                        
+                    
+                        
+                            <li title='3' data-url='http://music.163.com/song/media/outer/url?id=30352891.mp3'></li>
+                        
+                    
+                        
+                            <li title='4' data-url='http://music.163.com/song/media/outer/url?id=28138493.mp3'></li>
+                        
+                    
+                        
+                            <li title='5' data-url='http://music.163.com/song/media/outer/url?id=421137682.mp3'></li>
+                        
+                    
+                        
+                            <li title='6' data-url='http://music.163.com/song/media/outer/url?id=208902.mp3'></li>
+                        
+                    
+                        
+                            <li title='7' data-url='http://music.163.com/song/media/outer/url?id=1363948882.mp3'></li>
+                        
+                    
+                        
+                            <li title='8' data-url='http://music.163.com/song/media/outer/url?id=574566207.mp3'></li>
+                        
+                    
+                        
+                            <li title='9' data-url='http://music.163.com/song/media/outer/url?id=1330348068.mp3'></li>
+                        
+                    
+                        
+                            <li title='10' data-url='http://music.163.com/song/media/outer/url?id=26418130.mp3'></li>
+                        
+                    
+                        
+                            <li title='11' data-url='http://music.163.com/song/media/outer/url?id=506196018.mp3'></li>
+                        
+                    
+                        
+                            <li title='12' data-url='http://music.163.com/song/media/outer/url?id=1309129239.mp3'></li>
+                        
+                    
+                        
+                            <li title='13' data-url='http://music.163.com/song/media/outer/url?id=450455548.mp3'></li>
+                        
+                    
+                        
+                            <li title='14' data-url='http://music.163.com/song/media/outer/url?id=1860032684.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='93c58aa54b696342afaa'
+        data-cs='e593ee984f8640ebaed460b4b0bcc71c6d36289d'
+        data-r='gittalk'
+        data-o='edsion11'
+        data-a='edsion11'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是Ajax和JSON，它们的优缺点"><span class="toc-number">1.</span> <span class="toc-text">什么是Ajax和JSON，它们的优缺点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Ajax的交互流程有哪几步？"><span class="toc-number">2.</span> <span class="toc-text">Ajax的交互流程有哪几步？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#XMLHttpRequest对象在IE和Firefox中创建方式有没有不同？"><span class="toc-number">3.</span> <span class="toc-text">XMLHttpRequest对象在IE和Firefox中创建方式有没有不同？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#简述ajax的优缺点"><span class="toc-number">4.</span> <span class="toc-text">简述ajax的优缺点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#get与post的区别，什么时候使用post？"><span class="toc-number">5.</span> <span class="toc-text">get与post的区别，什么时候使用post？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#XMLHttpRequest常用方法和属性"><span class="toc-number">6.</span> <span class="toc-text">XMLHttpRequest常用方法和属性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#readyState的几个状态"><span class="toc-number">7.</span> <span class="toc-text">readyState的几个状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jquery ajax的实现"><span class="toc-number">8.</span> <span class="toc-text">jquery ajax的实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#"><span class="toc-number">9.</span> <span class="toc-text">同步和异步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#跨域"><span class="toc-number">10.</span> <span class="toc-text">跨域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#"><span class="toc-number">11.</span> <span class="toc-text">JSONP原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Ajax和JSONP"><span class="toc-number">12.</span> <span class="toc-text">Ajax和JSONP</span></a></li></ol>	
+        </div>
+    
+</div>
+
+
+  </div>
+</div>
+
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>
