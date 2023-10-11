@@ -1,308 +1,44 @@
-
-<!DOCTYPE html>
-<html lang="zh_CN" class="loading">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Promise和Observable区别 - EdsionGu的博客</title>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="google" content="notranslate" />
-    <meta name="keywords" content="前端,Rust,javascript,"> 
-    <meta name="description" content="断剑重铸之日，骑士归来之时,最近学 Angular 看大漠老师的视频看到了 Observable 这块，Observable 是 Rxjs 库里异步编程核心的一部分，相比于 Rxjs 又有那些区别呢
-Observable 介绍,"> 
-    <meta name="author" content="Edsion Gu"> 
-    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
-    <link rel="icon" href="/img/avatar.png"> 
-    
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<meta charset="utf-8">
+<title>Promise和Observable区别 - EdsionGu的博客</title>
+<base href="/">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<link rel="canonical" href="https://edsion11.github.io/2020/05/12/Promise%E5%92%8CObservable%E5%8C%BA%E5%88%AB/">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
 
-    
-<link rel="stylesheet" href="/css/diaspora.css">
+<meta name="description" content="最近学 Angular 看大漠老师的视频看到了 Observable 这块，Observable 是 Rxjs 库里异步编程核心的一部分，相比于 Rxjs 又有那些区别呢 Observable 介绍RxJS 是一个库，它通过使用 observable 序列来编写异步和基于事件的程序。它提供了一个核心类型 Observable，附属类型 (Observer、 Schedulers、 Subjects">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Promise和Observable区别">
+<meta property="og:url" content="https://edsion11.github.io/2020/05/12/Promise%E5%92%8CObservable%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:site_name" content="EdsionGu的博客">
+<meta property="og:description" content="最近学 Angular 看大漠老师的视频看到了 Observable 这块，Observable 是 Rxjs 库里异步编程核心的一部分，相比于 Rxjs 又有那些区别呢 Observable 介绍RxJS 是一个库，它通过使用 observable 序列来编写异步和基于事件的程序。它提供了一个核心类型 Observable，附属类型 (Observer、 Schedulers、 Subjects">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=160">
+<meta property="article:published_time" content="2020-05-12T11:32:27.000Z">
+<meta property="article:modified_time" content="2022-01-22T09:45:40.641Z">
+<meta property="article:author" content="Edsion Gu">
+<meta property="article:tag" content="Promise">
+<meta property="article:tag" content="Observable">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=160">
 
-	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({
-              google_ad_client: "ca-pub-8691406134231910",
-              enable_page_level_ads: true
-         });
-    </script>
-    <script async custom-element="amp-auto-ads"
-        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
-    </script>
+
+<link href="//fonts.googleapis.com/css?family=Baloo+Bhaijaan|Inconsolata|Josefin+Sans|Montserrat" rel="stylesheet">
+<link href="/styles.e4c22be5bb2c26eab146.css" rel="stylesheet">
+
+<link rel="stylesheet" href="/theme.fd07f88173d488a992d7.css" is="theme">
+
+
+<script src="/config.7aa0c95d166e067f6828.js"></script>
+
+
 <meta name="generator" content="Hexo 4.2.1"></head>
-
-<body class="loading">
-    <span id="config-title" style="display:none">EdsionGu的博客</span>
-    <div id="loader"></div>
-    <div id="single">
-  <div id="top" style="display: block;">
-  <div class="bar" style="width: 0;"></div>
-  <a
-    class="iconfont icon-home image-icon"
-    href="javascript:;"
-    data-url="https://edsion11.github.io"
-  ></a>
-  <div title="播放/暂停" class="iconfont icon-play"></div>
-  <h3 class="subtitle">Promise和Observable区别</h3>
-  <div class="social">
-    <div>
-      <div class="share">
-        <a
-          title="获取二维码"
-          class="iconfont icon-scan"
-          href="javascript:;"
-        ></a>
-      </div>
-      <div id="qr"></div>
-    </div>
-  </div>
-  <div class="scrollbar"></div>
-</div>
-
-  <div class="section">
-    <div class="article">
-    <div class='main'>
-        <h1 class="title">Promise和Observable区别</h1>
-        <div class="stuff">
-            <span>五月 12, 2020</span>
-            
-  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Observable/" rel="tag">Observable</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Promise/" rel="tag">Promise</a></li></ul>
-
-
-        </div>
-        <div class="content markdown">
-            <p>最近学 Angular 看大漠老师的视频看到了 Observable 这块，Observable 是 Rxjs 库里异步编程核心的一部分，相比于 Rxjs 又有那些区别呢</p>
-<h3 id="Observable-介绍"><a href="#Observable-介绍" class="headerlink" title="Observable 介绍"></a><h5>Observable 介绍</h5></h3><p>RxJS 是一个库，它通过使用 observable 序列来编写异步和基于事件的程序。它提供了一个核心类型 Observable，附属类型 (Observer、 Schedulers、 Subjects) 和受 [Array#extras] 启发的操作符 (map、filter、reduce、every, 等等)，这些数组操作符可以把异步事件作为集合来处理。 ————引用 Rxjs 中文网站的介绍 ——<a href="https://cn.rx.js.org/manual/overview.html#observable-" target="_blank" rel="noopener">Rxjs 官网</a></p>
-<h4 id="Observable（可观察对象）"><a href="#Observable（可观察对象）" class="headerlink" title="Observable（可观察对象）"></a>Observable（可观察对象）</h4><p>这里具体原理可参照 JavaScript 设计模式–观察，订阅模式</p>
-<ul>
-<li>在 RxJS 中用来解决异步事件管理的的基本概念是：</li>
-<li>-Observable (可观察对象): 表示一个概念，这个概念是一个可调用的未来值或事件的集合。</li>
-<li>Observer (观察者): 一个回调函数的集合，它知道如何去监听由 Observable 提供的值。</li>
-<li>Subscription (订阅): 表示 Observable 的执行，主要用于取消 Observable 的执行。</li>
-<li>Operators (操作符): 采用函数式编程风格的纯函数 (pure function)，使用像 map、filter、concat、flatMap 等这样的操作符来处理集合。</li>
-<li>Subject (主体): 相当于 EventEmitter，并且是将值或事件多路推送给多个 Observer 的唯一方式。</li>
-<li>Schedulers (调度器): 用来控制并发并且是中央集权的调度员，允许我们在发生计算时进行协调，例如 setTimeout 或 requestAnimationFrame 或其</li>
-</ul>
-<h4 id="使用-Observable"><a href="#使用-Observable" class="headerlink" title="使用 Observable"></a>使用 Observable</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Observable写法</span></span><br><span class="line"><span class="keyword">import</span> &#123; Observable &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span></span><br><span class="line"><span class="comment">//创建一个Observable对象</span></span><br><span class="line"><span class="keyword">let</span> Ob1 = <span class="keyword">new</span> Observable(<span class="function">(<span class="params">observer</span>) =&gt;</span> &#123;</span><br><span class="line">  observer.next(<span class="string">'observable'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">Ob1.subscribe(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(value)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用-Promise"><a href="#使用-Promise" class="headerlink" title="使用 Promise"></a>使用 Promise</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> Pro1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">  resolve(<span class="number">1</span>)</span><br><span class="line">  <span class="comment">//reject(2)</span></span><br><span class="line">&#125;</span><br><span class="line">Pro1.then(<span class="function"><span class="params">value</span>=&gt;</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(value)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<p>Observable 与函数</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  console.log(<span class="string">'Hello'</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">42</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x = foo.call(); <span class="comment">// 等同于 foo()</span></span><br><span class="line">console.log(x);</span><br><span class="line"><span class="keyword">var</span> y = foo.call(); <span class="comment">// 等同于 foo()</span></span><br><span class="line">console.log(y);</span><br><span class="line"><span class="comment">//"Hello"</span></span><br><span class="line"><span class="comment">//42</span></span><br><span class="line"><span class="comment">//"Hello"</span></span><br><span class="line"><span class="comment">//42</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">用 Observables 重写上面的代码：</span><br><span class="line"><span class="keyword">var</span> foo = Rx.Observable.create(function (observer) &#123;</span><br><span class="line">  console.log(<span class="string">'Hello'</span>);</span><br><span class="line">  observer.next(<span class="number">42</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">foo.subscribe(function (x) &#123;</span><br><span class="line">  console.log(x);</span><br><span class="line">&#125;);</span><br><span class="line">foo.subscribe(function (y) &#123;</span><br><span class="line">  console.log(y);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//"Hello"</span></span><br><span class="line"><span class="comment">//42</span></span><br><span class="line"><span class="comment">//"Hello"</span></span><br><span class="line"><span class="comment">//42</span></span><br><span class="line"><span class="comment">//</span></span><br></pre></td></tr></table></figure>
-
-<p>因为函数和 Observables 都是惰性运算。如果你不调用函数，console.log(‘Hello’) 就不会执行。Observables 也是如此，如果你不“调用”它(使用 subscribe)，console.log(‘Hello’) 也不会执行。此外，“调用”或“订阅”是独立的操作：两个函数调用会触发两个单独的副作用，两个 Observable 订阅同样也是触发两个单独的副作用。EventEmitters 共享副作用并且无论是否存在订阅者都会尽早执行，Observables 与之相反，不会共享副作用并且是延迟执行。</p>
-<h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><h5 id="为什么用-Rxjs"><a href="#为什么用-Rxjs" class="headerlink" title="为什么用 Rxjs"></a>为什么用 Rxjs</h5><p>promise 相较于 Rxjs 而言功能更单一 promise 只能将一个数据的状态由 pending 转换成 resoloved 或者 rejected.而 Rxjs 可以处理多个数据对应 complete 和 error 状态但是 Rxjs 同时又拥有 next 方法。Observable 是惰性的，需要 subscribe 的时候才输出值。promise 内部状态是不可控制的，执行了就无法终止。而 Observable 可以定义如何取消异步方法。<br>比如如下的场景：</p>
-<p>输入框中输入字符，按回车发送一个请求，并将返回的结果变成一个 Todo item。如果在请求返回结果前又一次按下回车或 add 按钮，如果相同则不进行任何操作，如果不同则取消掉上次的请求并发送新的请求。（实际的场景往往是发送个 http 请求该请求会返回的很慢，业务上加上心跳检查（发送方按照一定规则（周期性发送、空闲发送等等）向接收方发送固定格式的消息，接受方收到消息后回复一个固定格式的消息，如果长时间没有收到，比如心跳周期的 3 倍，则认为当前连接失效，将其断开。），如果前一次在心跳间隔内无返回则再次调用请求，同时需要抛弃前一次请求的返回，并且此时有可能调用参数不一样的该接口从而造成数据不一致的问题）对于 Promise 实现我们不只要维护一个定时器 timer 同时还要维护一个全局变量。</p>
-<p>再比如我们需要监听页面滚动的事件，作出一些逻辑操作，这是就会产生事件过于频繁的调用，造成页面卡顿的现象。用原生 js 实现的时候，需要实现个节流或者防抖函数，通过实现个闭包函数，在内部维护个定时器。而在 Rxjs 中通过操作符 debounce 就可以方便的解决</p>
-<h5 id="同步与异步"><a href="#同步与异步" class="headerlink" title="同步与异步"></a>同步与异步</h5><p>首先第一个区别是：Promise 是解决异步编程的方法，而 Observable 可以同步也可以异步</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Observable同步执行</span></span><br><span class="line"><span class="keyword">var</span> foo = Rx.Observable.create(<span class="function"><span class="keyword">function</span> (<span class="params">observer</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Hello'</span>)</span><br><span class="line">  observer.next(<span class="number">42</span>)</span><br><span class="line">  observer.next(<span class="number">100</span>) <span class="comment">// “返回”另外一个值</span></span><br><span class="line">  observer.next(<span class="number">200</span>) <span class="comment">// 还可以再“返回”值</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'before'</span>)</span><br><span class="line">foo.subscribe(<span class="function"><span class="keyword">function</span> (<span class="params">x</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(x)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">"before"</span></span><br><span class="line"><span class="comment">"Hello"</span></span><br><span class="line"><span class="comment">42</span></span><br><span class="line"><span class="comment">100</span></span><br><span class="line"><span class="comment">200</span></span><br><span class="line"><span class="comment">"after"</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'after'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Observable = <span class="built_in">require</span>(<span class="string">'rxjs/Observable'</span>).Observable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> observable = <span class="keyword">new</span> Observable(<span class="function">(<span class="params">observer</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// observer.next(5);</span></span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        observer.next(<span class="number">5</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">observable.subscribe(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value + <span class="string">'!'</span>));</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'And now we are here.'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">这个如果是直接next <span class="number">5</span>,则输出是  <span class="number">5</span>！ -&gt; And now we are here.</span><br><span class="line">采用setTimeout next <span class="number">5</span>， 则相反  And now we are here.-&gt; <span class="number">5</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="单个值和多个值"><a href="#单个值和多个值" class="headerlink" title="单个值和多个值"></a>单个值和多个值</h5><p>Observable 里面的 next()方法类似与 Promise.resolve(),但是 Promise()内部的 resolve()方法成功后，后面的不会执行，就是说 Observable 可以持续发射很多值，而 Promise 只能发射一个值就结束了</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> promise1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">' I am promise '</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">const</span> observable1 = <span class="keyword">new</span> Observable(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'I am Observable!'</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<p>Promise 里的 console.log 会执行，而 Observable 里的代码不会输出，只有订阅（subscribe）之后才会输出</p>
-<h5 id="异步执行任务的取消"><a href="#异步执行任务的取消" class="headerlink" title="异步执行任务的取消"></a>异步执行任务的取消</h5><p>Promise 的执行默认是不可取消的，而 Observable 是可以通过 subscribe 的 unsubscribe()方法来取消<br>因为在 Promise 中.then()返回的是一个新的 Promise 对象，而 Observable+subscribe 返回的是 subscription 对象</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Observable = require(<span class="string">'rxjs/Observable'</span>).Observable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> observable = <span class="keyword">new</span> Observable((observer) =&gt; &#123;</span><br><span class="line">    let i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">const</span> token = setInterval(() =&gt; &#123;</span><br><span class="line">        observer.next(i++);</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> () =&gt; clearInterval(token);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> subscription = observable.subscribe(value =&gt; console.log(value + <span class="string">'!'</span>));</span><br><span class="line"></span><br><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line">    subscription.unsubscribe();</span><br><span class="line">&#125;, <span class="number">5000</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结果</span></span><br><span class="line"></span><br><span class="line"><span class="number">0</span>!</span><br><span class="line"><span class="number">1</span>!</span><br><span class="line"><span class="number">2</span>!</span><br><span class="line"><span class="number">3</span>!</span><br><span class="line"><span class="comment">//Observable</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="一次和多次执行"><a href="#一次和多次执行" class="headerlink" title="一次和多次执行"></a>一次和多次执行</h5><p>Promise 只会执行一次 resolve(),而 Observable 每次订阅都会执行一次观察对象中的代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//Promise</span></span><br><span class="line">let time;</span><br><span class="line"><span class="keyword">const</span> waitOneSecondPromise = <span class="keyword">new</span> Promise((resolve) =&gt; &#123;</span><br><span class="line">    console.log(<span class="string">'promise call'</span>)</span><br><span class="line">    time = <span class="keyword">new</span> Date().getTime();</span><br><span class="line">    setTimeout(() =&gt; resolve(<span class="string">'hello world'</span>), <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">waitOneSecondPromise.then((value) =&gt; &#123;console.log( <span class="string">'第一次'</span>, value, <span class="keyword">new</span> Date().getTime() - time)&#125;);</span><br><span class="line"></span><br><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line">    waitOneSecondPromise.then((value) =&gt; &#123;console.log(<span class="string">'第二次'</span>, value, <span class="keyword">new</span> Date().getTime() - time)&#125;);</span><br><span class="line">&#125;, <span class="number">5000</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果是 promise call</span></span><br><span class="line">第一次 hello world <span class="number">1007</span></span><br><span class="line">第二次 hello world <span class="number">5006</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//Observable</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Observable = require(<span class="string">'rxjs/Observable'</span>).Observable;</span><br><span class="line"></span><br><span class="line">let time;</span><br><span class="line"><span class="keyword">const</span> waitOneSecondObservable = <span class="keyword">new</span> Observable((observer) =&gt; &#123;</span><br><span class="line">    console.log(<span class="string">'I was called'</span>);</span><br><span class="line">    time = <span class="keyword">new</span> Date().getTime();</span><br><span class="line">    setTimeout(() =&gt; observer.next(<span class="string">'hey girl'</span>), <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">waitOneSecondObservable.subscribe((value) =&gt; &#123;console.log( <span class="string">'第一次'</span>, value, <span class="keyword">new</span> Date().getTime() - time)&#125;);</span><br><span class="line"></span><br><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line">    waitOneSecondObservable.subscribe((value) =&gt; &#123;console.log( <span class="string">'第二次'</span>, value, <span class="keyword">new</span> Date().getTime() - time)&#125;);</span><br><span class="line">&#125;, <span class="number">5000</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出</span></span><br><span class="line">I was called</span><br><span class="line">第一次 hey girl <span class="number">1003</span></span><br><span class="line">I was called</span><br><span class="line">第二次 hey girl <span class="number">1003</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h5><p>Observable 提供了很多的工具函数，常用的 filter 和 map 演示如下</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> stream2$ =</span><br><span class="line">  <span class="keyword">new</span> Observable() &lt;</span><br><span class="line">  number &gt;</span><br><span class="line">  (<span class="function">(<span class="params">observer</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">let</span> interval = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      observer.next(count++)</span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      clearInterval(interval)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">stream2$.subscribe(<span class="function">(<span class="params">value</span>) =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'Observable&gt;'</span> + value))</span><br><span class="line">stream2$</span><br><span class="line">  .pipe(filter(<span class="function">(<span class="params">val</span>) =&gt;</span> val % <span class="number">2</span> == <span class="number">0</span>))</span><br><span class="line">  .subscribe(<span class="function">(<span class="params">value</span>) =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'filter&gt;'</span> + value))</span><br><span class="line">stream2$</span><br><span class="line">  .pipe(map(<span class="function">(<span class="params">value</span>) =&gt;</span> value * value))</span><br><span class="line">  .subscribe(<span class="function">(<span class="params">value</span>) =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'map&gt;'</span> + value))</span><br></pre></td></tr></table></figure>
-
-<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><ul>
-<li>Observable 是 lazy 的，只有订阅才输出，同时 Observable 可以接受多个值。Promise 只能 resolve 一次。</li>
-<li>Promise 内部 resolve 一定是异步的，而 Observable 则可以自由发挥</li>
-<li>Promise 只会执行一次，创建之后就会执行，不能重复执行，而 Observable 每订阅一次会执行一次，而如果想只执行一次，可以利用 share。</li>
-<li>Promise 不可以取消，而 Observable 可以取消</li>
-</ul>
-
-            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
-            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
-                <source type="audio/mpeg" src="">
-            </audio>
-            
-                <ul id="audio-list" style="display:none">
-                    
-                        
-                            <li title='0' data-url='http://music.163.com/song/media/outer/url?id=562598065.mp3'></li>
-                        
-                    
-                        
-                            <li title='1' data-url='http://music.163.com/song/media/outer/url?id=28188425.mp3'></li>
-                        
-                    
-                        
-                            <li title='2' data-url='http://music.163.com/song/media/outer/url?id=534542079.mp3'></li>
-                        
-                    
-                        
-                            <li title='3' data-url='http://music.163.com/song/media/outer/url?id=30352891.mp3'></li>
-                        
-                    
-                        
-                            <li title='4' data-url='http://music.163.com/song/media/outer/url?id=28138493.mp3'></li>
-                        
-                    
-                        
-                            <li title='5' data-url='http://music.163.com/song/media/outer/url?id=421137682.mp3'></li>
-                        
-                    
-                        
-                            <li title='6' data-url='http://music.163.com/song/media/outer/url?id=208902.mp3'></li>
-                        
-                    
-                        
-                            <li title='7' data-url='http://music.163.com/song/media/outer/url?id=1363948882.mp3'></li>
-                        
-                    
-                        
-                            <li title='8' data-url='http://music.163.com/song/media/outer/url?id=574566207.mp3'></li>
-                        
-                    
-                        
-                            <li title='9' data-url='http://music.163.com/song/media/outer/url?id=1330348068.mp3'></li>
-                        
-                    
-                        
-                            <li title='10' data-url='http://music.163.com/song/media/outer/url?id=26418130.mp3'></li>
-                        
-                    
-                        
-                            <li title='11' data-url='http://music.163.com/song/media/outer/url?id=506196018.mp3'></li>
-                        
-                    
-                        
-                            <li title='12' data-url='http://music.163.com/song/media/outer/url?id=1309129239.mp3'></li>
-                        
-                    
-                        
-                            <li title='13' data-url='http://music.163.com/song/media/outer/url?id=450455548.mp3'></li>
-                        
-                    
-                        
-                            <li title='14' data-url='http://music.163.com/song/media/outer/url?id=1860032684.mp3'></li>
-                        
-                    
-                </ul>
-            
-        </div>
-        
-    <div id='gitalk-container' class="comment link"
-		data-enable='true'
-        data-ae='true'
-        data-ci='93c58aa54b696342afaa'
-        data-cs='e593ee984f8640ebaed460b4b0bcc71c6d36289d'
-        data-r='gittalk'
-        data-o='edsion11'
-        data-a='edsion11'
-        data-d='false'
-    >查看评论</div>
-
-
-    </div>
-    
-        <div class='side'>
-			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Observable-介绍"><span class="toc-number">1.</span> <span class="toc-text">Observable 介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Observable-介绍"><span class="toc-number">1.0.1.</span> <span class="toc-text">Observable 介绍</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Observable（可观察对象）"><span class="toc-number">1.1.</span> <span class="toc-text">Observable（可观察对象）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用-Observable"><span class="toc-number">1.2.</span> <span class="toc-text">使用 Observable</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用-Promise"><span class="toc-number">1.3.</span> <span class="toc-text">使用 Promise</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#区别"><span class="toc-number">1.4.</span> <span class="toc-text">区别</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#为什么用-Rxjs"><span class="toc-number">1.4.1.</span> <span class="toc-text">为什么用 Rxjs</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#同步与异步"><span class="toc-number">1.4.2.</span> <span class="toc-text">同步与异步</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#单个值和多个值"><span class="toc-number">1.4.3.</span> <span class="toc-text">单个值和多个值</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#异步执行任务的取消"><span class="toc-number">1.4.4.</span> <span class="toc-text">异步执行任务的取消</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#一次和多次执行"><span class="toc-number">1.4.5.</span> <span class="toc-text">一次和多次执行</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#工具"><span class="toc-number">1.4.6.</span> <span class="toc-text">工具</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#总结"><span class="toc-number">1.4.7.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li></ol>	
-        </div>
-    
-</div>
-
-
-  </div>
-</div>
-
+<body lang="en">
+<is-a></is-a>
+<script src="/runtime.1720a40670866f12654e.js"></script>
+<script src="/polyfills.69a7b8a907a7ac9da988.js"></script>
+<script src="/main.12c3a04fa47641f902c2.js"></script>
 </body>
-
-<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-
-
-<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
-<script src="/js/plugin.js"></script>
-<script src="/js/typed.js"></script>
-<script src="/js/diaspora.js"></script>
-
-
-<link rel="stylesheet" href="/photoswipe/photoswipe.css">
-<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
-
-
-<script src="/photoswipe/photoswipe.min.js"></script>
-<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
-
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-            <div class="pswp__top-bar">
-                <!--  Controls are self-explanatory. Order can be changed. -->
-                <div class="pswp__counter"></div>
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                      <div class="pswp__preloader__cut">
-                        <div class="pswp__preloader__donut"></div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div> 
-            </div>
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    });
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-
-
-
 </html>

@@ -1,281 +1,46 @@
-
-<!DOCTYPE html>
-<html lang="zh_CN" class="loading">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>手动实现的call,apply,bind,new - EdsionGu的博客</title>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="google" content="notranslate" />
-    <meta name="keywords" content="前端,Rust,javascript,"> 
-    <meta name="description" content="断剑重铸之日，骑士归来之时,callcall() 方法使用一个指定的 this 值和单独给出的一个或多个参数来调用一个函数语法：function.call(thisArg, arg1, arg2, ...)
-123456789,"> 
-    <meta name="author" content="Edsion Gu"> 
-    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
-    <link rel="icon" href="/img/avatar.png"> 
-    
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<meta charset="utf-8">
+<title>手动实现的call,apply,bind,new - EdsionGu的博客</title>
+<base href="/">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<link rel="canonical" href="https://edsion11.github.io/2020/06/27/%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0%E7%9A%84call-apply-bind-new/">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
 
-    
-<link rel="stylesheet" href="/css/diaspora.css">
+<meta name="description" content="callcall() 方法使用一个指定的 this 值和单独给出的一个或多个参数来调用一个函数语法：function.call(thisArg, arg1, arg2, ...) 123456789101112131415161718192021222324Function.prototype.mycall &#x3D; function (thisArg, ...args) &amp;#123;  &#x2F;&#x2F;conso">
+<meta property="og:type" content="website">
+<meta property="og:title" content="手动实现的call,apply,bind,new">
+<meta property="og:url" content="https://edsion11.github.io/2020/06/27/%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0%E7%9A%84call-apply-bind-new/index.html">
+<meta property="og:site_name" content="EdsionGu的博客">
+<meta property="og:description" content="callcall() 方法使用一个指定的 this 值和单独给出的一个或多个参数来调用一个函数语法：function.call(thisArg, arg1, arg2, ...) 123456789101112131415161718192021222324Function.prototype.mycall &#x3D; function (thisArg, ...args) &amp;#123;  &#x2F;&#x2F;conso">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=160">
+<meta property="article:published_time" content="2020-06-27T19:52:13.000Z">
+<meta property="article:modified_time" content="2022-01-22T09:45:40.643Z">
+<meta property="article:author" content="Edsion Gu">
+<meta property="article:tag" content="call">
+<meta property="article:tag" content="apply">
+<meta property="article:tag" content="bind">
+<meta property="article:tag" content="new">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=160">
 
-	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({
-              google_ad_client: "ca-pub-8691406134231910",
-              enable_page_level_ads: true
-         });
-    </script>
-    <script async custom-element="amp-auto-ads"
-        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
-    </script>
+
+<link href="//fonts.googleapis.com/css?family=Baloo+Bhaijaan|Inconsolata|Josefin+Sans|Montserrat" rel="stylesheet">
+<link href="/styles.e4c22be5bb2c26eab146.css" rel="stylesheet">
+
+<link rel="stylesheet" href="/theme.fd07f88173d488a992d7.css" is="theme">
+
+
+<script src="/config.7aa0c95d166e067f6828.js"></script>
+
+
 <meta name="generator" content="Hexo 4.2.1"></head>
-
-<body class="loading">
-    <span id="config-title" style="display:none">EdsionGu的博客</span>
-    <div id="loader"></div>
-    <div id="single">
-  <div id="top" style="display: block;">
-  <div class="bar" style="width: 0;"></div>
-  <a
-    class="iconfont icon-home image-icon"
-    href="javascript:;"
-    data-url="https://edsion11.github.io"
-  ></a>
-  <div title="播放/暂停" class="iconfont icon-play"></div>
-  <h3 class="subtitle">手动实现的call,apply,bind,new</h3>
-  <div class="social">
-    <div>
-      <div class="share">
-        <a
-          title="获取二维码"
-          class="iconfont icon-scan"
-          href="javascript:;"
-        ></a>
-      </div>
-      <div id="qr"></div>
-    </div>
-  </div>
-  <div class="scrollbar"></div>
-</div>
-
-  <div class="section">
-    <div class="article">
-    <div class='main'>
-        <h1 class="title">手动实现的call,apply,bind,new</h1>
-        <div class="stuff">
-            <span>六月 27, 2020</span>
-            
-  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/apply/" rel="tag">apply</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/bind/" rel="tag">bind</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/call/" rel="tag">call</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/new/" rel="tag">new</a></li></ul>
-
-
-        </div>
-        <div class="content markdown">
-            <h4 id="call"><a href="#call" class="headerlink" title="call"></a>call</h4><p><code>call()</code> 方法使用一个指定的 <code>this</code> 值和单独给出的一个或多个参数来调用一个函数<br>语法：<code>function.call(thisArg, arg1, arg2, ...)</code></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.mycall = <span class="function"><span class="keyword">function</span> (<span class="params">thisArg, ...args</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//console.log(this)</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="keyword">this</span> !== <span class="string">'function'</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'error'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> fn = <span class="built_in">Symbol</span>(<span class="string">'fn'</span>) <span class="comment">// 声明一个独有的Symbol属性, 防止fn覆盖已有属性</span></span><br><span class="line">  thisArg = thisArg || global || <span class="built_in">window</span> <span class="comment">// 若没有传入this, 默认绑定window对象</span></span><br><span class="line">  thisArg[fn] = <span class="keyword">this</span> <span class="comment">// this指向调用call的对象,即我们要改变this指向的函数</span></span><br><span class="line">  <span class="keyword">const</span> result = thisArg[fn](...args) <span class="comment">// 执行当前函数</span></span><br><span class="line">  <span class="keyword">delete</span> thisArg[fn] <span class="comment">// 删除我们声明的fn属性</span></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">greet</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> reply = [<span class="keyword">this</span>.animal, <span class="string">'typically sleep between'</span>, <span class="keyword">this</span>.sleepDuration].join(</span><br><span class="line">    <span class="string">' '</span></span><br><span class="line">  )</span><br><span class="line">  <span class="built_in">console</span>.log(reply)</span><br><span class="line">&#125;</span><br><span class="line">global.obj = &#123;</span><br><span class="line">  animal: <span class="string">'cats'</span>,</span><br><span class="line">  sleepDuration: <span class="string">'12 and 16 hours'</span>,</span><br><span class="line">&#125;</span><br><span class="line">greet()<span class="comment">// typically sleep between</span></span><br><span class="line">greet.mycall(obj)<span class="comment">//cats typically sleep between 12 and 16 hours</span></span><br></pre></td></tr></table></figure>
-<h4 id="apply"><a href="#apply" class="headerlink" title="apply"></a>apply</h4><p><code>apply()</code> 方法调用一个具有给定this值的函数，以及作为一个数组（或类似数组对象）提供的参数。<br>语法：<code>func.apply(thisArg, [argsArray])</code></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.myApply = <span class="function"><span class="keyword">function</span> (<span class="params">thisArg, args</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="keyword">this</span> !== <span class="string">'function'</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'error'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> fn = <span class="built_in">Symbol</span>(<span class="string">'fn'</span>) <span class="comment">// 声明一个独有的Symbol属性, 防止fn覆盖已有属性</span></span><br><span class="line">  thisArg = thisArg || <span class="built_in">window</span> <span class="comment">// 若没有传入this, 默认绑定window对象</span></span><br><span class="line">  thisArg[fn] = <span class="keyword">this</span> <span class="comment">// this指向调用call的对象,即我们要改变this指向的函数</span></span><br><span class="line">  <span class="keyword">const</span> result = thisArg[fn](...args) <span class="comment">// 执行当前函数</span></span><br><span class="line">  <span class="keyword">delete</span> thisArg[fn] <span class="comment">// 删除我们声明的fn属性</span></span><br><span class="line">  <span class="keyword">return</span> result <span class="comment">// 返回函数执行结果</span></span><br><span class="line">&#125;</span><br><span class="line">greet.myApply(obj, [])<span class="comment">//cats typically sleep between 12 and 16 hours</span></span><br></pre></td></tr></table></figure>
-<h4 id="Bind"><a href="#Bind" class="headerlink" title="Bind"></a>Bind</h4><p><code>bind()</code> 方法创建一个新的函数，在 bind() 被调用时，这个新函数的 this 被指定为 bind() 的第一个参数，而其余参数将作为新函数的参数，供调用时使用。<br>语法: <code>function.bind(thisArg, arg1, arg2, ...)</code><br>注意三点:</p>
-<ul>
-<li>bind()除了this还接收其他参数，bind()返回的函数也接收参数，这两部分的参数都要传给返回的函数</li>
-<li>new会改变this指向：如果bind绑定后的函数被new了，那么this指向会发生改变，指向当前函数的实例</li>
-<li>没有保留原函数在原型链上的属性和方法<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.myBind = <span class="function"><span class="keyword">function</span> (<span class="params">thisArg, ...args</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="keyword">this</span> !== <span class="string">'function'</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="built_in">TypeError</span>(<span class="string">'Bind must be called on a function'</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span></span><br><span class="line">  <span class="comment">// new优先级</span></span><br><span class="line">  <span class="keyword">var</span> fbound = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    self.apply(</span><br><span class="line">      <span class="keyword">this</span> <span class="keyword">instanceof</span> self ? <span class="keyword">this</span> : thisArg,</span><br><span class="line">      args.concat(<span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>))</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 继承原型上的属性和方法</span></span><br><span class="line">  fbound.prototype = <span class="built_in">Object</span>.create(self.prototype)</span><br><span class="line">  <span class="keyword">return</span> fbound</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> result = greet.bind(obj)</span><br><span class="line">result()<span class="comment">//cats typically sleep between 12 and 16 hours</span></span><br></pre></td></tr></table></figure>
-<h4 id="new"><a href="#new" class="headerlink" title="new"></a>new</h4></li>
-</ul>
-<p>首先我们要知道new做了什么</p>
-<ul>
-<li>创建一个新对象，并继承其构造函数的prototype，这一步是为了继承构造函数原型上的属性和方法</li>
-<li>执行构造函数，方法内的this被指定为该新实例，这一步是为了执行构造函数内的赋值操作</li>
-<li>返回新实例（规范规定，如果构造方法返回了一个对象，那么返回该对象，否则返回第一步创建的新对象）<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">myNew</span>(<span class="params">item,...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> obj = <span class="built_in">Object</span>.create(item.prototype)</span><br><span class="line">    <span class="comment">//这里要注意是否对象会有返回值</span></span><br><span class="line">    <span class="keyword">let</span> result = item.apply(obj,args)</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">typeof</span> item()===<span class="literal">undefined</span>?obj:result</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Book</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        name:name</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> b1 = myNew(Book,<span class="string">"javaScript"</span>)</span><br><span class="line"><span class="keyword">let</span> b2 = <span class="keyword">new</span> Book(<span class="string">"javaScript"</span>)</span><br><span class="line"><span class="keyword">let</span> obj1 = <span class="keyword">new</span> <span class="built_in">Object</span>()</span><br><span class="line">Book.apply(obj1,[<span class="string">"123"</span>])</span><br><span class="line"><span class="built_in">console</span>.log(obj1)<span class="comment">//&#123; name: '123' &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(b1)<span class="comment">//&#123; name: 'javaScript' &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(b2)<span class="comment">//&#123; name: 'javaScript' &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">objectFactory</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>(),</span><br><span class="line">    Constructor = [].shift.call(<span class="built_in">arguments</span>);</span><br><span class="line">    obj.__proto__ = Constructor.prototype;</span><br><span class="line">    <span class="keyword">var</span> ret = Constructor.apply(obj, <span class="built_in">arguments</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">typeof</span> ret === <span class="string">'object'</span> ? ret : obj;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-
-            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
-            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
-                <source type="audio/mpeg" src="">
-            </audio>
-            
-                <ul id="audio-list" style="display:none">
-                    
-                        
-                            <li title='0' data-url='http://music.163.com/song/media/outer/url?id=562598065.mp3'></li>
-                        
-                    
-                        
-                            <li title='1' data-url='http://music.163.com/song/media/outer/url?id=28188425.mp3'></li>
-                        
-                    
-                        
-                            <li title='2' data-url='http://music.163.com/song/media/outer/url?id=534542079.mp3'></li>
-                        
-                    
-                        
-                            <li title='3' data-url='http://music.163.com/song/media/outer/url?id=30352891.mp3'></li>
-                        
-                    
-                        
-                            <li title='4' data-url='http://music.163.com/song/media/outer/url?id=28138493.mp3'></li>
-                        
-                    
-                        
-                            <li title='5' data-url='http://music.163.com/song/media/outer/url?id=421137682.mp3'></li>
-                        
-                    
-                        
-                            <li title='6' data-url='http://music.163.com/song/media/outer/url?id=208902.mp3'></li>
-                        
-                    
-                        
-                            <li title='7' data-url='http://music.163.com/song/media/outer/url?id=1363948882.mp3'></li>
-                        
-                    
-                        
-                            <li title='8' data-url='http://music.163.com/song/media/outer/url?id=574566207.mp3'></li>
-                        
-                    
-                        
-                            <li title='9' data-url='http://music.163.com/song/media/outer/url?id=1330348068.mp3'></li>
-                        
-                    
-                        
-                            <li title='10' data-url='http://music.163.com/song/media/outer/url?id=26418130.mp3'></li>
-                        
-                    
-                        
-                            <li title='11' data-url='http://music.163.com/song/media/outer/url?id=506196018.mp3'></li>
-                        
-                    
-                        
-                            <li title='12' data-url='http://music.163.com/song/media/outer/url?id=1309129239.mp3'></li>
-                        
-                    
-                        
-                            <li title='13' data-url='http://music.163.com/song/media/outer/url?id=450455548.mp3'></li>
-                        
-                    
-                        
-                            <li title='14' data-url='http://music.163.com/song/media/outer/url?id=1860032684.mp3'></li>
-                        
-                    
-                </ul>
-            
-        </div>
-        
-    <div id='gitalk-container' class="comment link"
-		data-enable='true'
-        data-ae='true'
-        data-ci='93c58aa54b696342afaa'
-        data-cs='e593ee984f8640ebaed460b4b0bcc71c6d36289d'
-        data-r='gittalk'
-        data-o='edsion11'
-        data-a='edsion11'
-        data-d='false'
-    >查看评论</div>
-
-
-    </div>
-    
-        <div class='side'>
-			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#call"><span class="toc-number">1.</span> <span class="toc-text">call</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#apply"><span class="toc-number">2.</span> <span class="toc-text">apply</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Bind"><span class="toc-number">3.</span> <span class="toc-text">Bind</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#new"><span class="toc-number">4.</span> <span class="toc-text">new</span></a></li></ol>	
-        </div>
-    
-</div>
-
-
-  </div>
-</div>
-
+<body lang="en">
+<is-a></is-a>
+<script src="/runtime.1720a40670866f12654e.js"></script>
+<script src="/polyfills.69a7b8a907a7ac9da988.js"></script>
+<script src="/main.12c3a04fa47641f902c2.js"></script>
 </body>
-
-<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-
-
-<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
-<script src="/js/plugin.js"></script>
-<script src="/js/typed.js"></script>
-<script src="/js/diaspora.js"></script>
-
-
-<link rel="stylesheet" href="/photoswipe/photoswipe.css">
-<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
-
-
-<script src="/photoswipe/photoswipe.min.js"></script>
-<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
-
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-            <div class="pswp__top-bar">
-                <!--  Controls are self-explanatory. Order can be changed. -->
-                <div class="pswp__counter"></div>
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                      <div class="pswp__preloader__cut">
-                        <div class="pswp__preloader__donut"></div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div> 
-            </div>
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    });
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-
-
-
 </html>

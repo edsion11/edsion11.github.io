@@ -1,272 +1,44 @@
-
-<!DOCTYPE html>
-<html lang="zh_CN" class="loading">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>leeocde-148-链表排序 - EdsionGu的博客</title>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="google" content="notranslate" />
-    <meta name="keywords" content="前端,Rust,javascript,"> 
-    <meta name="description" content="断剑重铸之日，骑士归来之时,leetcode-148-链表排序题目描述：在 O(nlog n) 时间复杂度和常数级空间复杂度下，对链表进行排序。分析：看到O(nlog n)的时间复杂度以及O(1)的空间复杂度。确定使用归并排序,"> 
-    <meta name="author" content="Edsion Gu"> 
-    <link rel="alternative" href="atom.xml" title="EdsionGu的博客" type="application/atom+xml"> 
-    <link rel="icon" href="/img/avatar.png"> 
-    
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<meta charset="utf-8">
+<title>leeocde-148-链表排序 - EdsionGu的博客</title>
+<base href="/">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<link rel="canonical" href="https://edsion11.github.io/2020/06/09/leeocde-%E9%93%BE%E8%A1%A8%E6%8E%92%E5%BA%8F/">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
 
-    
-<link rel="stylesheet" href="/css/diaspora.css">
+<meta name="description" content="leetcode-148-链表排序题目描述：在 O(nlog n) 时间复杂度和常数级空间复杂度下，对链表进行排序。分析：看到O(nlog n)的时间复杂度以及O(1)的空间复杂度。确定使用归并排序作为主要程序结构。 在归并排序中，体现了分而治之的思想：利用递归算法将链表分解一个个递归基：单节点。分解利用二分的思想，逐渐分解。但链表结构不同于向量结构，向量是循秩访问，可以求出中间元素的秩。链表则是">
+<meta property="og:type" content="website">
+<meta property="og:title" content="leeocde-148-链表排序">
+<meta property="og:url" content="https://edsion11.github.io/2020/06/09/leeocde-%E9%93%BE%E8%A1%A8%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:site_name" content="EdsionGu的博客">
+<meta property="og:description" content="leetcode-148-链表排序题目描述：在 O(nlog n) 时间复杂度和常数级空间复杂度下，对链表进行排序。分析：看到O(nlog n)的时间复杂度以及O(1)的空间复杂度。确定使用归并排序作为主要程序结构。 在归并排序中，体现了分而治之的思想：利用递归算法将链表分解一个个递归基：单节点。分解利用二分的思想，逐渐分解。但链表结构不同于向量结构，向量是循秩访问，可以求出中间元素的秩。链表则是">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=160">
+<meta property="article:published_time" content="2020-06-09T19:44:10.000Z">
+<meta property="article:modified_time" content="2022-01-22T09:45:40.642Z">
+<meta property="article:author" content="Edsion Gu">
+<meta property="article:tag" content="链表">
+<meta property="article:tag" content="归并排序">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=160">
 
-	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({
-              google_ad_client: "ca-pub-8691406134231910",
-              enable_page_level_ads: true
-         });
-    </script>
-    <script async custom-element="amp-auto-ads"
-        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
-    </script>
+
+<link href="//fonts.googleapis.com/css?family=Baloo+Bhaijaan|Inconsolata|Josefin+Sans|Montserrat" rel="stylesheet">
+<link href="/styles.e4c22be5bb2c26eab146.css" rel="stylesheet">
+
+<link rel="stylesheet" href="/theme.fd07f88173d488a992d7.css" is="theme">
+
+
+<script src="/config.7aa0c95d166e067f6828.js"></script>
+
+
 <meta name="generator" content="Hexo 4.2.1"></head>
-
-<body class="loading">
-    <span id="config-title" style="display:none">EdsionGu的博客</span>
-    <div id="loader"></div>
-    <div id="single">
-  <div id="top" style="display: block;">
-  <div class="bar" style="width: 0;"></div>
-  <a
-    class="iconfont icon-home image-icon"
-    href="javascript:;"
-    data-url="https://edsion11.github.io"
-  ></a>
-  <div title="播放/暂停" class="iconfont icon-play"></div>
-  <h3 class="subtitle">leeocde-148-链表排序</h3>
-  <div class="social">
-    <div>
-      <div class="share">
-        <a
-          title="获取二维码"
-          class="iconfont icon-scan"
-          href="javascript:;"
-        ></a>
-      </div>
-      <div id="qr"></div>
-    </div>
-  </div>
-  <div class="scrollbar"></div>
-</div>
-
-  <div class="section">
-    <div class="article">
-    <div class='main'>
-        <h1 class="title">leeocde-148-链表排序</h1>
-        <div class="stuff">
-            <span>六月 09, 2020</span>
-            
-  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" rel="tag">归并排序</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a></li></ul>
-
-
-        </div>
-        <div class="content markdown">
-            <h4 id="leetcode-148-链表排序"><a href="#leetcode-148-链表排序" class="headerlink" title="leetcode-148-链表排序"></a>leetcode-148-链表排序</h4><h5 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h5><p>在 O(n<em>log n) 时间复杂度和常数级空间复杂度下，对链表进行排序。<br>分析：看到O(n</em>log n)的时间复杂度以及O(1)的空间复杂度。确定使用归并排序作为主要程序结构。</p>
-<p>在归并排序中，体现了分而治之的思想：利用递归算法将链表分解一个个递归基：单节点。分解利用二分的思想，逐渐分解。但链表结构不同于向量结构，向量是循秩访问，可以求出中间元素的秩。链表则是通过节点间联系访问。这里是难点之一，解决方法是利用双指针法：设置快慢两个指针，快的走两步，慢的走一步，而且快指针定义在慢指针初始位置的下一位。这样当快指针为<code>null</code>时，慢指针刚好到中间。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> mid = node</span><br><span class="line"><span class="keyword">let</span> fast = node.next</span><br><span class="line"><span class="keyword">while</span> (fast &amp;&amp; fast.next) &#123;</span><br><span class="line">  mid = mid.next</span><br><span class="line">  fast = fast.next.next</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>链表多种操作会用到双指针的方法，这里<code>while</code>语句利用短路表达式<code>&amp;&amp;</code>，使代码可读性高，易于理解。<br>有了这关键的一步，就可以递归了。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mergeSort</span>(<span class="params">node</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!node || !node.next) <span class="keyword">return</span> node</span><br><span class="line">    <span class="keyword">let</span> mid = node</span><br><span class="line">    <span class="keyword">let</span> fast = node.next</span><br><span class="line">    <span class="keyword">while</span> (fast &amp;&amp; fast.next) &#123;</span><br><span class="line">      mid = mid.next</span><br><span class="line">      fast = fast.next.next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> rightList = mid.next</span><br><span class="line">    mid.next = <span class="literal">null</span></span><br><span class="line">    <span class="keyword">let</span> left = node</span><br><span class="line">    <span class="keyword">let</span> right = rightList</span><br><span class="line">    <span class="keyword">return</span> mergeList(mergeSort(left), mergeSort(right))<span class="comment">//这里的mergeSort是合并算法</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>递归完成后就要合并了，合并和正常归并排序一致，将左链表与右链表逐一比较，较小者连接到头节点，即可。<br>附上完整代码实现</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * function ListNode(val) &#123;</span></span><br><span class="line"><span class="comment"> *     this.val = val;</span></span><br><span class="line"><span class="comment"> *     this.next = null;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">/**在 O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;ListNode&#125;</span> <span class="variable">head</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;ListNode&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * function ListNode(val) &#123;</span></span><br><span class="line"><span class="comment"> *     this.val = val;</span></span><br><span class="line"><span class="comment"> *     this.next = null;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;ListNode&#125;</span> <span class="variable">head</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;ListNode&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ListNode</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.val = val</span><br><span class="line">  <span class="keyword">this</span>.next = <span class="literal">null</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> sortList = <span class="function"><span class="keyword">function</span> (<span class="params">head</span>) </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   *  合并每个递归基</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;*&#125;</span> <span class="variable">left</span></span></span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;*&#125;</span> <span class="variable">right</span></span></span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">mergeList</span>(<span class="params">left, right</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> res = <span class="keyword">new</span> ListNode(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">let</span> pre = res</span><br><span class="line">    <span class="keyword">while</span> (left &amp;&amp; right) &#123;</span><br><span class="line">      <span class="keyword">if</span> (left.val &lt;= right.val) &#123;</span><br><span class="line">        pre.next = left</span><br><span class="line">        left = left.next</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        pre.next = right</span><br><span class="line">        right = right.next</span><br><span class="line">      &#125;</span><br><span class="line">      pre = pre.next</span><br><span class="line">    &#125;</span><br><span class="line">    pre.next = left ? left : right</span><br><span class="line">    <span class="keyword">return</span> res.next</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 递归至每个递归基</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;*&#125;</span> <span class="variable">node</span></span></span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">mergeSort</span>(<span class="params">node</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!node || !node.next) <span class="keyword">return</span> node</span><br><span class="line">    <span class="keyword">let</span> mid = node</span><br><span class="line">    <span class="keyword">let</span> fast = node.next</span><br><span class="line">    <span class="keyword">while</span> (fast &amp;&amp; fast.next) &#123;</span><br><span class="line">      mid = mid.next</span><br><span class="line">      fast = fast.next.next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> rightList = mid.next</span><br><span class="line">    mid.next = <span class="literal">null</span></span><br><span class="line">    <span class="keyword">let</span> left = node</span><br><span class="line">    <span class="keyword">let</span> right = rightList</span><br><span class="line">    <span class="keyword">return</span> mergeList(mergeSort(left), mergeSort(right))</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> mergeSort(head)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当然归并排序比较复杂，链表排序方法中，容易理解以及使用的还有插入排序，这在leetocde-147.<br>在数组中插入元素比较麻烦，但可以转化为元素互换，而在链表中插入是个比较容易的操作。所以插入排序很适用。这里直接贴题解代码：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * function ListNode(val) &#123;</span></span><br><span class="line"><span class="comment"> *     this.val = val;</span></span><br><span class="line"><span class="comment"> *     this.next = null;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;ListNode&#125;</span> <span class="variable">head</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;ListNode&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> insertionSortList = <span class="function"><span class="keyword">function</span>(<span class="params">head</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 边界条件</span></span><br><span class="line">    <span class="comment">// 哨兵节点</span></span><br><span class="line">    <span class="keyword">let</span> preHead = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">    <span class="comment">// 将要移动重新插入链表中的元素</span></span><br><span class="line">    <span class="keyword">let</span> curr = head;</span><br><span class="line">    <span class="comment">// 插入链表中的前驱位置 插入pre和pre.next之间</span></span><br><span class="line">    <span class="keyword">let</span> pre = preHead;</span><br><span class="line">    <span class="comment">// 下一个将要移动插入的元素</span></span><br><span class="line">    <span class="keyword">let</span> next = <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">// 遍历</span></span><br><span class="line">    <span class="keyword">while</span>(curr)&#123;</span><br><span class="line">        <span class="comment">// 保存下一个将要插入的元素</span></span><br><span class="line">        next = curr.next;</span><br><span class="line">        <span class="comment">// 寻找插入的前驱位置</span></span><br><span class="line">        <span class="keyword">while</span>(pre.next &amp;&amp; pre.next.val &lt; curr.val)&#123;</span><br><span class="line">            pre = pre.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 插入</span></span><br><span class="line">        curr.next = pre.next;</span><br><span class="line">        pre.next = curr;</span><br><span class="line">        <span class="comment">// 从头或者从左到右开始遍历</span></span><br><span class="line">        pre = preHead;</span><br><span class="line">        <span class="comment">// 下一个</span></span><br><span class="line">        curr = next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> preHead.next;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>代码中有详细注释，就不用解释了。整体代码简洁，容易理解，可以更好的理解插入排序。</p>
-
-            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
-            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
-                <source type="audio/mpeg" src="">
-            </audio>
-            
-                <ul id="audio-list" style="display:none">
-                    
-                        
-                            <li title='0' data-url='http://music.163.com/song/media/outer/url?id=562598065.mp3'></li>
-                        
-                    
-                        
-                            <li title='1' data-url='http://music.163.com/song/media/outer/url?id=28188425.mp3'></li>
-                        
-                    
-                        
-                            <li title='2' data-url='http://music.163.com/song/media/outer/url?id=534542079.mp3'></li>
-                        
-                    
-                        
-                            <li title='3' data-url='http://music.163.com/song/media/outer/url?id=30352891.mp3'></li>
-                        
-                    
-                        
-                            <li title='4' data-url='http://music.163.com/song/media/outer/url?id=28138493.mp3'></li>
-                        
-                    
-                        
-                            <li title='5' data-url='http://music.163.com/song/media/outer/url?id=421137682.mp3'></li>
-                        
-                    
-                        
-                            <li title='6' data-url='http://music.163.com/song/media/outer/url?id=208902.mp3'></li>
-                        
-                    
-                        
-                            <li title='7' data-url='http://music.163.com/song/media/outer/url?id=1363948882.mp3'></li>
-                        
-                    
-                        
-                            <li title='8' data-url='http://music.163.com/song/media/outer/url?id=574566207.mp3'></li>
-                        
-                    
-                        
-                            <li title='9' data-url='http://music.163.com/song/media/outer/url?id=1330348068.mp3'></li>
-                        
-                    
-                        
-                            <li title='10' data-url='http://music.163.com/song/media/outer/url?id=26418130.mp3'></li>
-                        
-                    
-                        
-                            <li title='11' data-url='http://music.163.com/song/media/outer/url?id=506196018.mp3'></li>
-                        
-                    
-                        
-                            <li title='12' data-url='http://music.163.com/song/media/outer/url?id=1309129239.mp3'></li>
-                        
-                    
-                        
-                            <li title='13' data-url='http://music.163.com/song/media/outer/url?id=450455548.mp3'></li>
-                        
-                    
-                        
-                            <li title='14' data-url='http://music.163.com/song/media/outer/url?id=1860032684.mp3'></li>
-                        
-                    
-                </ul>
-            
-        </div>
-        
-    <div id='gitalk-container' class="comment link"
-		data-enable='true'
-        data-ae='true'
-        data-ci='93c58aa54b696342afaa'
-        data-cs='e593ee984f8640ebaed460b4b0bcc71c6d36289d'
-        data-r='gittalk'
-        data-o='edsion11'
-        data-a='edsion11'
-        data-d='false'
-    >查看评论</div>
-
-
-    </div>
-    
-        <div class='side'>
-			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#leetcode-148-链表排序"><span class="toc-number">1.</span> <span class="toc-text">leetcode-148-链表排序</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#题目描述："><span class="toc-number">1.1.</span> <span class="toc-text">题目描述：</span></a></li></ol></li></ol>	
-        </div>
-    
-</div>
-
-
-  </div>
-</div>
-
+<body lang="en">
+<is-a></is-a>
+<script src="/runtime.1720a40670866f12654e.js"></script>
+<script src="/polyfills.69a7b8a907a7ac9da988.js"></script>
+<script src="/main.12c3a04fa47641f902c2.js"></script>
 </body>
-
-<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-
-
-<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
-<script src="/js/plugin.js"></script>
-<script src="/js/typed.js"></script>
-<script src="/js/diaspora.js"></script>
-
-
-<link rel="stylesheet" href="/photoswipe/photoswipe.css">
-<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
-
-
-<script src="/photoswipe/photoswipe.min.js"></script>
-<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
-
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-            <div class="pswp__top-bar">
-                <!--  Controls are self-explanatory. Order can be changed. -->
-                <div class="pswp__counter"></div>
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                      <div class="pswp__preloader__cut">
-                        <div class="pswp__preloader__donut"></div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div> 
-            </div>
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    });
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-
-
-
 </html>
