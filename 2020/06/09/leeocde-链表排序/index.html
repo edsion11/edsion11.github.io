@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
-<head>
+<head><!-- hexo injector head_begin start -->
+<script src="/config.0f29558601a75d43d127.js"></script>
+<!-- hexo injector head_begin end -->
 <meta charset="utf-8">
 <title>leeocde-148-链表排序 - EdsionGu的博客</title>
 <base href="/">
@@ -8,12 +10,12 @@
 <link rel="canonical" href="https://edsion11.github.io/2020/06/09/leeocde-%E9%93%BE%E8%A1%A8%E6%8E%92%E5%BA%8F/">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
-<meta name="description" content="leetcode-148-链表排序题目描述：在 O(nlog n) 时间复杂度和常数级空间复杂度下，对链表进行排序。分析：看到O(nlog n)的时间复杂度以及O(1)的空间复杂度。确定使用归并排序作为主要程序结构。 在归并排序中，体现了分而治之的思想：利用递归算法将链表分解一个个递归基：单节点。分解利用二分的思想，逐渐分解。但链表结构不同于向量结构，向量是循秩访问，可以求出中间元素的秩。链表则是">
+<meta name="description" content="leetcode-148-链表排序 题目描述： 在 O(nlog n) 时间复杂度和常数级空间复杂度下，对链表进行排序。 分析：看到O(nlog n)的时间复杂度以及O(1)的空间复杂度。确定使用归并排序作为主要程序结构。 在归并排序中，体现了分而治之的思想：利用递归算法将链表分解一个个递归基：单节点。分解利用二分的思想，逐渐分解。但链表结构不同于向量结构，向量是循秩访问，可以求出中间元素的秩。链">
 <meta property="og:type" content="website">
 <meta property="og:title" content="leeocde-148-链表排序">
 <meta property="og:url" content="https://edsion11.github.io/2020/06/09/leeocde-%E9%93%BE%E8%A1%A8%E6%8E%92%E5%BA%8F/index.html">
 <meta property="og:site_name" content="EdsionGu的博客">
-<meta property="og:description" content="leetcode-148-链表排序题目描述：在 O(nlog n) 时间复杂度和常数级空间复杂度下，对链表进行排序。分析：看到O(nlog n)的时间复杂度以及O(1)的空间复杂度。确定使用归并排序作为主要程序结构。 在归并排序中，体现了分而治之的思想：利用递归算法将链表分解一个个递归基：单节点。分解利用二分的思想，逐渐分解。但链表结构不同于向量结构，向量是循秩访问，可以求出中间元素的秩。链表则是">
+<meta property="og:description" content="leetcode-148-链表排序 题目描述： 在 O(nlog n) 时间复杂度和常数级空间复杂度下，对链表进行排序。 分析：看到O(nlog n)的时间复杂度以及O(1)的空间复杂度。确定使用归并排序作为主要程序结构。 在归并排序中，体现了分而治之的思想：利用递归算法将链表分解一个个递归基：单节点。分解利用二分的思想，逐渐分解。但链表结构不同于向量结构，向量是循秩访问，可以求出中间元素的秩。链">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://edsion11.github.io/images/avatar.png">
 <meta property="article:published_time" content="2020-06-09T19:44:10.000Z">
@@ -25,20 +27,6 @@
 <meta name="twitter:image" content="https://edsion11.github.io/images/avatar.png">
 
 
-<link href="//fonts.googleapis.com/css?family=Baloo+Bhaijaan|Inconsolata|Josefin+Sans|Montserrat" rel="stylesheet">
-<link href="/styles.e4c22be5bb2c26eab146.css" rel="stylesheet">
-
-<link rel="stylesheet" href="/theme.fd07f88173d488a992d7.css" is="theme">
-
-
-<script src="/config.d103671b494a56af4827.js"></script>
-
-
-<meta name="generator" content="Hexo 4.2.1"></head>
-<body lang="en">
-<is-a></is-a>
-<script src="/runtime.1720a40670866f12654e.js"></script>
-<script src="/polyfills.69a7b8a907a7ac9da988.js"></script>
-<script src="/main.12c3a04fa47641f902c2.js"></script>
-</body>
+<!-- hexo injector head_end start --><style is="theme">html{--inside-accent-color:#2a2b33;--inside-foreground-color:#363636;--inside-border-color:#e0e0e0;--inside-background:#f3f6f7;--inside-sidebar-background:#2a2b33;--inside-card-background:#fff;--inside-font-base:'Josefin Sans','PingFang SC';--inside-font-logo:-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;--inside-font-menu:Baloo Bhaijaan,'Josefin Sans','PingFang SC';--inside-font-heading:-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;--inside-font-label:Montserrat,'Josefin Sans','PingFang SC';--inside-font-code:Inconsolata,monospace;--inside-font-print:-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;--inside-content-width:660px;--inside-highlight-00:#ffffff;--inside-highlight-01:#e0e0e0;--inside-highlight-02:#f3f6f7;--inside-highlight-03:#95a5b3;--inside-highlight-04:#363636;--inside-highlight-05:#262b2f;--inside-highlight-06:#000000;--inside-highlight-07:#000000;--inside-highlight-08:#5d6c7b;--inside-highlight-09:#40464a;--inside-highlight-0a:#2980b9;--inside-highlight-0b:#be516e;--inside-highlight-0c:#237dac;--inside-highlight-0d:#944770;--inside-highlight-0e:#239371;--inside-highlight-0f:#edf0f3;--inside-card-color:#fff;--inside-accent-color-005:rgba(42,43,51,.05);--inside-accent-color-01:rgba(42,43,51,.1);--inside-accent-color-02:rgba(42,43,51,.2);--inside-accent-color-04:rgba(42,43,51,.4);--inside-accent-color-08:rgba(42,43,51,.8)}</style><script src="/theme.9ecc9ab1.js"></script><link href="//fonts.googleapis.com/css?family=Baloo+Bhaijaan|Inconsolata|Josefin+Sans|Montserrat" rel="stylesheet"></link><link href="/styles.91e7dfca63c7c151daa6.css" rel="stylesheet"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+<body lang="en"><!-- hexo injector body_begin start --><is-a></is-a><!-- hexo injector body_begin end --><!-- hexo injector body_end start --><script src="/runtime.1ed960b0635ea0669f87.js"></script><script src="/polyfills.b7bf56fc45f931a8b83e.js"></script><script src="/main.543c891b4aad158701f3.js"></script><!-- hexo injector body_end end --></body>
 </html>
