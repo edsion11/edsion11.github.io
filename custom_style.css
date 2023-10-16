@@ -2,3 +2,9 @@
 article{
     font-size: 18px;
 }
+
+@media screen and (max-width: 750px) {
+    article{
+        font-size: 14px;
+    }
+}
